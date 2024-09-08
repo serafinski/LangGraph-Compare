@@ -1,18 +1,36 @@
+import sys
+
 from dotenv import load_dotenv
 from typing import Annotated
 from typing_extensions import TypedDict
 from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
+from langgraph.checkpoint.memory import MemorySaver
+from langchain.globals import set_debug
 
+# Import metody do zapisywania do pliku i wypisywanie output'u
+from tee import Tee
+
+# Debug mode - LangChain
+set_debug(True)
+
+# Otwarcie pliku do którego będziemy zapisywać
+log_file = open('langchain_debug_logs.log', 'w')
+
+# Użycie metody działającej ala tee na linux'ie
+sys.stdout = Tee(sys.stdout, log_file)
+
+# Inicjalizacja .env
 load_dotenv()
+
+memory = MemorySaver()
 
 class State(TypedDict):
     # Klucz Messages ma typ "list". The
     # Funkcja `add_messages` definuje jak klucz ma być aktualizowany
     # (w tym przypadku dodanie do listy, nie nadpisywanie)
     messages: Annotated[list, add_messages]
-
 
 graph_builder = StateGraph(State)
 
@@ -28,9 +46,19 @@ graph_builder.add_node("chatbot", chatbot)
 graph_builder.add_edge(START, "chatbot")
 graph_builder.add_edge("chatbot", END)
 
-graph = graph_builder.compile()
+graph = graph_builder.compile(checkpointer=memory)
 
-user_input = "Why is the sky blue?"
-for event in graph.stream({"messages": ("user", user_input)}):
-    for value in event.values():
-        print("Assistant:", value["messages"][-1].content)
+config = {"configurable": {"thread_id": "1"}}
+user_input = {"messages": [("user", "Hi")]}
+
+# Wywołanie grafu
+for event in graph.stream(user_input, config, stream_mode="debug"):
+    pass
+
+# Przywrócenie stdout do oryginalnego stanu
+sys.stdout = sys.__stdout__
+
+# Zamknięcie pliku
+log_file.close()
+
+#print("Debug logs have been written to langchain_debug_logs.log.")
