@@ -46,7 +46,7 @@ def chatbot(state: State):
 # Drugi argument - funkcja która będzie wywoływana kiedy node będzie używany
 graph_builder.add_node("chatbot_node", chatbot)
 
-graph_builder.add_edge(START, "chatbot_node_test")
+graph_builder.add_edge(START, "chatbot_node")
 graph_builder.add_edge("chatbot_node", END)
 
 graph = graph_builder.compile(checkpointer=memory)

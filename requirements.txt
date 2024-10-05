@@ -1,0 +1,11 @@
+python-dotenv
+langgraph
+langsmith
+langchain-openai
+langchain
+langchain_community
+langgraph-checkpoint-sqlite
+pandas
+pm4py
+tavily-python
+msgpack
