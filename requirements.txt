@@ -12,3 +12,4 @@ msgpack
 langchain_experimental
 matplotlib
 langchain_core
+pydantic
