@@ -9,7 +9,6 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 from dotenv import load_dotenv
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langgraph.graph import END, StateGraph, START
-from typing import Annotated
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.tools import tool
 from langchain_experimental.utilities import PythonREPL
@@ -20,7 +19,6 @@ from langchain_openai import ChatOpenAI
 import functools
 from langchain_core.messages import AIMessage
 from langgraph.prebuilt import ToolNode
-from typing import Literal
 
 # Inicjalizacja .env
 load_dotenv()
