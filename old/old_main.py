@@ -1,4 +1,5 @@
 import sqlite3
+import sys
 
 from dotenv import load_dotenv
 from typing import Annotated
@@ -8,11 +9,24 @@ from typing_extensions import TypedDict
 from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
+from langchain.globals import set_debug
+
+# Import metody do zapisywania do pliku i wypisywanie output'u
+from tee import Tee
+
+# Debug mode - LangChain
+set_debug(True)
+
+# Otwarcie pliku do którego będziemy zapisywać
+log_file = open('files/langchain_debug_logs.log', 'w')
+
+# Użycie metody działającej ala tee na linux'ie
+sys.stdout = Tee(sys.stdout, log_file)
 
 # Inicjalizacja .env
 load_dotenv()
 
-conn = sqlite3.connect("checkpoints.sqlite", check_same_thread=False)
+conn = sqlite3.connect("../checkpoints.sqlite", check_same_thread=False)
 memory = SqliteSaver(conn)
 
 class State(TypedDict):
@@ -41,6 +55,11 @@ config = {"configurable": {"thread_id": "1"}}
 user_input = {"messages": [("user", "What is Your name?")]}
 
 # Wywołanie grafu
-for event in graph.stream(user_input, config):
-    for value in event.values():
-        print("Assistant:", value["messages"][-1].content)
+for event in graph.stream(user_input, config, stream_mode="debug"):
+    pass
+
+# Przywrócenie stdout do oryginalnego stanu
+sys.stdout = sys.__stdout__
+
+# Zamknięcie pliku
+log_file.close()
