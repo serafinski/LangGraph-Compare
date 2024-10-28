@@ -59,12 +59,12 @@ with open(csv_filename, mode='w', newline='') as csv_file:
         else:
             # Skip wiersza jak nie ma activity lub org:resource
             continue
-
-        # Determine end_timestamp from the next valid log entry with the same case_id
+        # Wyciągnięcie end_timestap'a z następnego log entry z tym samym case_id
         end_timestamp = None
         for j in range(i + 1, len(logs)):
             next_log_entry = logs[j]
-            if next_log_entry.get('thread_ID') == case_id:  # Ensure it matches the same case_id
+            # To samo case_id!
+            if next_log_entry.get('thread_ID') == case_id:
                 if next_log_entry.get('metadata', {}).get('writes'):
                     end_timestamp = next_log_entry['checkpoint'].get('ts')
                     break
@@ -73,7 +73,8 @@ with open(csv_filename, mode='w', newline='') as csv_file:
         writer.writerow({
             'case_id': case_id,
             'timestamp': timestamp,
-            'end_timestamp': end_timestamp if end_timestamp is not None else timestamp,  # Write empty if None
+            # Podmianka na timestamp - jeżeli nie ma wartości - długość 0 (workaround dla ostanich wierszy)
+            'end_timestamp': end_timestamp if end_timestamp is not None else timestamp,
             'cost': cost,
             'activity': activity,
             'org:resource': org_resource
