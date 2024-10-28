@@ -4,7 +4,7 @@ import csv
 # Definiowanie input'u i output'u
 log_filename = 'files/sql_to_log_output.log'
 csv_filename = 'files/csv_output_skip.csv'
-csv_fields = ['case_id', 'timestamp', 'cost', 'activity', 'org:resource']
+csv_fields = ['case_id', 'timestamp', 'end_timestamp', 'cost', 'activity', 'org:resource']
 
 # Czytanie danych z JSON'a z .log
 with open(log_filename, 'r') as log_file:
@@ -16,7 +16,7 @@ with open(csv_filename, mode='w', newline='') as csv_file:
     writer.writeheader()
 
     # Przechodzenie po log'u
-    for log_entry in logs:
+    for i, log_entry in enumerate(logs):
         case_id = log_entry.get('thread_ID')
         timestamp = log_entry['checkpoint'].get('ts')
 
@@ -60,10 +60,20 @@ with open(csv_filename, mode='w', newline='') as csv_file:
             # Skip wiersza jak nie ma activity lub org:resource
             continue
 
+        # Determine end_timestamp from the next valid log entry with the same case_id
+        end_timestamp = None
+        for j in range(i + 1, len(logs)):
+            next_log_entry = logs[j]
+            if next_log_entry.get('thread_ID') == case_id:  # Ensure it matches the same case_id
+                if next_log_entry.get('metadata', {}).get('writes'):
+                    end_timestamp = next_log_entry['checkpoint'].get('ts')
+                    break
+
         # Zapisywanie wyciągniętych danych do pliku CSV
         writer.writerow({
             'case_id': case_id,
             'timestamp': timestamp,
+            'end_timestamp': end_timestamp if end_timestamp is not None else timestamp,  # Write empty if None
             'cost': cost,
             'activity': activity,
             'org:resource': org_resource
