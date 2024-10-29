@@ -13,3 +13,5 @@ langchain_experimental
 matplotlib
 langchain_core
 pydantic
+prefixspan
+pyvis
