@@ -136,3 +136,8 @@ for case_id in sorted_array:
 # Wyświetlanie czasu trwania dla każdego case_id
 for case_id in sorted_array:
     print(f"Case ID {case_id}: {case_durations[case_id]}")
+
+###################### WYKRESY
+print("\nGenerowanie wykresu Prefix Tree:")
+prefix_tree = pm4py.discover_prefix_tree(event_log, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+pm4py.save_vis_prefix_tree(prefix_tree, 'tree.png')
