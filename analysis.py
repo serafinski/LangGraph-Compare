@@ -1,5 +1,6 @@
 import pandas as pd
 import pm4py
+import numpy as np
 from collections import defaultdict
 
 pd.set_option('display.max_columns', None)
@@ -44,16 +45,21 @@ language = pm4py.get_stochastic_language(event_log)
 case_by_sequence = {tuple(seq): case_id for case_id, seq in sequences_by_case.items()}
 
 print("\nSekwencje wraz z prawdopodobieństwem wystąpienia:")
-for sequence, probability in language.items():
-    case_id = case_by_sequence.get(sequence)
+
+# Sortujemy sequences_by_case według numerycznych wartości case_id
+sorted_sequences = sorted(case_by_sequence.items(), key=lambda x: int(x[1]))
+
+for sequence, case_id in sorted_sequences:
+    probability = language[sequence]
     print(f"Case ID {case_id}: {sequence}, {probability}")
 
 ######################
 print("\nMinimalne odległości własne (self-distances) dla każdej aktywności:")
 unique_case_ids = event_log['case:concept:name'].unique()
+sorted_case_ids = np.sort(unique_case_ids.astype(int)).astype(str)
 
 # Iterujemy po każdym case_id i obliczamy minimalne odległości własne dla jego aktywności
-for case_id in unique_case_ids:
+for case_id in sorted_case_ids:
     # Filtrowanie logu dla bieżącego case_id
     filtered_event_log = event_log[event_log['case:concept:name'] == case_id]
 
@@ -68,8 +74,9 @@ for case_id in unique_case_ids:
 ######################
 print("\nŚwiadkowie odległości własnych:")
 unique_case_ids = event_log['case:concept:name'].unique()
+sorted_case_ids = np.sort(unique_case_ids.astype(int)).astype(str)
 
-for case_id in unique_case_ids:
+for case_id in sorted_case_ids:
     # Filtrowanie logu dla bieżącego case_id
     filtered_event_log = event_log[event_log['case:concept:name'] == case_id]
 
@@ -87,9 +94,9 @@ for case_id in unique_case_ids:
 ######################
 print("\nIlość wystąpień powtórzenia aktywności (rework):")
 unique_case_ids = event_log['case:concept:name'].unique()
+sorted_case_ids = np.sort(unique_case_ids.astype(int)).astype(str)
 
-# Iterujemy po każdym case_id i ręcznie liczymy powtórzenia dla jego aktywności
-for case_id in unique_case_ids:
+for case_id in sorted_case_ids:
     # Filtrowanie logu dla bieżącego case_id
     filtered_event_log = event_log[event_log['case:concept:name'] == case_id]
 
@@ -118,13 +125,14 @@ print(mean_serv_time)
 print("\nCzas trwania case'a:")
 # Pobranie unikalnych identyfikatorów przypadków (case_id)
 unique_case_ids = event_log['case:concept:name'].unique()
+sorted_array = np.sort(unique_case_ids.astype(int)).astype(str)
 
 # Iterowanie po każdym case_id i uzyskanie jego czasu trwania
 case_durations = {}
-for case_id in unique_case_ids:
+for case_id in sorted_array:
     duration = pm4py.get_case_duration(event_log, case_id)
     case_durations[case_id] = duration
 
 # Wyświetlanie czasu trwania dla każdego case_id
-for case_id, duration in sorted(case_durations.items()):
-    print(f"Case ID {case_id}: {duration}")
+for case_id in sorted_array:
+    print(f"Case ID {case_id}: {case_durations[case_id]}")

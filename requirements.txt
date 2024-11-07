@@ -15,3 +15,4 @@ langchain_core
 pydantic
 prefixspan
 pyvis
+numpy
