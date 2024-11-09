@@ -63,7 +63,7 @@ for i in range(num_repetitions):
             print("Assistant:", value["messages"][-1].content)
 
 output = "files/sql_to_log_output.log"
-csv_output = "files/csv_output_skip.csv"
+csv_output = "files/csv_output.csv"
 
 export_to_log(database, output)
 
@@ -73,4 +73,4 @@ log_to_csv(output,csv_output)
 print()
 event_log = load_event_log(csv_output)
 full_analysis(event_log)
-generate_prefix_tree(event_log, 'tree.png')
+generate_prefix_tree(event_log, 'img/tree.png')

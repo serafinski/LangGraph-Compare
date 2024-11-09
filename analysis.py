@@ -70,6 +70,7 @@ def print_minimum_self_distances(event_log):
     unique_case_ids = event_log['case:concept:name'].unique()
     sorted_case_ids = np.sort(unique_case_ids.astype(int)).astype(str)
 
+    print("\nMinimalne odległości własne (self-distances) dla każdej aktywności:")
     # Iterujemy po każdym case_id i obliczamy minimalne odległości własne dla jego aktywności
     for case_id in sorted_case_ids:
         # Filtrowanie logu dla bieżącego case_id
@@ -88,6 +89,8 @@ def print_self_distance_witnesses(event_log):
     """Calculate and print the minimum self-distance witnesses for each activity in each case."""
     unique_case_ids = event_log['case:concept:name'].unique()
     sorted_case_ids = np.sort(unique_case_ids.astype(int)).astype(str)
+
+    print("\nŚwiadkowie odległości własnych:")
 
     for case_id in sorted_case_ids:
         # Filtrowanie logu dla bieżącego case_id
@@ -110,6 +113,8 @@ def get_rework_counts(event_log):
     rework_counts_by_case = {}
     unique_case_ids = event_log['case:concept:name'].unique()
     sorted_case_ids = np.sort(unique_case_ids.astype(int)).astype(str)
+
+    print("\nIlość wystąpień powtórzenia aktywności (rework):")
 
     for case_id in sorted_case_ids:
         # Filtrowanie logu dla bieżącego case_id
@@ -145,6 +150,8 @@ def get_case_durations(event_log):
     # Pobranie unikalnych identyfikatorów przypadków (case_id)
     unique_case_ids = event_log['case:concept:name'].unique()
     sorted_array = np.sort(unique_case_ids.astype(int)).astype(str)
+
+    print("\nCzas trwania case'a:")
 
     # Iterowanie po każdym case_id i uzyskanie jego czasu trwania
     case_durations = {}
