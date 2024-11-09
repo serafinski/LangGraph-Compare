@@ -19,11 +19,18 @@ from langchain_core.messages import BaseMessage
 from langgraph.graph import END, StateGraph, START
 from langgraph.prebuilt import create_react_agent
 
+from sql_to_log import export_to_log
+from log_to_csv import *
+from analysis import *
+from graph_runner import *
+
+database = "checkpoints.sqlite"
+
 
 # Inicjalizacja .env
 load_dotenv()
 
-conn = sqlite3.connect("checkpoints.sqlite", check_same_thread=False)
+conn = sqlite3.connect(database, check_same_thread=False)
 memory = SqliteSaver(conn)
 
 #####
@@ -126,16 +133,32 @@ workflow.add_conditional_edges("supervisor", lambda x: x["next"], conditional_ma
 workflow.add_edge(START, "supervisor")
 
 graph = workflow.compile(checkpointer=memory)
-config = {"configurable": {"thread_id": "10"},"recursion_limit": 100}
+# config = {"configurable": {"thread_id": "10"},"recursion_limit": 100}
+#
+# for s in graph.stream(
+#     {"messages": [HumanMessage(content="Code hello world and print it to the terminal")]},
+#     config
+# ):
+#     if "__end__" not in s:
+#         print(s)
+#         print("----")
 
-for s in graph.stream(
-    {"messages": [HumanMessage(content="Code hello world and print it to the terminal")]},
-    config
-):
-    if "__end__" not in s:
-        print(s)
-        print("----")
 
+user_input = {
+    "messages": [
+        HumanMessage(
+            content="Code hello world and print it to the terminal"
+        )
+    ]
+}
+
+run_graph_iterations(
+    graph=graph,
+    starting_thread_id=12,
+    num_repetitions=3,
+    user_input_template=user_input,
+    recursion_limit=100
+)
 
 # for s in graph.stream(
 #     {"messages": [HumanMessage(content="Write a brief research report on pikas.")]},
@@ -144,3 +167,33 @@ for s in graph.stream(
 #     if "__end__" not in s:
 #         print(s)
 #         print("----")
+
+
+user_input = {
+    "messages": [
+        HumanMessage(
+            content="Write a brief research report on pikas."
+        )
+    ]
+}
+
+run_graph_iterations(
+    graph=graph,
+    starting_thread_id=15,
+    num_repetitions=3,
+    user_input_template=user_input,
+    recursion_limit=100
+)
+
+output = "files/sql_to_log_output.log"
+csv_output = "files/csv_output.csv"
+
+export_to_log(database, output)
+
+log_to_csv(output,csv_output)
+
+# ANALIZA
+print()
+event_log = load_event_log(csv_output)
+full_analysis(event_log)
+generate_prefix_tree(event_log, 'img/tree.png')

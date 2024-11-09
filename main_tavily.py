@@ -11,10 +11,17 @@ from langgraph.graph import StateGraph
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
 
+from sql_to_log import export_to_log
+from log_to_csv import *
+from analysis import *
+from graph_runner import *
+
+database = "checkpoints.sqlite"
+
 # Inicjalizacja .env
 load_dotenv()
 
-conn = sqlite3.connect("checkpoints.sqlite", check_same_thread=False)
+conn = sqlite3.connect(database, check_same_thread=False)
 memory = SqliteSaver(conn)
 
 class State(TypedDict):
@@ -51,10 +58,27 @@ graph_builder.set_entry_point("chatbot_node")
 
 graph = graph_builder.compile(checkpointer=memory)
 
-config = {"configurable": {"thread_id": "2"}}
+# config = {"configurable": {"thread_id": "2"}}
+# user_input = {"messages": [("user", "Tell me about PJATK in Warsaw")]}
+#
+# # Wywołanie grafu
+# for event in graph.stream(user_input, config):
+#     for value in event.values():
+#         print("Assistant:", value["messages"][-1].content)
+
 user_input = {"messages": [("user", "Tell me about PJATK in Warsaw")]}
 
-# Wywołanie grafu
-for event in graph.stream(user_input, config):
-    for value in event.values():
-        print("Assistant:", value["messages"][-1].content)
+run_graph_iterations(graph, 6, 3, user_input)
+
+output = "files/sql_to_log_output.log"
+csv_output = "files/csv_output.csv"
+
+export_to_log(database, output)
+
+log_to_csv(output,csv_output)
+
+# ANALIZA
+print()
+event_log = load_event_log(csv_output)
+full_analysis(event_log)
+generate_prefix_tree(event_log, 'img/tree.png')

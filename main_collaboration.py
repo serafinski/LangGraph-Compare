@@ -20,10 +20,17 @@ import functools
 from langchain_core.messages import AIMessage
 from langgraph.prebuilt import ToolNode
 
+from sql_to_log import export_to_log
+from log_to_csv import *
+from analysis import *
+from graph_runner import *
+
+database = "checkpoints.sqlite"
+
 # Inicjalizacja .env
 load_dotenv()
 
-conn = sqlite3.connect("checkpoints.sqlite", check_same_thread=False)
+conn = sqlite3.connect(database, check_same_thread=False)
 memory = SqliteSaver(conn)
 
 #####
@@ -181,21 +188,52 @@ workflow.add_conditional_edges(
 workflow.add_edge(START, "Researcher")
 graph = workflow.compile(checkpointer=memory)
 
-config = {"configurable": {"thread_id": "4"},"recursion_limit": 150}
+# config = {"configurable": {"thread_id": "4"},"recursion_limit": 150}
+#
+# events = graph.stream(
+#     {
+#         "messages": [
+#             HumanMessage(
+#                 content="Fetch the UK's GDP over the past 5 years,"
+#                 " then draw a line graph of it."
+#                 " Once you code it up, finish."
+#             )
+#         ],
+#     },
+#     # Maximum number of steps to take in the graph
+#     config,
+# )
+# for s in events:
+#     print(s)
+#     print("----")
 
-events = graph.stream(
-    {
-        "messages": [
-            HumanMessage(
-                content="Fetch the UK's GDP over the past 5 years,"
-                " then draw a line graph of it."
-                " Once you code it up, finish."
-            )
-        ],
-    },
-    # Maximum number of steps to take in the graph
-    config,
+user_input = {
+    "messages": [
+        HumanMessage(
+            content="Fetch the UK's GDP over the past 5 years,"
+                    " then draw a line graph of it."
+                    " Once you code it up, finish."
+        )
+    ]
+}
+
+run_graph_iterations(
+    graph=graph,
+    starting_thread_id=9,
+    num_repetitions=3,
+    user_input_template=user_input,
+    recursion_limit=150
 )
-for s in events:
-    print(s)
-    print("----")
+
+output = "files/sql_to_log_output.log"
+csv_output = "files/csv_output.csv"
+
+export_to_log(database, output)
+
+log_to_csv(output,csv_output)
+
+# ANALIZA
+print()
+event_log = load_event_log(csv_output)
+full_analysis(event_log)
+generate_prefix_tree(event_log, 'img/tree.png')

@@ -19,9 +19,16 @@ from langgraph.graph import END, StateGraph, START
 from langchain_core.messages import HumanMessage, trim_messages, BaseMessage
 from langgraph.prebuilt import create_react_agent
 
+from sql_to_log import export_to_log
+from log_to_csv import *
+from analysis import *
+from graph_runner import *
+
+database = "checkpoints.sqlite"
+
 # Inicjalizacja .env
 load_dotenv()
-conn = sqlite3.connect("checkpoints.sqlite", check_same_thread=False)
+conn = sqlite3.connect(database, check_same_thread=False)
 memory = SqliteSaver(conn)
 
 #####
@@ -442,18 +449,49 @@ super_graph.add_conditional_edges(
 )
 super_graph.add_edge(START, "supervisor")
 super_graph = super_graph.compile(checkpointer=memory)
-config = {"configurable": {"thread_id": "15"},"recursion_limit": 150}
 
-for s in super_graph.stream(
-    {
-        "messages": [
-            HumanMessage(
-                content="Write a brief research report on the North American sturgeon. Include a chart."
-            )
-        ],
-    },
-    config,
-):
-    if "__end__" not in s:
-        print(s)
-        print("---")
+# config = {"configurable": {"thread_id": "15"},"recursion_limit": 150}
+#
+# for s in super_graph.stream(
+#     {
+#         "messages": [
+#             HumanMessage(
+#                 content="Write a brief research report on the North American sturgeon. Include a chart."
+#             )
+#         ],
+#     },
+#     config,
+# ):
+#     if "__end__" not in s:
+#         print(s)
+#         print("---")
+
+
+user_input = {
+    "messages": [
+        HumanMessage(
+            content="Write a brief research report on the North American sturgeon. Include a chart."
+        )
+    ]
+}
+
+run_graph_iterations(
+    graph=super_graph,
+    starting_thread_id=18,
+    num_repetitions=3,
+    user_input_template=user_input,
+    recursion_limit=150
+)
+
+output = "files/sql_to_log_output.log"
+csv_output = "files/csv_output.csv"
+
+export_to_log(database, output)
+
+log_to_csv(output,csv_output)
+
+# ANALIZA
+print()
+event_log = load_event_log(csv_output)
+full_analysis(event_log)
+generate_prefix_tree(event_log, 'img/tree.png')

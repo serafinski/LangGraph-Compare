@@ -48,6 +48,20 @@ def get_sequences_by_case(event_log):
         sequences_by_case[case_id].append(activity)
     return sequences_by_case
 
+def print_all_sequences(event_log):
+    """Print sequences for each case ID in the event log, sorted numerically by case ID."""
+
+    # Sekwencja dla każdego case_id
+    sequences_by_case = get_sequences_by_case(event_log)
+
+    print("\nWszystkie sekwencje:")
+
+    # Sortowanie po case_id
+    for case_id in sorted(sequences_by_case.keys(), key=lambda x: int(x)):
+        sequence = sequences_by_case[case_id]
+        print(f"Case ID {case_id}: {sequence}")
+
+
 def print_sequences_with_probabilities(event_log):
     """Print sequences with probabilities for each case ID."""
     sequences_by_case = get_sequences_by_case(event_log)
@@ -57,7 +71,7 @@ def print_sequences_with_probabilities(event_log):
     # Tworzymy odwrotny słownik dla łatwego porównania
     case_by_sequence = {tuple(seq): case_id for case_id, seq in sequences_by_case.items()}
 
-    print("\nSekwencje wraz z prawdopodobieństwem wystąpienia:")
+    print("\nID ostatniego wystąpienia sekwencji wraz z jej prawdopodobieństwem wystąpienia:")
     # Sortujemy sequences_by_case według numerycznych wartości case_id
     sorted_sequences = sorted(case_by_sequence.items(), key=lambda x: int(x[1]))
 
@@ -141,7 +155,7 @@ def get_mean_service_time(event_log):
     mean_serv_time = pm4py.get_service_time(
         event_log, start_timestamp_key='timestamp', timestamp_key='end_timestamp', aggregation_measure='mean'
     )
-    print("\nŚredni czas wykonania aktywności:", mean_serv_time)
+    print("\nŚredni czas wykonania aktywności (w sekundach):", mean_serv_time)
     return mean_serv_time
 
 def get_case_durations(event_log):
@@ -177,6 +191,8 @@ def full_analysis(event_log):
     get_end_activities(event_log)
 
     get_activity_counts(event_log)
+
+    print_all_sequences(event_log)
 
     print_sequences_with_probabilities(event_log)
 

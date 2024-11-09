@@ -12,6 +12,7 @@ from langgraph.graph.message import add_messages
 from sql_to_log import export_to_log
 from log_to_csv import *
 from analysis import *
+from graph_runner import *
 
 database = "checkpoints.sqlite"
 
@@ -43,24 +44,26 @@ graph_builder.add_edge("chatbot_node", END)
 
 graph = graph_builder.compile(checkpointer=memory)
 
-# Specify the starting thread_id and loop count
-starting_thread_id = 1  # Replace with your desired starting thread ID
-num_repetitions = 5     # Replace with the desired number of repetitions
+# # Specify the starting thread_id and loop count
+# starting_thread_id = 1  # Replace with your desired starting thread ID
+# num_repetitions = 5     # Replace with the desired number of repetitions
+#
+# # Loop to run the graph `num_repetitions` times
+# for i in range(num_repetitions):
+#     # Increment thread_id for each iteration if desired
+#     current_thread_id = str(starting_thread_id + i)
+#
+#     # Configuration and user input for each run
+#     config = {"configurable": {"thread_id": current_thread_id}}
+#     user_input = {"messages": [("user", "Tell me joke")]}
+#
+#     # Run the graph and print the output
+#     print(f"Running iteration {i + 1} with thread_id {current_thread_id}")
+#     for event in graph.stream(user_input, config):
+#         for value in event.values():
+#             print("Assistant:", value["messages"][-1].content)
 
-# Loop to run the graph `num_repetitions` times
-for i in range(num_repetitions):
-    # Increment thread_id for each iteration if desired
-    current_thread_id = str(starting_thread_id + i)
-
-    # Configuration and user input for each run
-    config = {"configurable": {"thread_id": current_thread_id}}
-    user_input = {"messages": [("user", "Tell me joke")]}
-
-    # Run the graph and print the output
-    print(f"Running iteration {i + 1} with thread_id {current_thread_id}")
-    for event in graph.stream(user_input, config):
-        for value in event.values():
-            print("Assistant:", value["messages"][-1].content)
+run_graph_iterations(graph, 1,5, {"messages": [("user", "Tell me a joke")]})
 
 output = "files/sql_to_log_output.log"
 csv_output = "files/csv_output.csv"
