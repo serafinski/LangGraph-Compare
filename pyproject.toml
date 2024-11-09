@@ -28,7 +28,7 @@ langchain-core = "^0.3.15"
 pydantic = "^2.9.2"
 prefixspan = "^0.5.2"
 pyvis = "^0.3.2"
-numpy = "^1.26.0"
+numpy = "<2.0.0"
 
 [build-system]
 requires = ["poetry-core"]

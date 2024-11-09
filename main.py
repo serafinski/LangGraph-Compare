@@ -9,10 +9,16 @@ from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 
+from sql_to_log import export_to_log
+from log_to_csv import *
+from analysis import *
+
+database = "checkpoints.sqlite"
+
 # Inicjalizacja .env
 load_dotenv()
 
-conn = sqlite3.connect("checkpoints.sqlite", check_same_thread=False)
+conn = sqlite3.connect(database, check_same_thread=False)
 memory = SqliteSaver(conn)
 
 class State(TypedDict):
@@ -37,10 +43,34 @@ graph_builder.add_edge("chatbot_node", END)
 
 graph = graph_builder.compile(checkpointer=memory)
 
-config = {"configurable": {"thread_id": "1"}}
-user_input = {"messages": [("user", "What is Your name?")]}
+# Specify the starting thread_id and loop count
+starting_thread_id = 1  # Replace with your desired starting thread ID
+num_repetitions = 5     # Replace with the desired number of repetitions
 
-# Wywołanie grafu
-for event in graph.stream(user_input, config):
-    for value in event.values():
-        print("Assistant:", value["messages"][-1].content)
+# Loop to run the graph `num_repetitions` times
+for i in range(num_repetitions):
+    # Increment thread_id for each iteration if desired
+    current_thread_id = str(starting_thread_id + i)
+
+    # Configuration and user input for each run
+    config = {"configurable": {"thread_id": current_thread_id}}
+    user_input = {"messages": [("user", "Tell me joke")]}
+
+    # Run the graph and print the output
+    print(f"Running iteration {i + 1} with thread_id {current_thread_id}")
+    for event in graph.stream(user_input, config):
+        for value in event.values():
+            print("Assistant:", value["messages"][-1].content)
+
+output = "files/sql_to_log_output.log"
+csv_output = "files/csv_output_skip.csv"
+
+export_to_log(database, output)
+
+log_to_csv(output,csv_output)
+
+# ANALIZA
+print()
+event_log = load_event_log(csv_output)
+full_analysis(event_log)
+generate_prefix_tree(event_log, 'tree.png')
