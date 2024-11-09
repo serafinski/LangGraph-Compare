@@ -1,3 +1,7 @@
+# Check poetry location by:
+# Unix - which poetry
+# Windows - where poetry
+
 [tool.poetry]
 name = "langgraph log parser"
 version = "0.1.0"
