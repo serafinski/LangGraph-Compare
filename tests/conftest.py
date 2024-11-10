@@ -58,3 +58,8 @@ def sample_event_log():
     formatted_df = pm4py.format_dataframe(df, case_id='case_id', activity_key='activity', timestamp_key='timestamp')
 
     return formatted_df
+
+@pytest.fixture
+def log_file_path():
+    """Fixture providing path to the test JSON log file."""
+    return "files/tests/test_sql_to_log_output.log"

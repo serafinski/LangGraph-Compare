@@ -12,7 +12,7 @@ from langgraph_log_parser.analysis import (
 
 def test_load_event_log():
     # Define the path to the test CSV file
-    test_file_path = "files/test.csv"
+    test_file_path = "files/tests/test_csv_output.csv"
 
     # Ensure the file exists before proceeding
     assert os.path.exists(test_file_path), "The test CSV file does not exist at the specified path."
