@@ -2,6 +2,9 @@
 # Unix - which poetry
 # Windows - where poetry
 
+# Before running tests:
+# Be sure to: "poetry install --with test" before running "poetry run pytest"
+
 [tool.poetry]
 name = "langgraph_log_parser"
 version = "0.1.0"
@@ -29,6 +32,9 @@ pydantic = "^2.9.2"
 prefixspan = "^0.5.2"
 pyvis = "^0.3.2"
 numpy = "<2.0.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.3"
 
 [build-system]
 requires = ["poetry-core"]

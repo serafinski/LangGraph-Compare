@@ -184,7 +184,7 @@ def print_full_analysis(event_log):
         event_log: The event log data to analyze.
     """
 
-    print("\n####################################################")
+    print("\n####################START###########################")
 
     get_start_activities(event_log)
 
@@ -206,7 +206,7 @@ def print_full_analysis(event_log):
 
     get_case_durations(event_log)
 
-    print("####################################################")
+    print("######################END###########################")
 
 ### GRAPHS
 def generate_prefix_tree(event_log, output_path='tree.png'):
