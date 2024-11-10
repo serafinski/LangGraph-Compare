@@ -3,7 +3,7 @@
 # Windows - where poetry
 
 [tool.poetry]
-name = "langgraph log parser"
+name = "langgraph_log_parser"
 version = "0.1.0"
 description = "Parser for logs from LangGraph"
 authors = ["Tomasz Serafiński <tomasz@serafinski.net>"]

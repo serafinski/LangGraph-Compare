@@ -1,7 +1,7 @@
 import json
 import csv
 
-def log_to_csv(log_filename = 'files/sql_to_log_output.log', csv_filename = 'files/csv_output_skip.csv', csv_fields = ['case_id', 'timestamp', 'end_timestamp', 'cost', 'activity', 'org:resource']):
+def export_log_to_csv(log_filename = 'files/sql_to_log_output.log', csv_filename = 'files/csv_output_skip.csv', csv_fields = ['case_id', 'timestamp', 'end_timestamp', 'cost', 'activity', 'org:resource']):
     """Convert JSON log data to CSV format.
 
     Args:

@@ -176,7 +176,7 @@ def get_case_durations(event_log):
     return case_durations
 
 
-def full_analysis(event_log):
+def print_full_analysis(event_log):
     """
     Runs multiple analyses on the event log and prints the results in a structured format.
 

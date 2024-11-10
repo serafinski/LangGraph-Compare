@@ -20,7 +20,7 @@ def _convert(obj):
         return obj
 
 
-def export_to_log(db_path="checkpoints.sqlite", output_file="files/sql_to_log_output.log"):
+def export_sqlite_to_log(db_path="checkpoints.sqlite", output_file="files/sql_to_log_output.log"):
     """Fetch data from the SQLite database and export it as JSON to a log file.
 
     Args:

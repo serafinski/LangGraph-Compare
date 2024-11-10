@@ -19,10 +19,7 @@ from langgraph.graph import END, StateGraph, START
 from langchain_core.messages import HumanMessage, trim_messages, BaseMessage
 from langgraph.prebuilt import create_react_agent
 
-from sql_to_log import export_to_log
-from log_to_csv import *
-from analysis import *
-from graph_runner import *
+from langgraph_log_parser import *
 
 database = "checkpoints.sqlite"
 
@@ -486,12 +483,12 @@ run_graph_iterations(
 output = "files/sql_to_log_output.log"
 csv_output = "files/csv_output.csv"
 
-export_to_log(database, output)
+export_sqlite_to_log(database, output)
 
-log_to_csv(output,csv_output)
+export_log_to_csv(output, csv_output)
 
 # ANALIZA
 print()
 event_log = load_event_log(csv_output)
-full_analysis(event_log)
+print_full_analysis(event_log)
 generate_prefix_tree(event_log, 'img/tree.png')
