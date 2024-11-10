@@ -1,6 +1,8 @@
 import pytest
 import pandas as pd
 import pm4py
+from unittest.mock import MagicMock
+from langgraph.graph import StateGraph
 
 @pytest.fixture
 def sample_event_log():
@@ -63,3 +65,15 @@ def sample_event_log():
 def log_file_path():
     """Fixture providing path to the test JSON log file."""
     return "files/tests/test_sql_to_log_output.log"
+
+@pytest.fixture
+def mock_state_graph():
+    """
+    Create a mock StateGraph object with a stream method that simulates a graph's output.
+    """
+    graph = MagicMock(spec=StateGraph)
+
+    # Configure the mock stream to yield a list of dictionaries representing events
+    graph.stream = MagicMock(return_value=[{"event_1": "output_1"}, {"event_2": "output_2"}, {"event_3": "__end__"}])
+
+    return graph
