@@ -279,19 +279,3 @@ def print_full_analysis(event_log):
     get_case_durations(event_log)
 
     print("######################END###########################")
-
-### GRAPHS
-def generate_prefix_tree(event_log, output_path='tree.png'):
-    """
-    Generate and save a prefix tree visualization.
-
-    :param event_log: Event log data.
-    :type event_log: pd.DataFrame
-    :param output_path: Path to save the prefix tree visualization.
-    :type output_path: str
-    """
-    prefix_tree = pm4py.discover_prefix_tree(
-        event_log, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp'
-    )
-    pm4py.save_vis_prefix_tree(prefix_tree, output_path)
-    print("\nPrefix Tree zapisane jako:", output_path)

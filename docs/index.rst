@@ -13,3 +13,4 @@ LangGraph Log Parser documentation
    graph_runner
    log_to_csv
    sql_to_log
+   visualize
