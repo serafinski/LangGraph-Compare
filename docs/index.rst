@@ -1,16 +1,19 @@
 .. LangGraph Log Parser documentation master file, created by
-   sphinx-quickstart on Fri Nov 15 12:27:10 2024.
+   sphinx-quickstart on Sat Nov 16 00:19:00 2024.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
 LangGraph Log Parser documentation
 ==================================
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   analysis
-   graph_runner
-   log_to_csv
-   sql_to_log
-   visualize
+   modules
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
