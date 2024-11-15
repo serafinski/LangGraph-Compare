@@ -2,8 +2,20 @@ from langgraph_log_parser.log_to_csv import *
 
 def test_export_log_to_csv(log_file_path, tmp_path):
     """
-    Test the export_log_to_csv function by verifying it correctly converts
+    Test the `export_log_to_csv` function by verifying it correctly converts
     JSON log data to the specified CSV format.
+
+    This test ensures:
+    - The function creates a CSV file from the provided JSON log file.
+    - The CSV file contains the expected fields and data structure.
+    - All required fields are populated in the output CSV.
+
+    :param log_file_path: Path to the test JSON log file provided by the fixture.
+    :type log_file_path: str
+    :param tmp_path: A pytest fixture providing a temporary directory for test outputs.
+    :type tmp_path: pathlib.Path
+    :raises AssertionError: If the CSV file is not created, headers do not match,
+                            or required fields are missing in the output.
     """
     # Path for the temporary CSV output
     csv_output_path = tmp_path / "csv_output_test.csv"

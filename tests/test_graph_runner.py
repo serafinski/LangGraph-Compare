@@ -2,7 +2,19 @@ from langgraph_log_parser.graph_runner import *
 
 def test_run_graph_iterations(mock_state_graph, capsys):
     """
-    Test the run_graph_iterations function with a mock StateGraph, capturing printed output.
+    Test the `run_graph_iterations` function with a mock `StateGraph`, capturing printed output.
+
+    This test ensures the function:
+    - Runs the specified number of repetitions.
+    - Configures the `StateGraph` with correct thread IDs and recursion limits.
+    - Produces the expected printed output.
+    - Calls the `stream` method with correct arguments.
+
+    :param mock_state_graph: A mock StateGraph object provided by the fixture.
+    :type mock_state_graph: MagicMock
+    :param capsys: A pytest fixture to capture standard output.
+    :type capsys: pytest.CaptureFixture
+    :raises AssertionError: If the output or behavior does not match expectations.
     """
     # Test parameters
     starting_thread_id = 1

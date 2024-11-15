@@ -3,29 +3,41 @@ import json
 import msgpack
 
 def _convert(obj):
-    """Convert bytes, dicts, lists, and tuples to strings recursively."""
+    """
+    Convert bytes, dicts, lists, and tuples to strings recursively.
+
+    :param obj: The object to convert (bytes, dict, list, or tuple).
+    :type obj: Any
+    :return: The converted object with strings instead of bytes.
+    :rtype: Any
+    """
     # Konwersja byte'ów do string'ów
     if isinstance(obj, bytes):
         return obj.decode("utf-8", errors="ignore")
     # Konwersja słowników do string'ów
     elif isinstance(obj, dict):
+        # Konwersja elementów słownika rekursywnie
         return {key: _convert(value) for key, value in obj.items()}
     # Konwersja listy do string'ów
     elif isinstance(obj, list):
+        # Konwersja elementów listy rekursywnie
         return [_convert(element) for element in obj]
     # Konwersja tupli do string'ów
     elif isinstance(obj, tuple):
+        # Konwersja elementów tupli rekursywnie
         return tuple(_convert(element) for element in obj)
     else:
         return obj
 
 
 def export_sqlite_to_log(db_path="checkpoints.sqlite", output_file="files/sql_to_log_output.log"):
-    """Fetch data from the SQLite database and export it as JSON to a log file.
+    """
+    Fetch data from the SQLite database and export it as JSON to a log file.
 
-    Args:
-        db_path (str): Path to the SQLite database file.
-        output_file (str): Path to the output log file.
+    :param db_path: Path to the SQLite database file.
+    :type db_path: str
+    :param output_file: Path to the output log file.
+    :type output_file: str
     """
     conn = sqlite3.connect(db_path, check_same_thread=False)
     cursor = conn.cursor()

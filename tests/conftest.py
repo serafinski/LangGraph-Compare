@@ -12,8 +12,8 @@ def sample_event_log():
     This sample event log mimics a process mining dataset with multiple cases and events.
     It includes timestamps, costs, activities, and resources typical for process analysis.
 
-    Returns:
-        pd.DataFrame: A formatted DataFrame for pm4py analysis.
+    :return: A formatted DataFrame for pm4py analysis.
+    :rtype: pd.DataFrame
     """
 
     data = {
@@ -63,13 +63,23 @@ def sample_event_log():
 
 @pytest.fixture
 def log_file_path():
-    """Fixture providing path to the test JSON log file."""
+    """
+    Fixture providing the path to the test JSON log file.
+
+    :return: Path to the test JSON log file.
+    :rtype: str
+    """
     return "files/tests/test_sql_to_log_output.log"
 
 @pytest.fixture
 def mock_state_graph():
     """
-    Create a mock StateGraph object with a stream method that simulates a graph's output.
+    Create a mock StateGraph object with a `stream` method simulating a graph's output.
+
+    The `stream` method returns a list of dictionaries, each representing an event in the graph.
+
+    :return: A mock StateGraph object with a pre-configured `stream` method.
+    :rtype: MagicMock
     """
     graph = MagicMock(spec=StateGraph)
 

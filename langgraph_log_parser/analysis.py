@@ -6,8 +6,14 @@ from collections import defaultdict
 pd.set_option('display.max_columns', None)
 
 def load_event_log(file_path):
-    """Load CSV data into a formatted PM4Py DataFrame."""
+    """
+    Load CSV data into a formatted PM4Py DataFrame.
 
+    :param file_path: Path to the CSV file containing the event log.
+    :type file_path: str
+    :return: PM4Py formatted DataFrame.
+    :rtype: pd.DataFrame
+    """
     # Ładowanie CSV do pandas DataFrame
     df = pd.read_csv(file_path)
 
@@ -18,26 +24,53 @@ def load_event_log(file_path):
     return pm4py.format_dataframe(df, case_id='case_id', activity_key='activity', timestamp_key='timestamp')
 
 def get_start_activities(event_log):
-    """Print and return the start activities of the event log."""
+    """
+    Get and print the start activities of the event log.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    :return: Start activities and their counts.
+    :rtype: dict
+    """
     start_activities = pm4py.get_start_activities(event_log)
     print("Początkowe aktywności:", start_activities)
     return start_activities
 
 def get_end_activities(event_log):
-    """Print and return the end activities of the event log."""
+    """
+    Get and print the end activities of the event log.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    :return: End activities and their counts.
+    :rtype: dict
+    """
     end_activities = pm4py.get_end_activities(event_log)
     print("Końcowe aktywności:", end_activities)
     return end_activities
 
 def get_activity_counts(event_log):
-    """Print and return the counts of each activity in the event log."""
+    """
+    Get and print the counts of each activity in the event log.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    :return: Activity counts.
+    :rtype: dict
+    """
     activities = pm4py.get_event_attribute_values(event_log, 'concept:name')
     print("\nIlość wystąpień aktywności:", activities)
     return activities
 
 def get_sequences_by_case(event_log):
-    """Return activity sequences for each case ID."""
+    """
+    Return activity sequences for each case ID.
 
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    :return: Mapping of case IDs to their activity sequences.
+    :rtype: dict
+    """
     # Tworzymy słownik, który będzie przechowywał sekwencje aktywności dla każdego case_id
     sequences_by_case = defaultdict(list)
 
@@ -49,8 +82,12 @@ def get_sequences_by_case(event_log):
     return sequences_by_case
 
 def print_all_sequences(event_log):
-    """Print sequences for each case ID in the event log, sorted numerically by case ID."""
+    """
+    Print sequences for each case ID in the event log, sorted numerically by case ID.
 
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    """
     # Sekwencja dla każdego case_id
     sequences_by_case = get_sequences_by_case(event_log)
 
@@ -63,7 +100,12 @@ def print_all_sequences(event_log):
 
 
 def print_sequences_with_probabilities(event_log):
-    """Print sequences with probabilities for each case ID."""
+    """
+    Print sequences with probabilities for each case ID.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    """
     sequences_by_case = get_sequences_by_case(event_log)
 
     # Generujemy probabilistyczny język
@@ -80,7 +122,12 @@ def print_sequences_with_probabilities(event_log):
         print(f"Case ID {case_id}: {sequence}, {probability}")
 
 def print_minimum_self_distances(event_log):
-    """Calculate and print the minimum self-distances for each activity in each case."""
+    """
+    Calculate and print the minimum self-distances for each activity in each case.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    """
     unique_case_ids = event_log['case:concept:name'].unique()
     sorted_case_ids = np.sort(unique_case_ids.astype(int)).astype(str)
 
@@ -100,7 +147,12 @@ def print_minimum_self_distances(event_log):
         print(f"Case ID {case_id}: {msd}")
 
 def print_self_distance_witnesses(event_log):
-    """Calculate and print the minimum self-distance witnesses for each activity in each case."""
+    """
+    Calculate and print the minimum self-distance witnesses for each activity in each case.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    """
     unique_case_ids = event_log['case:concept:name'].unique()
     sorted_case_ids = np.sort(unique_case_ids.astype(int)).astype(str)
 
@@ -123,7 +175,14 @@ def print_self_distance_witnesses(event_log):
 
 
 def get_rework_counts(event_log):
-    """Print and return the rework counts for each activity in each case."""
+    """
+    Print and return the rework counts for each activity in each case.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    :return: Rework counts for each case ID.
+    :rtype: dict
+    """
     rework_counts_by_case = {}
     unique_case_ids = event_log['case:concept:name'].unique()
     sorted_case_ids = np.sort(unique_case_ids.astype(int)).astype(str)
@@ -151,7 +210,14 @@ def get_rework_counts(event_log):
     return rework_counts_by_case
 
 def get_mean_service_time(event_log):
-    """Calculate and print the mean service time for each activity."""
+    """
+    Calculate and print the mean service time for each activity.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    :return: Mean service times for each activity.
+    :rtype: dict
+    """
     mean_serv_time = pm4py.get_service_time(
         event_log, start_timestamp_key='timestamp', timestamp_key='end_timestamp', aggregation_measure='mean'
     )
@@ -159,8 +225,14 @@ def get_mean_service_time(event_log):
     return mean_serv_time
 
 def get_case_durations(event_log):
-    """Calculate and print the duration of each case."""
+    """
+    Calculate and print the duration of each case.
 
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    :return: Case durations.
+    :rtype: dict
+    """
     # Pobranie unikalnych identyfikatorów przypadków (case_id)
     unique_case_ids = event_log['case:concept:name'].unique()
     sorted_array = np.sort(unique_case_ids.astype(int)).astype(str)
@@ -178,10 +250,10 @@ def get_case_durations(event_log):
 
 def print_full_analysis(event_log):
     """
-    Runs multiple analyses on the event log and prints the results in a structured format.
+    Run multiple analyses on the event log and print the results.
 
-    Parameters:
-        event_log: The event log data to analyze.
+    :param event_log: The event log data to analyze.
+    :type event_log: pd.DataFrame
     """
 
     print("\n####################START###########################")
@@ -210,7 +282,14 @@ def print_full_analysis(event_log):
 
 ### GRAPHS
 def generate_prefix_tree(event_log, output_path='tree.png'):
-    """Generate and save a prefix tree visualization."""
+    """
+    Generate and save a prefix tree visualization.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    :param output_path: Path to save the prefix tree visualization.
+    :type output_path: str
+    """
     prefix_tree = pm4py.discover_prefix_tree(
         event_log, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp'
     )

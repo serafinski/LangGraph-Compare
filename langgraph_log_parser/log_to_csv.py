@@ -1,15 +1,24 @@
 import json
 import csv
 
-def export_log_to_csv(log_filename = 'files/sql_to_log_output.log', csv_filename = 'files/csv_output_skip.csv', csv_fields = ['case_id', 'timestamp', 'end_timestamp', 'cost', 'activity', 'org:resource']):
-    """Convert JSON log data to CSV format.
-
-    Args:
-        log_filename (str): Path to the input JSON log file.
-        csv_filename (str): Path to the output CSV file.
-        csv_fields (list): List of field names for the CSV file.
+def export_log_to_csv(
+    log_filename='files/sql_to_log_output.log',
+    csv_filename='files/csv_output_skip.csv',
+    csv_fields=None
+):
     """
+    Convert JSON log data to CSV format.
 
+    :param log_filename: Path to the input JSON log file.
+    :type log_filename: str
+    :param csv_filename: Path to the output CSV file.
+    :type csv_filename: str
+    :param csv_fields: List of field names for the CSV file. Default fields are:
+                       ['case_id', 'timestamp', 'end_timestamp', 'cost', 'activity', 'org:resource'].
+    :type csv_fields: list[str], optional
+    """
+    if csv_fields is None:
+        csv_fields = ['case_id', 'timestamp', 'end_timestamp', 'cost', 'activity', 'org:resource']
 
     # Czytanie danych z JSON'a z .log
     with open(log_filename, 'r') as log_file:
@@ -65,7 +74,7 @@ def export_log_to_csv(log_filename = 'files/sql_to_log_output.log', csv_filename
                 # Skip wiersza jak nie ma activity lub org:resource
                 continue
 
-            # Wyciągnięcie end_timestap'a z następnego log entry z tym samym case_id
+            # Wyciągnięcie end_timestamp'a z następnego log entry z tym samym case_id
             end_timestamp = None
             for j in range(i + 1, len(logs)):
                 next_log_entry = logs[j]
@@ -79,7 +88,7 @@ def export_log_to_csv(log_filename = 'files/sql_to_log_output.log', csv_filename
             writer.writerow({
                 'case_id': case_id,
                 'timestamp': timestamp,
-                # Podmianka na timestamp - jeżeli nie ma wartości - długość 0 (workaround dla ostanich wierszy)
+                # Podmianka na timestamp - jeżeli nie ma wartości - długość 0 (workaround dla ostatnich wierszy)
                 'end_timestamp': end_timestamp if end_timestamp is not None else timestamp,
                 'cost': cost,
                 'activity': activity,
