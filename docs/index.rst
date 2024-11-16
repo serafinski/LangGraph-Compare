@@ -12,6 +12,19 @@ LangGraph Log Parser documentation
 
    modules
 
+Usage
+=====
+
+Installation
+------------
+
+To use LangGraph Log Parser, first install it using pip:
+
+.. code-block:: console
+
+   (.venv) $ pip install langgraph_log_parser
+
+
 Indices and tables
 ==================
 

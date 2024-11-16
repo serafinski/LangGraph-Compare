@@ -4,10 +4,18 @@ langgraph\_log\_parser package
 Submodules
 ----------
 
-langgraph\_log\_parser.analysis module
---------------------------------------
+langgraph\_log\_parser.analyze module
+-------------------------------------
 
-.. automodule:: langgraph_log_parser.analysis
+.. automodule:: langgraph_log_parser.analyze
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+langgraph\_log\_parser.analyze\_case\_id module
+-----------------------------------------------
+
+.. automodule:: langgraph_log_parser.analyze_case_id
    :members:
    :undoc-members:
    :show-inheritance:
