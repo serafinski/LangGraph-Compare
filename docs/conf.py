@@ -8,7 +8,7 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../langgraph_log_parser'))
 
 project = 'LangGraph Log Parser'
 copyright = '2024, Tomasz Serafiński'
