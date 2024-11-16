@@ -3,3 +3,5 @@ sphinx_rtd_theme
 ghp-import
 pandas
 pm4py
+langgraph
+numpy
