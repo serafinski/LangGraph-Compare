@@ -343,6 +343,56 @@ def print_activities_count_by_case_id(event_log, case_id):
     activities_count = get_activities_count_by_case_id(event_log, case_id)
     print(f"\nCount of each activity for case ID {case_id}: {activities_count}")
 
+#40
+def get_sum_service_time_by_case_id(event_log, case_id):
+    """
+    Calculate the sum service time for each activity for a specific case ID.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    :param case_id: The case ID for which to calculate service times.
+    :type case_id: int
+    :return: Sum service times for each activity in the specified case.
+    :rtype: dict
+    """
+
+    # Konwersja na string'a - bo get_case_duration przyjmuje tylko stringi
+    case_id_str = str(case_id)
+
+    # Usuń potencjalne spacje z case_id w logu
+    event_log["case_id"] = event_log["case_id"].astype(str).str.strip()
+
+    # Sprawdź, czy case_id istnieje w event_log'u
+    if case_id_str not in event_log['case_id'].astype(str).unique():
+        raise ValueError(f"Case ID {case_id} does not exist in the event log.")
+
+    # Filtrowanie
+    filtered_log = event_log[event_log["case_id"] == case_id_str].copy()
+
+    # Wyliczenie średnich czasów wykonania aktywności w danym przypadku
+    sum_serv_time = pm4py.get_service_time(
+        filtered_log,
+        start_timestamp_key="timestamp",
+        timestamp_key="end_timestamp",
+        aggregation_measure="sum"
+    )
+
+    return sum_serv_time
+
+#41
+def print_sum_service_time_by_case_id(event_log, case_id):
+    """
+    Print the sum service time for each activity for a specific case ID.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    :param case_id: The case ID for which to calculate service times.
+    :type case_id: int
+    """
+    sum_time = get_sum_service_time_by_case_id(event_log, case_id)
+    print(f"\nSum service time of each activity for case ID {case_id} (in sec): {sum_time}")
+
+
 #43
 def print_full_analysis_by_id(event_log, case_id):
     """
@@ -373,8 +423,7 @@ def print_full_analysis_by_id(event_log, case_id):
 
     print_rework_by_case_id(event_log,case_id)
 
-    # TODO - wersja dla pojedynczego ID
-    # print_all_activities_mean_service_time(event_log)
+    print_sum_service_time_by_case_id(event_log, case_id)
 
     print_case_duration_by_id(event_log,case_id)
 

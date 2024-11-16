@@ -1,6 +1,7 @@
 __all__ = [
     # Modules
     "analyze", "analyze_case_id", "graph_runner", "log_to_csv", "sql_to_log", "visualize",
+
     # Functions - analyze
     "load_event_log",
     "get_all_start_activities", "print_all_start_activities",
@@ -25,6 +26,7 @@ __all__ = [
     "get_start_activity", "print_start_activity",
     "get_end_activity", "print_end_activity",
     "get_activities_count_by_case_id", "print_activities_count_by_case_id",
+    "get_sum_service_time_by_case_id", "print_sum_service_time_by_case_id",
     "print_full_analysis_by_id",
 
     # Functions - graph_runner
