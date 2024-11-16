@@ -2,7 +2,6 @@ import pandas as pd
 import pm4py
 import numpy as np
 from collections import defaultdict
-from collections import Counter
 
 pd.set_option('display.max_columns', None)
 
@@ -377,10 +376,6 @@ def print_all_cases_durations(event_log):
 
     for case_id, duration in case_durations.items():
         print(f"Case ID {case_id}: {duration} s")
-
-#40
-
-#41
 
 #42
 def print_full_analysis(event_log):

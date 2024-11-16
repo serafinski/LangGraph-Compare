@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import json
 import msgpack
@@ -30,22 +31,33 @@ def _convert(obj):
         return obj
 
 
-def export_sqlite_to_log(db_path="checkpoints.sqlite", output_file="files/sql_to_log_output.log"):
+def export_sqlite_to_log(db_path="checkpoints.sqlite", output_path="files/sql_to_log_output.log"):
     """
     Fetch data from the SQLite database and export it as JSON to a log file.
 
     :param db_path: Path to the SQLite database file.
     :type db_path: str
-    :param output_file: Path to the output log file.
-    :type output_file: str
+    :param output_path: Path to the output log file.
+    :type output_path: str
     """
+
+    # Jeżeli użytkownik nie podał ścieżki
+    if os.path.dirname(output_path) == '':
+        # Upewnij się, że folder istnieje
+        folder = 'files'
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        # Zapisz obraz w docelowej ścieżce
+        output_path = os.path.join(folder, output_path)
+
+
     conn = sqlite3.connect(db_path, check_same_thread=False)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM checkpoints")
     rows = cursor.fetchall()
 
 
-    with open(output_file, 'w') as log_file:
+    with open(output_path, 'w') as log_file:
         # Początek JSON array
         log_file.write('[\n')
 

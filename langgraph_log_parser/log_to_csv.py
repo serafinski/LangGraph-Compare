@@ -1,18 +1,19 @@
+import os
 import json
 import csv
 
 def export_log_to_csv(
-    log_filename='files/sql_to_log_output.log',
-    csv_filename='files/csv_output_skip.csv',
+    log_path='files/sql_to_log_output.log',
+    csv_path='files/csv_output_skip.csv',
     csv_fields=None
 ):
     """
     Convert JSON log data to CSV format.
 
-    :param log_filename: Path to the input JSON log file.
-    :type log_filename: str
-    :param csv_filename: Path to the output CSV file.
-    :type csv_filename: str
+    :param log_path: Path to the input JSON log file.
+    :type log_path: str
+    :param csv_path: Path to the output CSV file.
+    :type csv_path: str
     :param csv_fields: List of field names for the CSV file. Default fields are:
                        ['case_id', 'timestamp', 'end_timestamp', 'cost', 'activity', 'org:resource'].
     :type csv_fields: list[str], optional
@@ -20,12 +21,21 @@ def export_log_to_csv(
     if csv_fields is None:
         csv_fields = ['case_id', 'timestamp', 'end_timestamp', 'cost', 'activity', 'org:resource']
 
+    # Jeżeli użytkownik nie podał ścieżki
+    if os.path.dirname(csv_path) == '':
+        # Upewnij się, że folder istnieje
+        folder = 'files'
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        # Zapisz obraz w docelowej ścieżce
+        output_path = os.path.join(folder, csv_path)
+
     # Czytanie danych z JSON'a z .log
-    with open(log_filename, 'r') as log_file:
+    with open(log_path, 'r') as log_file:
         logs = json.load(log_file)
 
     # Otwarcie .csv z zapisem
-    with open(csv_filename, mode='w', newline='') as csv_file:
+    with open(csv_path, mode='w', newline='') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=csv_fields)
         writer.writeheader()
 

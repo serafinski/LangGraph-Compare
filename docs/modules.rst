@@ -1,4 +1,4 @@
-langgraph_log_parser
+Langgraph Log Parser
 ====================
 
 .. toctree::

@@ -1,10 +1,10 @@
-langgraph\_log\_parser package
+Langgraph Log Parser Package
 ==============================
 
 Submodules
 ----------
 
-langgraph\_log\_parser.analyze module
+langgraph\_log\_parser.analyze
 -------------------------------------
 
 .. automodule:: langgraph_log_parser.analyze
@@ -12,7 +12,7 @@ langgraph\_log\_parser.analyze module
    :undoc-members:
    :show-inheritance:
 
-langgraph\_log\_parser.analyze\_case\_id module
+langgraph\_log\_parser.analyze\_case\_id
 -----------------------------------------------
 
 .. automodule:: langgraph_log_parser.analyze_case_id
@@ -20,7 +20,7 @@ langgraph\_log\_parser.analyze\_case\_id module
    :undoc-members:
    :show-inheritance:
 
-langgraph\_log\_parser.graph\_runner module
+langgraph\_log\_parser.graph\_runner
 -------------------------------------------
 
 .. automodule:: langgraph_log_parser.graph_runner
@@ -28,7 +28,7 @@ langgraph\_log\_parser.graph\_runner module
    :undoc-members:
    :show-inheritance:
 
-langgraph\_log\_parser.log\_to\_csv module
+langgraph\_log\_parser.log\_to\_csv
 ------------------------------------------
 
 .. automodule:: langgraph_log_parser.log_to_csv
@@ -36,7 +36,7 @@ langgraph\_log\_parser.log\_to\_csv module
    :undoc-members:
    :show-inheritance:
 
-langgraph\_log\_parser.sql\_to\_log module
+langgraph\_log\_parser.sql\_to\_log
 ------------------------------------------
 
 .. automodule:: langgraph_log_parser.sql_to_log
@@ -44,18 +44,10 @@ langgraph\_log\_parser.sql\_to\_log module
    :undoc-members:
    :show-inheritance:
 
-langgraph\_log\_parser.visualize module
+langgraph\_log\_parser.visualize
 ---------------------------------------
 
 .. automodule:: langgraph_log_parser.visualize
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: langgraph_log_parser
    :members:
    :undoc-members:
    :show-inheritance:
