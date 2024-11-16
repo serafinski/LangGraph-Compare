@@ -1,0 +1,1014 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>langgraph_log_parser.analysis &mdash; LangGraph Log Parser 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            LangGraph Log Parser
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">langgraph_log_parser</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">LangGraph Log Parser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">langgraph_log_parser.analysis</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for langgraph_log_parser.analysis</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">pm4py</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="c1">#1</span>
+<div class="viewcode-block" id="load_event_log">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.load_event_log">[docs]</a>
+<span class="k">def</span> <span class="nf">load_event_log</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load CSV data into a formatted PM4Py DataFrame.</span>
+
+<span class="sd">    :param file_path: Path to the CSV file containing the event log.</span>
+<span class="sd">    :type file_path: str</span>
+<span class="sd">    :return: PM4Py formatted DataFrame.</span>
+<span class="sd">    :rtype: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Ładowanie CSV do pandas DataFrame</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+
+    <span class="c1"># Formatowanie DataFrame dla PM4Py</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">])</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Event log loaded and formated from file: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pm4py</span><span class="o">.</span><span class="n">format_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">case_id</span><span class="o">=</span><span class="s1">&#39;case_id&#39;</span><span class="p">,</span> <span class="n">activity_key</span><span class="o">=</span><span class="s1">&#39;activity&#39;</span><span class="p">,</span> <span class="n">timestamp_key</span><span class="o">=</span><span class="s1">&#39;timestamp&#39;</span><span class="p">)</span></div>
+
+
+<span class="c1">#2</span>
+<div class="viewcode-block" id="get_all_start_activities">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_all_start_activities">[docs]</a>
+<span class="k">def</span> <span class="nf">get_all_start_activities</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the start activities of the event log.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :return: Start activities and their counts.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">start_activities</span> <span class="o">=</span> <span class="n">pm4py</span><span class="o">.</span><span class="n">get_start_activities</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">start_activities</span></div>
+
+
+<span class="c1">#3</span>
+<div class="viewcode-block" id="print_all_start_activities">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_all_start_activities">[docs]</a>
+<span class="k">def</span> <span class="nf">print_all_start_activities</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the start activities of the event log.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">start_activities</span> <span class="o">=</span> <span class="n">get_all_start_activities</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Start activities:&quot;</span><span class="p">,</span> <span class="n">start_activities</span><span class="p">)</span></div>
+
+
+
+<span class="c1">#4</span>
+<div class="viewcode-block" id="get_end_activities">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_end_activities">[docs]</a>
+<span class="k">def</span> <span class="nf">get_end_activities</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the end activities of the event log.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :return: End activities and their counts.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">end_activities</span> <span class="o">=</span> <span class="n">pm4py</span><span class="o">.</span><span class="n">get_end_activities</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">end_activities</span></div>
+
+<span class="c1">#5</span>
+<div class="viewcode-block" id="print_all_end_activities">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_all_end_activities">[docs]</a>
+<span class="k">def</span> <span class="nf">print_all_end_activities</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the end activities of the event log.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">end_activities</span> <span class="o">=</span> <span class="n">get_end_activities</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">End activities:&quot;</span><span class="p">,</span> <span class="n">end_activities</span><span class="p">)</span></div>
+
+
+<span class="c1">#6</span>
+<div class="viewcode-block" id="get_all_activities_count">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_all_activities_count">[docs]</a>
+<span class="k">def</span> <span class="nf">get_all_activities_count</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the counts of every activity in the event log.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :return: Activity counts.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">activities</span> <span class="o">=</span> <span class="n">pm4py</span><span class="o">.</span><span class="n">get_event_attribute_values</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="s1">&#39;concept:name&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">activities</span></div>
+
+
+<span class="c1">#7</span>
+<div class="viewcode-block" id="print_all_activities_count">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_all_activities_count">[docs]</a>
+<span class="k">def</span> <span class="nf">print_all_activities_count</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the counts of every activity in the event log.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">activities</span> <span class="o">=</span> <span class="n">get_all_activities_count</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Count of each activity:&quot;</span><span class="p">,</span> <span class="n">activities</span><span class="p">)</span></div>
+
+
+<span class="c1">#8</span>
+<div class="viewcode-block" id="get_all_sequences_by_case_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_all_sequences_by_case_id">[docs]</a>
+<span class="k">def</span> <span class="nf">get_all_sequences_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return activity sequences for every case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :return: Mapping of case IDs to their activity sequences.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Tworzymy słownik, który będzie przechowywał sekwencje aktywności dla każdego case_id</span>
+    <span class="n">sequences_by_case</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+    <span class="c1"># Budujemy sekwencje dla każdego case_id</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">event_log</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">case_id</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;case_id&#39;</span><span class="p">]</span>
+        <span class="n">activity</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;activity&#39;</span><span class="p">]</span>
+        <span class="n">sequences_by_case</span><span class="p">[</span><span class="n">case_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">activity</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">sequences_by_case</span><span class="p">)</span></div>
+
+
+<span class="c1">#9</span>
+<div class="viewcode-block" id="print_all_sequences_by_case_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_all_sequences_by_case_id">[docs]</a>
+<span class="k">def</span> <span class="nf">print_all_sequences_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print sequences for every case ID in the event log, sorted numerically by case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sekwencja dla każdego case_id</span>
+    <span class="n">sequences_by_case</span> <span class="o">=</span> <span class="n">get_all_sequences_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">All sequences:&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Sortowanie po case_id</span>
+    <span class="k">for</span> <span class="n">case_id</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">sequences_by_case</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+        <span class="n">sequence</span> <span class="o">=</span> <span class="n">sequences_by_case</span><span class="p">[</span><span class="n">case_id</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">sequence</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1">#10</span>
+<div class="viewcode-block" id="get_all_sequences_with_probabilities">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_all_sequences_with_probabilities">[docs]</a>
+<span class="k">def</span> <span class="nf">get_all_sequences_with_probabilities</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return sequences with probabilities for each case ID.</span>
+<span class="sd">    If sequence already occurred it only lists the ID of the latest occurrence.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :return: List of tuples containing (case ID, sequence, probability).</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sequences_by_case</span> <span class="o">=</span> <span class="n">get_all_sequences_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="c1"># Generujemy probabilistyczny język</span>
+    <span class="n">language</span> <span class="o">=</span> <span class="n">pm4py</span><span class="o">.</span><span class="n">get_stochastic_language</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="c1"># Tworzymy odwrotny słownik dla łatwego porównania</span>
+    <span class="n">case_by_sequence</span> <span class="o">=</span> <span class="p">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span> <span class="n">case_id</span> <span class="k">for</span> <span class="n">case_id</span><span class="p">,</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">sequences_by_case</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="c1"># Sortujemy sequences_by_case według numerycznych wartości case_id</span>
+    <span class="n">sorted_sequences</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">case_by_sequence</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="c1"># Generowanie listy rezultatów</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[(</span><span class="n">case_id</span><span class="p">,</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">language</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="k">for</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">case_id</span> <span class="ow">in</span> <span class="n">sorted_sequences</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<span class="c1">#11</span>
+<div class="viewcode-block" id="print_all_sequences_with_probabilities">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_all_sequences_with_probabilities">[docs]</a>
+<span class="k">def</span> <span class="nf">print_all_sequences_with_probabilities</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print sequences with probabilities for each case ID.</span>
+<span class="sd">    If sequence already occurred it only prints the ID of the latest occurrence.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sequences_with_probabilities</span> <span class="o">=</span> <span class="n">get_all_sequences_with_probabilities</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">ID of last sequence occurrence with probability of occurrence:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">case_id</span><span class="p">,</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">probability</span> <span class="ow">in</span> <span class="n">sequences_with_probabilities</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">sequence</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">probability</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<span class="c1"># 12</span>
+<div class="viewcode-block" id="get_sequence_by_case_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_sequence_by_case_id">[docs]</a>
+<span class="k">def</span> <span class="nf">get_sequence_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the activity sequence for a specific case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve the sequence for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    :return: The activity sequence for the specified case ID.</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    :raises ValueError: If the case ID does not exist in the event log.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sprawdź, czy case_id istnieje</span>
+    <span class="k">if</span> <span class="n">case_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2"> does not exist in the event log.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Filtrowanie event log&#39;u pod dane case_id</span>
+    <span class="n">case_log</span> <span class="o">=</span> <span class="n">event_log</span><span class="p">[</span><span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">case_id</span><span class="p">]</span>
+
+    <span class="c1"># Wyciągnięcie sekwencji</span>
+    <span class="n">sequence</span> <span class="o">=</span> <span class="n">case_log</span><span class="p">[</span><span class="s1">&#39;activity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">sequence</span></div>
+
+
+<span class="c1">#13</span>
+<div class="viewcode-block" id="print_sequence_by_case_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_sequence_by_case_id">[docs]</a>
+<span class="k">def</span> <span class="nf">print_sequence_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the activity sequence for a specific case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve the sequence for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sequence</span> <span class="o">=</span> <span class="n">get_sequence_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Activity sequence for case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">sequence</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1">#14</span>
+<div class="viewcode-block" id="get_sequence_with_probability_by_case_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_sequence_with_probability_by_case_id">[docs]</a>
+<span class="k">def</span> <span class="nf">get_sequence_with_probability_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the activity sequence with its probability for a specific case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve the sequence and probability for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    :return: A tuple containing (sequence, probability) for the specified case ID.</span>
+<span class="sd">    :rtype: tuple</span>
+<span class="sd">    :raises ValueError: If the case ID does not exist in the event log.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sprawdź, czy case_id istnieje</span>
+    <span class="k">if</span> <span class="n">case_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2"> does not exist in the event log.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Pobierz sekwencje o specyficznym case_id</span>
+    <span class="n">sequence</span> <span class="o">=</span> <span class="n">get_sequence_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+
+    <span class="c1"># Generujemy probabilistyczny język</span>
+    <span class="n">language</span> <span class="o">=</span> <span class="n">pm4py</span><span class="o">.</span><span class="n">get_stochastic_language</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="n">probability</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">sequence</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">probability</span></div>
+
+
+<span class="c1">#15</span>
+<div class="viewcode-block" id="print_sequence_with_probability_by_case_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_sequence_with_probability_by_case_id">[docs]</a>
+<span class="k">def</span> <span class="nf">print_sequence_with_probability_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the activity sequence with its probability for a specific case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve and print the sequence and probability for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sequence</span><span class="p">,</span> <span class="n">probability</span> <span class="o">=</span> <span class="n">get_sequence_with_probability_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Activity sequence with probability for case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: Sequence: </span><span class="si">{</span><span class="n">sequence</span><span class="si">}</span><span class="s2">, Probability: </span><span class="si">{</span><span class="n">probability</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># 16</span>
+<div class="viewcode-block" id="get_all_minimum_self_distances">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_all_minimum_self_distances">[docs]</a>
+<span class="k">def</span> <span class="nf">get_all_minimum_self_distances</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the minimum self-distances for each activity in each case.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :return: Dictionary where keys are case IDs and values are dictionaries of activities with their minimum self-distances.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">unique_case_ids</span> <span class="o">=</span> <span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case:concept:name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+    <span class="n">sorted_case_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">unique_case_ids</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># Słownik do przechowywania minimalnych odległości własnych dla każdego Case ID</span>
+    <span class="n">min_self_distances</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Iterujemy po każdym case_id i obliczamy minimalne odległości własne dla jego aktywności</span>
+    <span class="k">for</span> <span class="n">case_id</span> <span class="ow">in</span> <span class="n">sorted_case_ids</span><span class="p">:</span>
+        <span class="c1"># Filtrowanie event logu dla danego case_id</span>
+        <span class="n">filtered_event_log</span> <span class="o">=</span> <span class="n">event_log</span><span class="p">[</span><span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case:concept:name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">case_id</span><span class="p">]</span>
+
+        <span class="c1"># Kalkulowanie minimalnych odległości własnych dla danego case_id</span>
+        <span class="n">msd</span> <span class="o">=</span> <span class="n">pm4py</span><span class="o">.</span><span class="n">get_minimum_self_distances</span><span class="p">(</span>
+            <span class="n">filtered_event_log</span><span class="p">,</span>
+            <span class="n">activity_key</span><span class="o">=</span><span class="s1">&#39;concept:name&#39;</span><span class="p">,</span>
+            <span class="n">case_id_key</span><span class="o">=</span><span class="s1">&#39;case:concept:name&#39;</span><span class="p">,</span>
+            <span class="n">timestamp_key</span><span class="o">=</span><span class="s1">&#39;time:timestamp&#39;</span>
+        <span class="p">)</span>
+        <span class="n">min_self_distances</span><span class="p">[</span><span class="n">case_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">msd</span>
+
+    <span class="k">return</span> <span class="n">min_self_distances</span></div>
+
+
+<span class="c1">#17</span>
+<div class="viewcode-block" id="print_all_minimum_self_distances">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_all_minimum_self_distances">[docs]</a>
+<span class="k">def</span> <span class="nf">print_all_minimum_self_distances</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate and print the minimum self-distances for each activity in each case.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">min_self_distances</span> <span class="o">=</span> <span class="n">get_all_minimum_self_distances</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Minimal self-distances for every activity:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">case_id</span><span class="p">,</span> <span class="n">distances</span> <span class="ow">in</span> <span class="n">min_self_distances</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">distances</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1">#18</span>
+<div class="viewcode-block" id="get_minimum_self_distances_by_case_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_minimum_self_distances_by_case_id">[docs]</a>
+<span class="k">def</span> <span class="nf">get_minimum_self_distances_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the minimum self-distances for all activities for a specific case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve the minimum self-distances for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    :return: A dictionary of activities with their minimum self-distances for the specified case ID.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises ValueError: If the case ID does not exist in the event log.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sprawdź, czy case_id istnieje w event logu</span>
+    <span class="k">if</span> <span class="n">case_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2"> does not exist in the event log.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Filtrowanie event logu do specyficznego case id</span>
+    <span class="n">filtered_event_log</span> <span class="o">=</span> <span class="n">event_log</span><span class="p">[</span><span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">case_id</span><span class="p">]</span>
+
+    <span class="c1"># Obliczanie minimalnych odległości własnych dla wybranego case_id</span>
+    <span class="n">msd</span> <span class="o">=</span> <span class="n">pm4py</span><span class="o">.</span><span class="n">get_minimum_self_distances</span><span class="p">(</span>
+        <span class="n">filtered_event_log</span><span class="p">,</span>
+        <span class="n">activity_key</span><span class="o">=</span><span class="s1">&#39;concept:name&#39;</span><span class="p">,</span>
+        <span class="n">case_id_key</span><span class="o">=</span><span class="s1">&#39;case:concept:name&#39;</span><span class="p">,</span>
+        <span class="n">timestamp_key</span><span class="o">=</span><span class="s1">&#39;time:timestamp&#39;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">msd</span></div>
+
+
+<span class="c1">#19</span>
+<div class="viewcode-block" id="print_minimum_self_distances_by_case_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_minimum_self_distances_by_case_id">[docs]</a>
+<span class="k">def</span> <span class="nf">print_minimum_self_distances_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the minimum self-distances for all activities for a specific case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve and print the minimum self-distances for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">min_self_distances</span> <span class="o">=</span> <span class="n">get_minimum_self_distances_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Minimum self distances for case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">min_self_distances</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># TODO - FIX THIS</span>
+<span class="c1">#20 REQUIRES FIX (NEED TO DIFF WHEN Hierarchical Agent Teams) - ISSUE WITH get_minimum_self_distance_witnesses</span>
+<div class="viewcode-block" id="get_all_self_distance_witnesses">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_all_self_distance_witnesses">[docs]</a>
+<span class="k">def</span> <span class="nf">get_all_self_distance_witnesses</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the minimum self-distance witnesses for each activity in each case.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :return: Dictionary where keys are case IDs, and values are dictionaries with activities and their sorted witnesses.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">unique_case_ids</span> <span class="o">=</span> <span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+    <span class="n">sorted_case_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">unique_case_ids</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># Słownik do przechowywania świadków dla każdego case ID</span>
+    <span class="n">all_msd_witnesses</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">case_id</span> <span class="ow">in</span> <span class="n">sorted_case_ids</span><span class="p">:</span>
+        <span class="c1"># Filtruj event log dla aktualnego case_id</span>
+        <span class="n">filtered_event_log</span> <span class="o">=</span> <span class="n">event_log</span><span class="p">[</span><span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">case_id</span><span class="p">]</span>
+
+        <span class="c1"># Wylicz świadków odległości własnych dla min. własnych dystansów</span>
+        <span class="n">msd_wit</span> <span class="o">=</span> <span class="n">pm4py</span><span class="o">.</span><span class="n">get_minimum_self_distance_witnesses</span><span class="p">(</span>
+            <span class="n">filtered_event_log</span><span class="p">,</span>
+            <span class="n">activity_key</span><span class="o">=</span><span class="s1">&#39;concept:name&#39;</span><span class="p">,</span>
+            <span class="n">case_id_key</span><span class="o">=</span><span class="s1">&#39;case:concept:name&#39;</span><span class="p">,</span>
+            <span class="n">timestamp_key</span><span class="o">=</span><span class="s1">&#39;time:timestamp&#39;</span>
+        <span class="p">)</span>
+        <span class="c1"># Sortowanie świadków</span>
+        <span class="n">sorted_msd_wit</span> <span class="o">=</span> <span class="p">{</span><span class="n">activity</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">witnesses</span><span class="p">)</span> <span class="k">for</span> <span class="n">activity</span><span class="p">,</span> <span class="n">witnesses</span> <span class="ow">in</span> <span class="n">msd_wit</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">all_msd_witnesses</span><span class="p">[</span><span class="n">case_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">sorted_msd_wit</span>
+
+    <span class="k">return</span> <span class="n">all_msd_witnesses</span></div>
+
+
+<span class="c1"># TODO - FIX THIS</span>
+<span class="c1">#21 REQUIRES FIX (NEED TO DIFF WHEN Hierarchical Agent Teams) - ISSUE WITH get_minimum_self_distance_witnesses</span>
+<div class="viewcode-block" id="print_all_self_distance_witnesses">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_all_self_distance_witnesses">[docs]</a>
+<span class="k">def</span> <span class="nf">print_all_self_distance_witnesses</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the minimum self-distance witnesses for each activity in each case.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">all_msd_witnesses</span> <span class="o">=</span> <span class="n">get_all_self_distance_witnesses</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Witnesses of minimum self-distances:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">case_id</span><span class="p">,</span> <span class="n">witnesses</span> <span class="ow">in</span> <span class="n">all_msd_witnesses</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">witnesses</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># TODO - FIX THIS</span>
+<span class="c1">#22 REQUIRES FIX (NEED TO DIFF WHEN Hierarchical Agent Teams) - ISSUE WITH get_minimum_self_distance_witnesses</span>
+<div class="viewcode-block" id="get_self_distance_witnesses_by_case_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_self_distance_witnesses_by_case_id">[docs]</a>
+<span class="k">def</span> <span class="nf">get_self_distance_witnesses_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the minimum self-distance witnesses for all activities for a specific case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve the witnesses for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    :return: A dictionary of activities with their sorted witnesses for the specified case ID.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises ValueError: If the case ID does not exist in the event log.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if case_id exists in the event log</span>
+    <span class="k">if</span> <span class="n">case_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2"> does not exist in the event log.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Filter event log for the specific case_id</span>
+    <span class="n">filtered_event_log</span> <span class="o">=</span> <span class="n">event_log</span><span class="p">[</span><span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">case_id</span><span class="p">]</span>
+
+    <span class="c1"># Calculate witnesses for the minimum self-distances</span>
+    <span class="n">msd_wit</span> <span class="o">=</span> <span class="n">pm4py</span><span class="o">.</span><span class="n">get_minimum_self_distance_witnesses</span><span class="p">(</span>
+        <span class="n">filtered_event_log</span><span class="p">,</span>
+        <span class="n">activity_key</span><span class="o">=</span><span class="s1">&#39;concept:name&#39;</span><span class="p">,</span>
+        <span class="n">case_id_key</span><span class="o">=</span><span class="s1">&#39;case:concept:name&#39;</span><span class="p">,</span>
+        <span class="n">timestamp_key</span><span class="o">=</span><span class="s1">&#39;time:timestamp&#39;</span>
+    <span class="p">)</span>
+
+
+    <span class="c1"># Sort witnesses for better readability</span>
+    <span class="n">sorted_msd_wit</span> <span class="o">=</span> <span class="p">{</span><span class="n">activity</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">witnesses</span><span class="p">)</span> <span class="k">for</span> <span class="n">activity</span><span class="p">,</span> <span class="n">witnesses</span> <span class="ow">in</span> <span class="n">msd_wit</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="n">sorted_msd_wit</span></div>
+
+
+<span class="c1"># TODO - FIX THIS</span>
+<span class="c1">#23 REQUIRES FIX (NEED TO DIFF WHEN Hierarchical Agent Teams) - ISSUE WITH get_minimum_self_distance_witnesses</span>
+<div class="viewcode-block" id="print_self_distance_witnesses_by_case_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_self_distance_witnesses_by_case_id">[docs]</a>
+<span class="k">def</span> <span class="nf">print_self_distance_witnesses_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the minimum self-distance witnesses for all activities for a specific case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve and print the witnesses for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">witnesses</span> <span class="o">=</span> <span class="n">get_self_distance_witnesses_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Minimum self distance witnesses for case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">witnesses</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1">#24</span>
+<div class="viewcode-block" id="get_all_rework_counts">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_all_rework_counts">[docs]</a>
+<span class="k">def</span> <span class="nf">get_all_rework_counts</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the rework counts for each activity in each case.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :return: Rework counts for each case ID.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rework_counts_by_case</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">unique_case_ids</span> <span class="o">=</span> <span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case:concept:name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+    <span class="n">sorted_case_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">unique_case_ids</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">case_id</span> <span class="ow">in</span> <span class="n">sorted_case_ids</span><span class="p">:</span>
+        <span class="c1"># Filtrowanie logu dla bieżącego case_id</span>
+        <span class="n">filtered_event_log</span> <span class="o">=</span> <span class="n">event_log</span><span class="p">[</span><span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case:concept:name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">case_id</span><span class="p">]</span>
+
+        <span class="c1"># Inicjalizacja licznika powtórzeń</span>
+        <span class="n">activity_counts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+        <span class="c1"># Tworzymy listę aktywności w bieżącej ścieżce</span>
+        <span class="n">activities</span> <span class="o">=</span> <span class="n">filtered_event_log</span><span class="p">[</span><span class="s1">&#39;concept:name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="c1"># Zliczanie wystąpień każdej aktywności</span>
+        <span class="k">for</span> <span class="n">activity</span> <span class="ow">in</span> <span class="n">activities</span><span class="p">:</span>
+            <span class="n">activity_counts</span><span class="p">[</span><span class="n">activity</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Usunięcie aktywności, które wystąpiły tylko raz (bo nie są &quot;rework&quot;)</span>
+        <span class="n">rework_counts</span> <span class="o">=</span> <span class="p">{</span><span class="n">activity</span><span class="p">:</span> <span class="n">count</span> <span class="k">for</span> <span class="n">activity</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">activity_counts</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="n">rework_counts_by_case</span><span class="p">[</span><span class="n">case_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">rework_counts</span>
+    <span class="k">return</span> <span class="n">rework_counts_by_case</span></div>
+
+
+<span class="c1">#25</span>
+<div class="viewcode-block" id="print_all_rework_counts">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_all_rework_counts">[docs]</a>
+<span class="k">def</span> <span class="nf">print_all_rework_counts</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the rework counts for each activity in each case.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rework_counts_by_case</span> <span class="o">=</span> <span class="n">get_all_rework_counts</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Count of activity rework:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">case_id</span><span class="p">,</span> <span class="n">rework_counts</span> <span class="ow">in</span> <span class="n">rework_counts_by_case</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">rework_counts</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1">#26</span>
+<div class="viewcode-block" id="get_rework_by_case_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_rework_by_case_id">[docs]</a>
+<span class="k">def</span> <span class="nf">get_rework_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the rework counts for each activity for a specific case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve the rework counts for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    :return: A dictionary of activities with their rework counts for the specified case ID.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises ValueError: If the case ID does not exist in the event log.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sprawdź, czy case_id istnieje w event_log&#39;u</span>
+    <span class="k">if</span> <span class="n">case_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2"> does not exist in the event log.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Filtrowanie dla specyficznego case_id</span>
+    <span class="n">filtered_event_log</span> <span class="o">=</span> <span class="n">event_log</span><span class="p">[</span><span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">case_id</span><span class="p">]</span>
+
+    <span class="c1"># Inicjalizacja liczenia aktywności</span>
+    <span class="n">activity_counts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="c1"># Tworzenie listy aktywności</span>
+    <span class="n">activities</span> <span class="o">=</span> <span class="n">filtered_event_log</span><span class="p">[</span><span class="s1">&#39;concept:name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="c1"># Policz wystąpienia każdej aktywności</span>
+    <span class="k">for</span> <span class="n">activity</span> <span class="ow">in</span> <span class="n">activities</span><span class="p">:</span>
+        <span class="n">activity_counts</span><span class="p">[</span><span class="n">activity</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># Jeżeli zaistniało raz — usuń bo nie rework</span>
+    <span class="n">rework_counts</span> <span class="o">=</span> <span class="p">{</span><span class="n">activity</span><span class="p">:</span> <span class="n">count</span> <span class="k">for</span> <span class="n">activity</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">activity_counts</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">rework_counts</span></div>
+
+
+<span class="c1">#27</span>
+<div class="viewcode-block" id="print_rework_by_case_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_rework_by_case_id">[docs]</a>
+<span class="k">def</span> <span class="nf">print_rework_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the rework counts for each activity for a specific case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve and print the rework counts for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rework_counts</span> <span class="o">=</span> <span class="n">get_rework_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Rework counts for case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">rework_counts</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1">#28</span>
+<div class="viewcode-block" id="get_all_activities_mean_service_time">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_all_activities_mean_service_time">[docs]</a>
+<span class="k">def</span> <span class="nf">get_all_activities_mean_service_time</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the mean service time for each activity.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :return: Mean service times for each activity.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mean_serv_time</span> <span class="o">=</span> <span class="n">pm4py</span><span class="o">.</span><span class="n">get_service_time</span><span class="p">(</span>
+        <span class="n">event_log</span><span class="p">,</span> <span class="n">start_timestamp_key</span><span class="o">=</span><span class="s1">&#39;timestamp&#39;</span><span class="p">,</span> <span class="n">timestamp_key</span><span class="o">=</span><span class="s1">&#39;end_timestamp&#39;</span><span class="p">,</span> <span class="n">aggregation_measure</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">mean_serv_time</span></div>
+
+<span class="c1">#29</span>
+<div class="viewcode-block" id="print_all_activities_mean_service_time">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_all_activities_mean_service_time">[docs]</a>
+<span class="k">def</span> <span class="nf">print_all_activities_mean_service_time</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the mean service time for each activity.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mean_serv_time</span> <span class="o">=</span> <span class="n">get_all_activities_mean_service_time</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Mean duration of every activity (in sec):&quot;</span><span class="p">,</span> <span class="n">mean_serv_time</span><span class="p">)</span></div>
+
+
+<span class="c1">#30</span>
+<div class="viewcode-block" id="get_all_cases_durations">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_all_cases_durations">[docs]</a>
+<span class="k">def</span> <span class="nf">get_all_cases_durations</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the duration of each case.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :return: Case durations.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Pobranie unikalnych identyfikatorów przypadków (case_id)</span>
+    <span class="n">unique_case_ids</span> <span class="o">=</span> <span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case:concept:name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+    <span class="n">sorted_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">unique_case_ids</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># Iterowanie po każdym case_id i uzyskanie jego czasu trwania</span>
+    <span class="n">case_durations</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">case_id</span> <span class="ow">in</span> <span class="n">sorted_array</span><span class="p">:</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">pm4py</span><span class="o">.</span><span class="n">get_case_duration</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+        <span class="n">case_durations</span><span class="p">[</span><span class="n">case_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">duration</span>
+    <span class="k">return</span> <span class="n">case_durations</span></div>
+
+
+<span class="c1">#31</span>
+<div class="viewcode-block" id="print_all_cases_durations">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_all_cases_durations">[docs]</a>
+<span class="k">def</span> <span class="nf">print_all_cases_durations</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the duration of each case.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">case_durations</span> <span class="o">=</span> <span class="n">get_all_cases_durations</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Duration of the case:&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">case_id</span><span class="p">,</span> <span class="n">duration</span> <span class="ow">in</span> <span class="n">case_durations</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">duration</span><span class="si">}</span><span class="s2"> s&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1">#32</span>
+<div class="viewcode-block" id="get_case_duration_by_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_case_duration_by_id">[docs]</a>
+<span class="k">def</span> <span class="nf">get_case_duration_by_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the duration time for a specific case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve the duration time for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    :return: The duration time for the specified case ID.</span>
+<span class="sd">    :rtype: float</span>
+<span class="sd">    :raises ValueError: If the case ID does not exist in the event log.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Konwersja na string&#39;a - bo get_case_duration przyjmuje tylko stringi</span>
+    <span class="n">case_id_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">case_id</span><span class="p">)</span>
+
+    <span class="c1"># Sprawdź, czy case_id istnieje w event_log&#39;u</span>
+    <span class="k">if</span> <span class="n">case_id_str</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2"> does not exist in the event log.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Wylicz czas trwania dla danego case_id</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="n">pm4py</span><span class="o">.</span><span class="n">get_case_duration</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id_str</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">duration</span></div>
+
+<span class="c1">#33</span>
+<div class="viewcode-block" id="print_case_duration_by_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_case_duration_by_id">[docs]</a>
+<span class="k">def</span> <span class="nf">print_case_duration_by_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the duration time for a specific case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve and print the duration time for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="n">get_case_duration_by_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Duration for case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">duration</span><span class="si">}</span><span class="s2"> s&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1">#34</span>
+<div class="viewcode-block" id="get_start_activity">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_start_activity">[docs]</a>
+<span class="k">def</span> <span class="nf">get_start_activity</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve the first activity for the specified case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve the start activity for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    :return: The first activity in the sequence.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sequence</span> <span class="o">=</span> <span class="n">get_sequence_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sequence</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<span class="c1">#35</span>
+<div class="viewcode-block" id="print_start_activity">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_start_activity">[docs]</a>
+<span class="k">def</span> <span class="nf">print_start_activity</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the first activity for the specified case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve and print the start activity for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">start_activity</span> <span class="o">=</span> <span class="n">get_start_activity</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Start activity for case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">start_activity</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1">#36</span>
+<div class="viewcode-block" id="get_end_activity">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_end_activity">[docs]</a>
+<span class="k">def</span> <span class="nf">get_end_activity</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve the last activity for the specified case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve the end activity for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    :return: The last activity in the sequence.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sequence</span> <span class="o">=</span> <span class="n">get_sequence_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sequence</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<span class="c1">#37</span>
+<div class="viewcode-block" id="print_end_activity">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_end_activity">[docs]</a>
+<span class="k">def</span> <span class="nf">print_end_activity</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the last activity for the specified case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve and print the end activity for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">end_activity</span> <span class="o">=</span> <span class="n">get_end_activity</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">End activity for case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">end_activity</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1">#38</span>
+<div class="viewcode-block" id="get_activities_count_by_case_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.get_activities_count_by_case_id">[docs]</a>
+<span class="k">def</span> <span class="nf">get_activities_count_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Count how many times each activity occurred for the specified case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to count activities for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    :return: A dictionary with activities as keys and their counts as values.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sequence</span> <span class="o">=</span> <span class="n">get_sequence_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Counter</span><span class="p">(</span><span class="n">sequence</span><span class="p">))</span></div>
+
+
+<span class="c1">#39</span>
+<div class="viewcode-block" id="print_activities_count_by_case_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_activities_count_by_case_id">[docs]</a>
+<span class="k">def</span> <span class="nf">print_activities_count_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the count of each activity for the specified case ID.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to count and print activities for.</span>
+<span class="sd">    :type case_id: int or str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">activities_count</span> <span class="o">=</span> <span class="n">get_activities_count_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Count of each activity for case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">activities_count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1">#40</span>
+
+<span class="c1">#41</span>
+
+<span class="c1">#42</span>
+<div class="viewcode-block" id="print_full_analysis">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_full_analysis">[docs]</a>
+<span class="k">def</span> <span class="nf">print_full_analysis</span><span class="p">(</span><span class="n">event_log</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run multiple analyses on the event log and print the results.</span>
+
+<span class="sd">    :param event_log: The event log data to analyze.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">####################START###########################&quot;</span><span class="p">)</span>
+
+    <span class="n">print_all_start_activities</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="n">print_all_end_activities</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="n">print_all_activities_count</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="n">print_all_sequences_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="n">print_all_sequences_with_probabilities</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="n">print_all_minimum_self_distances</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="c1"># TODO - FIX THIS</span>
+    <span class="n">print_all_self_distance_witnesses</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="n">print_all_rework_counts</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="n">print_all_activities_mean_service_time</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="n">print_all_cases_durations</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">######################END###########################&quot;</span><span class="p">)</span></div>
+
+<span class="c1">#43</span>
+<div class="viewcode-block" id="print_full_analysis_by_id">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analysis.print_full_analysis_by_id">[docs]</a>
+<span class="k">def</span> <span class="nf">print_full_analysis_by_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run multiple analyses on single case_id and print the results.</span>
+
+<span class="sd">    :param event_log: The event log data to analyze.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :param case_id: The case ID to retrieve and analyze.</span>
+<span class="sd">    :type case_id: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">####################START###########################&quot;</span><span class="p">)</span>
+
+    <span class="n">print_start_activity</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+
+    <span class="n">print_end_activity</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+
+    <span class="n">print_activities_count_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+
+    <span class="n">print_sequence_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+
+    <span class="n">print_sequence_with_probability_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+
+    <span class="n">print_minimum_self_distances_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+
+    <span class="c1"># TODO - FIX THIS</span>
+    <span class="n">print_self_distance_witnesses_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">case_id</span><span class="p">)</span>
+
+    <span class="n">print_rework_by_case_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span><span class="n">case_id</span><span class="p">)</span>
+
+    <span class="c1"># TODO - wersja dla pojedynczego ID</span>
+    <span class="n">print_all_activities_mean_service_time</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="n">print_case_duration_by_id</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span><span class="n">case_id</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">######################END###########################&quot;</span><span class="p">)</span></div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Tomasz Serafiński.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
