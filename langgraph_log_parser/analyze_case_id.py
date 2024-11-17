@@ -126,54 +126,6 @@ def print_minimum_self_distances_by_case_id(event_log, case_id):
     min_self_distances = get_minimum_self_distances_by_case_id(event_log, case_id)
     print(f"\nMinimum self distances for case ID {case_id}: {min_self_distances}")
 
-# TODO - FIX THIS
-#22 REQUIRES FIX (NEED TO DIFF WHEN Hierarchical Agent Teams) - ISSUE WITH get_minimum_self_distance_witnesses
-def get_self_distance_witnesses_by_case_id(event_log, case_id):
-    """
-    Return the minimum self-distance witnesses for all activities for a specific case ID.
-
-    :param event_log: Event log data.
-    :type event_log: pd.DataFrame
-    :param case_id: The case ID to retrieve the witnesses for.
-    :type case_id: int or str
-    :return: A dictionary of activities with their sorted witnesses for the specified case ID.
-    :rtype: dict
-    :raises ValueError: If the case ID does not exist in the event log.
-    """
-    # Check if case_id exists in the event log
-    if case_id not in event_log['case_id'].unique():
-        raise ValueError(f"Case ID {case_id} does not exist in the event log.")
-
-    # Filter event log for the specific case_id
-    filtered_event_log = event_log[event_log['case_id'] == case_id]
-
-    # Calculate witnesses for the minimum self-distances
-    msd_wit = pm4py.get_minimum_self_distance_witnesses(
-        filtered_event_log,
-        activity_key='concept:name',
-        case_id_key='case:concept:name',
-        timestamp_key='time:timestamp'
-    )
-
-
-    # Sort witnesses for better readability
-    sorted_msd_wit = {activity: sorted(witnesses) for activity, witnesses in msd_wit.items()}
-    return sorted_msd_wit
-
-# TODO - FIX THIS
-#23 REQUIRES FIX (NEED TO DIFF WHEN Hierarchical Agent Teams) - ISSUE WITH get_minimum_self_distance_witnesses
-def print_self_distance_witnesses_by_case_id(event_log, case_id):
-    """
-    Print the minimum self-distance witnesses for all activities for a specific case ID.
-
-    :param event_log: Event log data.
-    :type event_log: pd.DataFrame
-    :param case_id: The case ID to retrieve and print the witnesses for.
-    :type case_id: int or str
-    """
-    witnesses = get_self_distance_witnesses_by_case_id(event_log, case_id)
-    print(f"\nMinimum self distance witnesses for case ID {case_id}: {witnesses}")
-
 #26
 def get_rework_by_case_id(event_log, case_id):
     """
@@ -393,6 +345,80 @@ def print_sum_service_time_by_case_id(event_log, case_id):
     print(f"\nSum service time of each activity for case ID {case_id} (in sec): {sum_time}")
 
 
+def get_self_distance_witnesses_by_case_id(event_log, case_id):
+    """
+    Return the minimum self-distance witnesses for all activities for a specific case ID.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    :param case_id: The case ID to retrieve the witnesses for.
+    :type case_id: int or str
+    :return: A dictionary of activities with their for the specified case ID.
+    :rtype: dict
+    :raises ValueError: If the case ID does not exist in the event log.
+    """
+    # Konwersja case_id do int dla spójności
+    event_log['case_id'] = event_log['case_id'].astype(int)
+    case_id = int(case_id)
+
+    # Sprawdź, czy case_id istnieje w dzienniku zdarzeń
+    if case_id not in event_log['case_id'].unique():
+        raise ValueError(f"Case ID {case_id} nie istnieje w dzienniku zdarzeń.")
+
+    # Filtrowanie dziennika zdarzeń dla określonego case_id
+    filtered_event_log = event_log[event_log['case_id'] == case_id].copy()
+
+    # Sprawdzenie, czy po filtrowaniu dziennik zdarzeń nie jest pusty
+    if filtered_event_log.empty:
+        return {}
+
+    # Resetowanie indeksu, aby zapewnić, że indeksy zaczynają się od 0
+    filtered_event_log.reset_index(drop=True, inplace=True)
+
+    # Grupowanie zdarzeń według aktywności i obliczanie indeksów
+    activity_indices = {}
+    for activity in filtered_event_log['concept:name'].unique():
+        activity_indices[activity] = filtered_event_log[filtered_event_log['concept:name'] == activity].index.tolist()
+
+    # Obliczanie minimalnych odległości własnych i świadków
+    corrected_witnesses = {}
+    for activity, indices in activity_indices.items():
+        if len(indices) < 2:
+            continue
+
+        # Obliczanie przerw i znajdowanie minimalnej odległości własnej
+        gaps = [indices[i + 1] - indices[i] - 1 for i in range(len(indices) - 1)]
+        min_distance = min(gaps)
+
+        # Identyfikacja świadków dla minimalnej odległości własnej
+        witness_sequences = []
+        for i in range(len(indices) - 1):
+            gap_size = indices[i + 1] - indices[i] - 1
+            if gap_size == min_distance:
+                gap_events = filtered_event_log.iloc[indices[i] + 1:indices[i + 1]]['concept:name'].tolist()
+                # Wykluczanie samej aktywności z listy zdarzeń w przerwie
+                gap_events = [event for event in gap_events if event != activity]
+                if gap_events:  # Dodaj tylko niepuste przerwy
+                    witness_sequences.append(gap_events)
+
+        # Deduplikacja sekwencji z zachowaniem ich kolejności
+        unique_sequences = list(map(list, {tuple(seq) for seq in witness_sequences}))
+        corrected_witnesses[activity] = unique_sequences
+
+    return corrected_witnesses
+
+def print_self_distance_witnesses_by_case_id(event_log, case_id):
+    """
+    Print the minimum self-distance witnesses for all activities for a specific case ID.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    :param case_id: The case ID to retrieve and print the witnesses for.
+    :type case_id: int or str
+    """
+    witnesses = get_self_distance_witnesses_by_case_id(event_log, case_id)
+    print(f"\nMinimum self distance witnesses for case ID {case_id}: {witnesses}")
+
 #43
 def print_full_analysis_by_id(event_log, case_id):
     """
@@ -418,7 +444,6 @@ def print_full_analysis_by_id(event_log, case_id):
 
     print_minimum_self_distances_by_case_id(event_log, case_id)
 
-    # TODO - FIX THIS
     print_self_distance_witnesses_by_case_id(event_log, case_id)
 
     print_rework_by_case_id(event_log,case_id)

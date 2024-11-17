@@ -221,55 +221,6 @@ def print_all_minimum_self_distances(event_log):
     for case_id, distances in min_self_distances.items():
         print(f"Case ID {case_id}: {distances}")
 
-# TODO - FIX THIS
-#20 REQUIRES FIX (NEED TO DIFF WHEN Hierarchical Agent Teams) - ISSUE WITH get_minimum_self_distance_witnesses
-def get_all_self_distance_witnesses(event_log):
-    """
-    Calculate the minimum self-distance witnesses for each activity in each case.
-
-    :param event_log: Event log data.
-    :type event_log: pd.DataFrame
-    :return: Dictionary where keys are case IDs, and values are dictionaries with activities and their sorted witnesses.
-    :rtype: dict
-    """
-    unique_case_ids = event_log['case_id'].unique()
-    sorted_case_ids = np.sort(unique_case_ids.astype(int)).astype(str)
-
-    # Słownik do przechowywania świadków dla każdego case ID
-    all_msd_witnesses = {}
-
-    for case_id in sorted_case_ids:
-        # Filtruj event log dla aktualnego case_id
-        filtered_event_log = event_log[event_log['case_id'] == case_id]
-
-        # Wylicz świadków odległości własnych dla min. własnych dystansów
-        msd_wit = pm4py.get_minimum_self_distance_witnesses(
-            filtered_event_log,
-            activity_key='concept:name',
-            case_id_key='case:concept:name',
-            timestamp_key='time:timestamp'
-        )
-        # Sortowanie świadków
-        sorted_msd_wit = {activity: sorted(witnesses) for activity, witnesses in msd_wit.items()}
-        all_msd_witnesses[case_id] = sorted_msd_wit
-
-    return all_msd_witnesses
-
-# TODO - FIX THIS
-#21 REQUIRES FIX (NEED TO DIFF WHEN Hierarchical Agent Teams) - ISSUE WITH get_minimum_self_distance_witnesses
-def print_all_self_distance_witnesses(event_log):
-    """
-    Print the minimum self-distance witnesses for each activity in each case.
-
-    :param event_log: Event log data.
-    :type event_log: pd.DataFrame
-    """
-    all_msd_witnesses = get_all_self_distance_witnesses(event_log)
-
-    print("\nWitnesses of minimum self-distances:")
-    for case_id, witnesses in all_msd_witnesses.items():
-        print(f"Case ID {case_id}: {witnesses}")
-
 #24
 def get_all_rework_counts(event_log):
     """
@@ -377,6 +328,88 @@ def print_all_cases_durations(event_log):
     for case_id, duration in case_durations.items():
         print(f"Case ID {case_id}: {duration} s")
 
+
+def get_all_self_distance_witnesses(event_log):
+    """
+    Compute the minimum self-distance witnesses for each activity in each case of the event log.
+
+    :param event_log: Event log data containing events with case IDs and activity names.
+    :type event_log: pd.DataFrame
+    :return: A dictionary where each key is a case ID, and each value is another dictionary mapping
+             activities to lists of witness sequences.
+    :rtype: dict
+    """
+    # Konwersja case_id do int'a
+    event_log['case_id'] = event_log['case_id'].astype(int)
+    unique_case_ids = event_log['case_id'].unique()
+
+    # Sortowanie case_id
+    sorted_case_ids = sorted(unique_case_ids)
+
+    all_msd_witnesses = {}
+
+    for case_id in sorted_case_ids:
+        # Filtrowanie event log'u dla aktualnego case_id
+        filtered_event_log = event_log[event_log['case_id'] == case_id].copy()
+
+        if filtered_event_log.empty:
+            continue
+
+        # Reset index'u by zapewnić, że index'y zaczynają się od 0
+        filtered_event_log.reset_index(drop=True, inplace=True)
+
+        # Grupowanie event'ów po aktywności i kalkulacja indeksów
+        activity_indices = {}
+        for activity in filtered_event_log['concept:name'].unique():
+            activity_indices[activity] = filtered_event_log[filtered_event_log['concept:name'] == activity].index.tolist()
+
+        # Wylicz minimalne odległości własne i świadków
+        min_self_distances = {}
+        corrected_witnesses = {}
+        for activity, indices in activity_indices.items():
+            # Nie ma odległości własnej jak nie występuje przynajmniej 2 razy
+            if len(indices) < 2:
+                continue
+
+            # Wylicz przerwy i znajdź minimalne odległości własne
+            gaps = [indices[i + 1] - indices[i] - 1 for i in range(len(indices) - 1)]
+            min_distance = min(gaps)
+            min_self_distances[activity] = min_distance
+
+            # Zidentyfikuj świadków dla minimalnych odległości własnych
+            witness_sequences = []
+            for i in range(len(indices) - 1):
+                gap_size = indices[i + 1] - indices[i] - 1
+                if gap_size == min_distance:
+                    gap_events = filtered_event_log.iloc[indices[i] + 1:indices[i + 1]]['concept:name'].tolist()
+                    # Wyłącz aktywność z listy
+                    gap_events = [event for event in gap_events if event != activity]
+                    # Dodaj tylko nie pustę przerwy
+                    if gap_events:
+                        witness_sequences.append(gap_events)
+
+            # De duplikacja sekwencji z zachowaniem ich kolejności
+            unique_sequences = list(map(list, {tuple(seq) for seq in witness_sequences}))
+            corrected_witnesses[activity] = unique_sequences
+
+        all_msd_witnesses[case_id] = corrected_witnesses
+
+    return all_msd_witnesses
+
+
+def print_all_self_distance_witnesses(event_log):
+    """
+    Print the minimum self-distance witnesses for each activity in each case.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    """
+    all_msd_witnesses = get_all_self_distance_witnesses(event_log)
+
+    print("\nWitnesses of minimum self-distances:")
+    for case_id, witnesses in all_msd_witnesses.items():
+        print(f"Case ID {case_id}: {witnesses}")
+
 #42
 def print_full_analysis(event_log):
     """
@@ -400,7 +433,6 @@ def print_full_analysis(event_log):
 
     print_all_minimum_self_distances(event_log)
 
-    # TODO - FIX THIS
     print_all_self_distance_witnesses(event_log)
 
     print_all_rework_counts(event_log)
