@@ -22,6 +22,33 @@ def run_graph_iterations(
     :type user_input_template: Dict[str, Any]
     :param recursion_limit: Maximum recursion depth allowed for each graph run.
     :type recursion_limit: int
+
+    **Example**:
+
+    .. code-block:: python
+
+        # .compile method from official langgraph package
+        graph = graph_builder.compile(checkpointer=memory)
+
+        # Run the graph for 3 iterations, starting from thread ID 1
+        run_graph_iterations(graph, 1, 3, {"messages": [("user", "Tell me a joke")]})
+
+        # Output:
+        # Iteration: 1, Thread_ID 1
+        # {'messages': [AIMessage(content='Why did the scarecrow win an award? Because he was outstanding in his field!',
+        # additional_kwargs={'refusal': None}, response_metadata={'token_usage': {'completion_tokens': 18,
+        # 'prompt_tokens': 11, 'total_tokens': 29, ...})]}
+        # ---
+        # Iteration: 2, Thread_ID 2
+        # {'messages': [AIMessage(content='Why did the scarecrow win an award? Because he was outstanding in his field!',
+        # additional_kwargs={'refusal': None}, response_metadata={'token_usage': {'completion_tokens': 17,
+        # 'prompt_tokens': 11, 'total_tokens': 28, ...})]}
+        # ---
+        # Iteration: 3, Thread_ID 3
+        # {'messages': [AIMessage(content='Why did the scarecrow win an award? Because he was outstanding in his field!',
+        # additional_kwargs={'refusal': None}, response_metadata={'token_usage': {'completion_tokens': 18,
+        # 'prompt_tokens': 11, 'total_tokens': 29, ...})]}
+        # ---
     """
     for i in range(num_repetitions):
         # Wygeneruj dla aktualnego thread ID i dostosuj user input w ramach potrzeby

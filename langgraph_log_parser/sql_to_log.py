@@ -39,6 +39,12 @@ def export_sqlite_to_log(db_path="checkpoints.sqlite", output_path="files/sql_to
     :type db_path: str
     :param output_path: Path to the output log file.
     :type output_path: str
+
+    **Example:**
+
+    >>> database = "test.sqlite"
+    >>> output = "files/test.log"
+    >>> export_sqlite_to_log(database, output)
     """
 
     # Jeżeli użytkownik nie podał ścieżki

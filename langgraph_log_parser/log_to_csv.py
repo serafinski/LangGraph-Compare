@@ -17,6 +17,12 @@ def export_log_to_csv(
     :param csv_fields: List of field names for the CSV file. Default fields are:
                        ['case_id', 'timestamp', 'end_timestamp', 'cost', 'activity', 'org:resource'].
     :type csv_fields: list[str], optional
+
+    **Example:**
+
+    >>> output = "files/test.log"
+    >>> csv_output = "files/csv_output.csv"
+    >>> export_log_to_csv(output, csv_output)
     """
     if csv_fields is None:
         csv_fields = ['case_id', 'timestamp', 'end_timestamp', 'cost', 'activity', 'org:resource']

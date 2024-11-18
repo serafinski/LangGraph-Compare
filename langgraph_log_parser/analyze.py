@@ -5,6 +5,7 @@ from collections import defaultdict
 
 pd.set_option('display.max_columns', None)
 
+
 #1
 def load_event_log(file_path):
     """
@@ -14,6 +15,12 @@ def load_event_log(file_path):
     :type file_path: str
     :return: PM4Py formatted DataFrame.
     :rtype: pd.DataFrame
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    Event log loaded and formated from file: files/examples.csv
     """
     # Ładowanie CSV do pandas DataFrame
     df = pd.read_csv(file_path)
@@ -24,6 +31,7 @@ def load_event_log(file_path):
     print(f"Event log loaded and formated from file: {file_path}")
     return pm4py.format_dataframe(df, case_id='case_id', activity_key='activity', timestamp_key='timestamp')
 
+
 #2
 def get_all_start_activities(event_log):
     """
@@ -33,9 +41,18 @@ def get_all_start_activities(event_log):
     :type event_log: pd.DataFrame
     :return: Start activities and their counts.
     :rtype: dict
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print(get_all_start_activities(event_log))
+    Event log loaded and formated from file: files/examples.csv
+    {'__start__': 8}
     """
     start_activities = pm4py.get_start_activities(event_log)
     return start_activities
+
 
 #3
 def print_all_start_activities(event_log):
@@ -44,9 +61,17 @@ def print_all_start_activities(event_log):
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print_all_start_activities(event_log)
+    Event log loaded and formated from file: files/examples.csv
+    Start activities: {'__start__': 8}
     """
     start_activities = get_all_start_activities(event_log)
-    print("\nStart activities:", start_activities)
+    print("Start activities:", start_activities)
 
 
 #4
@@ -58,9 +83,19 @@ def get_all_end_activities(event_log):
     :type event_log: pd.DataFrame
     :return: End activities and their counts.
     :rtype: dict
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print(get_all_end_activities(event_log))
+    Event log loaded and formated from file: files/examples.csv
+    {'chatbot_node': 2, 'supervisor': 3, 'call_tool': 1, 'chart_generator': 2}
     """
     end_activities = pm4py.get_end_activities(event_log)
     return end_activities
+
+
 #5
 def print_all_end_activities(event_log):
     """
@@ -68,9 +103,18 @@ def print_all_end_activities(event_log):
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print_all_end_activities(event_log)
+    Event log loaded and formated from file: files/examples.csv
+    End activities: {'chatbot_node': 2, 'supervisor': 3, 'call_tool': 1, 'chart_generator': 2}
     """
     end_activities = get_all_end_activities(event_log)
-    print("\nEnd activities:", end_activities)
+    print("End activities:", end_activities)
+
 
 #6
 def get_all_activities_count(event_log):
@@ -81,9 +125,18 @@ def get_all_activities_count(event_log):
     :type event_log: pd.DataFrame
     :return: Activity counts.
     :rtype: dict
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print(get_all_activities_count(event_log))
+    Event log loaded and formated from file: files/examples.csv
+    {'__start__': 20, 'supervisor': 19, 'Researcher': 15, 'call_tool': 14, 'agent': 9, 'chart_generator': 6, 'tools': 4, 'chatbot_node': 3, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'ChartGenerator': 2, 'Coder': 1, 'Search': 1, 'WebScraper': 1}
     """
     activities = pm4py.get_event_attribute_values(event_log, 'concept:name')
     return activities
+
 
 #7
 def print_all_activities_count(event_log):
@@ -92,9 +145,18 @@ def print_all_activities_count(event_log):
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print_all_activities_count(event_log)
+    Event log loaded and formated from file: files/examples.csv
+    Count of each activity: {'__start__': 20, 'supervisor': 19, 'Researcher': 15, 'call_tool': 14, 'agent': 9, 'chart_generator': 6, 'tools': 4, 'chatbot_node': 3, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'ChartGenerator': 2, 'Coder': 1, 'Search': 1, 'WebScraper': 1}
     """
     activities = get_all_activities_count(event_log)
-    print("\nCount of each activity:", activities)
+    print("Count of each activity:", activities)
+
 
 #8
 def get_all_sequences(event_log):
@@ -105,16 +167,29 @@ def get_all_sequences(event_log):
     :type event_log: pd.DataFrame
     :return: Mapping of case IDs to their activity sequences.
     :rtype: dict
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print(get_all_sequences(event_log))
+    Event log loaded and formated from file: files/examples.csv
+    {1: ['__start__', 'chatbot_node'], 2: ['__start__', 'chatbot_node', 'tools', 'chatbot_node'], 4: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator', '__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool'], 5: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator'], 6: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator'], 9: ['__start__', 'supervisor', '__start__', 'agent', 'Researcher', 'supervisor'], 10: ['__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'Coder', 'supervisor'], 15: ['__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor']}
     """
     # Tworzymy słownik, który będzie przechowywał sekwencje aktywności dla każdego case_id
     sequences_by_case = defaultdict(list)
 
     # Budujemy sekwencje dla każdego case_id
     for _, row in event_log.iterrows():
-        case_id = row['case_id']
+        # Upewnienie, że case_id jest int'em
+        case_id = int(row['case_id'])
         activity = row['activity']
         sequences_by_case[case_id].append(activity)
-    return dict(sequences_by_case)
+
+        # Sortowanie po id
+        sorted_sequences = dict(sorted(sequences_by_case.items()))
+    return sorted_sequences
+
 
 #9
 def print_all_sequences(event_log):
@@ -123,16 +198,33 @@ def print_all_sequences(event_log):
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print_all_sequences(event_log)
+    Event log loaded and formated from file: files/examples.csv
+    All sequences:
+    Case ID 1: ['__start__', 'chatbot_node']
+    Case ID 2: ['__start__', 'chatbot_node', 'tools', 'chatbot_node']
+    Case ID 4: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator', '__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool']
+    Case ID 5: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator']
+    Case ID 6: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator']
+    Case ID 9: ['__start__', 'supervisor', '__start__', 'agent', 'Researcher', 'supervisor']
+    Case ID 10: ['__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'Coder', 'supervisor']
+    Case ID 15: ['__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor']
     """
     # Sekwencja dla każdego case_id
     sequences_by_case = get_all_sequences(event_log)
 
-    print("\nAll sequences:")
+    print("All sequences:")
 
     # Sortowanie po case_id
     for case_id in sorted(sequences_by_case.keys(), key=lambda x: int(x)):
         sequence = sequences_by_case[case_id]
         print(f"Case ID {case_id}: {sequence}")
+
 
 #10
 def get_all_sequences_with_probabilities(event_log):
@@ -144,6 +236,14 @@ def get_all_sequences_with_probabilities(event_log):
     :type event_log: pd.DataFrame
     :return: List of tuples containing (case ID, sequence, probability).
     :rtype: list
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print(get_all_sequences_with_probabilities(event_log))
+    Event log loaded and formated from file: files/examples.csv
+    [(1, ('__start__', 'chatbot_node'), 0.125), (2, ('__start__', 'chatbot_node', 'tools', 'chatbot_node'), 0.125), (4, ('__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator', '__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool'), 0.125), (5, ('__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator'), 0.125), (6, ('__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator'), 0.125), (9, ('__start__', 'supervisor', '__start__', 'agent', 'Researcher', 'supervisor'), 0.125), (10, ('__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'Coder', 'supervisor'), 0.125), (15, ('__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor'), 0.125)]
     """
     sequences_by_case = get_all_sequences(event_log)
 
@@ -160,6 +260,7 @@ def get_all_sequences_with_probabilities(event_log):
     result = [(case_id, sequence, language.get(sequence, 0)) for sequence, case_id in sorted_sequences]
     return result
 
+
 #11
 def print_all_sequences_with_probabilities(event_log):
     """
@@ -168,12 +269,29 @@ def print_all_sequences_with_probabilities(event_log):
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print_all_sequences_with_probabilities(event_log)
+    Event log loaded and formated from file: files/examples.csv
+    ID of last sequence occurrence with probability of occurrence:
+    Case ID 1: ('__start__', 'chatbot_node'), 0.125
+    Case ID 2: ('__start__', 'chatbot_node', 'tools', 'chatbot_node'), 0.125
+    Case ID 4: ('__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator', '__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool'), 0.125
+    Case ID 5: ('__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator'), 0.125
+    Case ID 6: ('__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator'), 0.125
+    Case ID 9: ('__start__', 'supervisor', '__start__', 'agent', 'Researcher', 'supervisor'), 0.125
+    Case ID 10: ('__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'Coder', 'supervisor'), 0.125
+    Case ID 15: ('__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor'), 0.125
     """
     sequences_with_probabilities = get_all_sequences_with_probabilities(event_log)
 
-    print("\nID of last sequence occurrence with probability of occurrence:")
+    print("ID of last sequence occurrence with probability of occurrence:")
     for case_id, sequence, probability in sequences_with_probabilities:
         print(f"Case ID {case_id}: {sequence}, {probability}")
+
 
 # 16
 def get_all_minimum_self_distances(event_log):
@@ -184,6 +302,14 @@ def get_all_minimum_self_distances(event_log):
     :type event_log: pd.DataFrame
     :return: Dictionary where keys are case IDs and values are dictionaries of activities with their minimum self-distances.
     :rtype: dict
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print(get_all_minimum_self_distances(event_log))
+    Event log loaded and formated from file: files/examples.csv
+    {'1': {}, '2': {'chatbot_node': 1}, '4': {'Researcher': 1, '__start__': 6, 'call_tool': 1, 'chart_generator': 1}, '5': {'Researcher': 1, 'call_tool': 1, 'chart_generator': 1}, '6': {'Researcher': 1, 'call_tool': 2, 'chart_generator': 1}, '9': {'__start__': 1, 'supervisor': 3}, '10': {'__start__': 1, 'agent': 1, 'supervisor': 5}, '15': {'ChartGenerator': 5, 'PaperWritingTeam': 15, 'ResearchTeam': 3, '__start__': 1, 'agent': 1, 'supervisor': 1, 'tools': 5}}
     """
     unique_case_ids = event_log['case:concept:name'].unique()
     sorted_case_ids = np.sort(unique_case_ids.astype(int)).astype(str)
@@ -207,6 +333,7 @@ def get_all_minimum_self_distances(event_log):
 
     return min_self_distances
 
+
 #17
 def print_all_minimum_self_distances(event_log):
     """
@@ -214,12 +341,29 @@ def print_all_minimum_self_distances(event_log):
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print_all_minimum_self_distances(event_log)
+    Event log loaded and formated from file: files/examples.csv
+    Minimal self-distances for every activity:
+    Case ID 1: {}
+    Case ID 2: {'chatbot_node': 1}
+    Case ID 4: {'Researcher': 1, '__start__': 6, 'call_tool': 1, 'chart_generator': 1}
+    Case ID 5: {'Researcher': 1, 'call_tool': 1, 'chart_generator': 1}
+    Case ID 6: {'Researcher': 1, 'call_tool': 2, 'chart_generator': 1}
+    Case ID 9: {'__start__': 1, 'supervisor': 3}
+    Case ID 10: {'__start__': 1, 'agent': 1, 'supervisor': 5}
+    Case ID 15: {'ChartGenerator': 5, 'PaperWritingTeam': 15, 'ResearchTeam': 3, '__start__': 1, 'agent': 1, 'supervisor': 1, 'tools': 5}
     """
     min_self_distances = get_all_minimum_self_distances(event_log)
 
-    print("\nMinimal self-distances for every activity:")
+    print("Minimal self-distances for every activity:")
     for case_id, distances in min_self_distances.items():
         print(f"Case ID {case_id}: {distances}")
+
 
 #24
 def get_all_rework_counts(event_log):
@@ -230,6 +374,14 @@ def get_all_rework_counts(event_log):
     :type event_log: pd.DataFrame
     :return: Rework counts for each case ID.
     :rtype: dict
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print(get_all_rework_counts(event_log))
+    Event log loaded and formated from file: files/examples.csv
+    {'1': {}, '2': {'chatbot_node': 2}, '4': {'__start__': 2, 'Researcher': 9, 'call_tool': 9, 'chart_generator': 2}, '5': {'Researcher': 3, 'call_tool': 3, 'chart_generator': 2}, '6': {'Researcher': 2, 'call_tool': 2, 'chart_generator': 2}, '9': {'__start__': 2, 'supervisor': 2}, '10': {'__start__': 2, 'supervisor': 2, 'agent': 2}, '15': {'__start__': 10, 'supervisor': 15, 'agent': 6, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'tools': 2, 'ChartGenerator': 2}}
     """
     rework_counts_by_case = {}
     unique_case_ids = event_log['case:concept:name'].unique()
@@ -254,6 +406,7 @@ def get_all_rework_counts(event_log):
         rework_counts_by_case[case_id] = rework_counts
     return rework_counts_by_case
 
+
 #25
 def print_all_rework_counts(event_log):
     """
@@ -261,12 +414,29 @@ def print_all_rework_counts(event_log):
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print_all_rework_counts(event_log)
+    Event log loaded and formated from file: files/examples.csv
+    Count of activity rework:
+    Case ID 1: {}
+    Case ID 2: {'chatbot_node': 2}
+    Case ID 4: {'__start__': 2, 'Researcher': 9, 'call_tool': 9, 'chart_generator': 2}
+    Case ID 5: {'Researcher': 3, 'call_tool': 3, 'chart_generator': 2}
+    Case ID 6: {'Researcher': 2, 'call_tool': 2, 'chart_generator': 2}
+    Case ID 9: {'__start__': 2, 'supervisor': 2}
+    Case ID 10: {'__start__': 2, 'supervisor': 2, 'agent': 2}
+    Case ID 15: {'__start__': 10, 'supervisor': 15, 'agent': 6, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'tools': 2, 'ChartGenerator': 2}
     """
     rework_counts_by_case = get_all_rework_counts(event_log)
 
-    print("\nCount of activity rework:")
+    print("Count of activity rework:")
     for case_id, rework_counts in rework_counts_by_case.items():
         print(f"Case ID {case_id}: {rework_counts}")
+
 
 #28
 def get_all_activities_mean_service_time(event_log):
@@ -277,11 +447,21 @@ def get_all_activities_mean_service_time(event_log):
     :type event_log: pd.DataFrame
     :return: Mean service times for each activity.
     :rtype: dict
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print(get_all_activities_mean_service_time(event_log))
+    Event log loaded and formated from file: files/examples.csv
+    {'ChartGenerator': 0.431036, 'Coder': 0.618058, 'PaperWritingTeam': 0.597055, 'ResearchTeam': 0.8091940000000001, 'Researcher': 3.5640768, 'Search': 0.598059, 'WebScraper': 0.8930849999999999, '__start__': 2.3303979999999997, 'agent': 0.030281333333333334, 'call_tool': 7.828810357142857, 'chart_generator': 56.312364, 'chatbot_node': 0.8704093333333334, 'supervisor': 0.03221426315789473, 'tools': 1.068717}
     """
     mean_serv_time = pm4py.get_service_time(
         event_log, start_timestamp_key='timestamp', timestamp_key='end_timestamp', aggregation_measure='mean'
     )
     return mean_serv_time
+
+
 #29
 def print_all_activities_mean_service_time(event_log):
     """
@@ -289,19 +469,36 @@ def print_all_activities_mean_service_time(event_log):
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print_all_activities_mean_service_time(event_log)
+    Event log loaded and formated from file: files/examples.csv
+    Mean duration of every activity (in sec): {'ChartGenerator': 0.431036, 'Coder': 0.618058, 'PaperWritingTeam': 0.597055, 'ResearchTeam': 0.8091940000000001, 'Researcher': 3.5640768, 'Search': 0.598059, 'WebScraper': 0.8930849999999999, '__start__': 2.3303979999999997, 'agent': 0.030281333333333334, 'call_tool': 7.828810357142857, 'chart_generator': 56.312364, 'chatbot_node': 0.8704093333333334, 'supervisor': 0.03221426315789473, 'tools': 1.068717}
     """
     mean_serv_time = get_all_activities_mean_service_time(event_log)
-    print("\nMean duration of every activity (in sec):", mean_serv_time)
+    print("Mean duration of every activity (in sec):", mean_serv_time)
+
 
 #30
 def get_all_cases_durations(event_log):
     """
-    Calculate the duration of each case.
+    Calculate the duration of each case in seconds.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :return: Case durations.
     :rtype: dict
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print(get_all_cases_durations(event_log))
+    Event log loaded and formated from file: files/examples.csv
+    {'1': 0.7335699999999999, '2': 5.178459, '4': 471.634856, '5': 18.039546, '6': 15.052201, '9': 7.484676, '10': 3.326793, '15': 40.460205}
     """
     # Pobranie unikalnych identyfikatorów przypadków (case_id)
     unique_case_ids = event_log['case:concept:name'].unique()
@@ -314,16 +511,33 @@ def get_all_cases_durations(event_log):
         case_durations[case_id] = duration
     return case_durations
 
+
 #31
 def print_all_cases_durations(event_log):
     """
-    Print the duration of each case.
+    Print the duration of each case in seconds.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print_all_cases_durations(event_log)
+    Event log loaded and formated from file: files/examples.csv
+    Duration of the case:
+    Case ID 1: 0.7335699999999999 s
+    Case ID 2: 5.178459 s
+    Case ID 4: 471.634856 s
+    Case ID 5: 18.039546 s
+    Case ID 6: 15.052201 s
+    Case ID 9: 7.484676 s
+    Case ID 10: 3.326793 s
+    Case ID 15: 40.460205 s
     """
     case_durations = get_all_cases_durations(event_log)
-    print("\nDuration of the case:")
+    print("Duration of the case:")
 
     for case_id, duration in case_durations.items():
         print(f"Case ID {case_id}: {duration} s")
@@ -338,6 +552,14 @@ def get_all_self_distance_witnesses(event_log):
     :return: A dictionary where each key is a case ID, and each value is another dictionary mapping
              activities to lists of witness sequences.
     :rtype: dict
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print(get_all_self_distance_witnesses(event_log))
+    Event log loaded and formated from file: files/examples.csv
+    {1: {}, 2: {'chatbot_node': [['tools']]}, 4: {'__start__': [['Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator']], 'Researcher': [['call_tool']], 'call_tool': [['Researcher']], 'chart_generator': [['call_tool']]}, 5: {'Researcher': [['call_tool']], 'call_tool': [['Researcher']], 'chart_generator': [['call_tool']]}, 6: {'Researcher': [['call_tool']], 'call_tool': [['Researcher', 'chart_generator']], 'chart_generator': [['call_tool']]}, 9: {'__start__': [['supervisor']], 'supervisor': [['__start__', 'agent', 'Researcher']]}, 10: {'__start__': [['supervisor']], 'supervisor': [['__start__', 'agent', 'tools', 'agent', 'Coder']], 'agent': [['tools']]}, 15: {'__start__': [['supervisor']], 'supervisor': [['__start__'], ['PaperWritingTeam'], ['ResearchTeam']], 'agent': [['tools']], 'ResearchTeam': [['supervisor', '__start__', 'supervisor']], 'PaperWritingTeam': [['supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor']], 'tools': [['agent', 'ChartGenerator', 'supervisor', '__start__', 'agent']], 'ChartGenerator': [['supervisor', '__start__', 'agent', 'tools', 'agent']]}}
     """
     # Konwersja case_id do int'a
     event_log['case_id'] = event_log['case_id'].astype(int)
@@ -361,7 +583,8 @@ def get_all_self_distance_witnesses(event_log):
         # Grupowanie event'ów po aktywności i kalkulacja indeksów
         activity_indices = {}
         for activity in filtered_event_log['concept:name'].unique():
-            activity_indices[activity] = filtered_event_log[filtered_event_log['concept:name'] == activity].index.tolist()
+            activity_indices[activity] = filtered_event_log[
+                filtered_event_log['concept:name'] == activity].index.tolist()
 
         # Wylicz minimalne odległości własne i świadków
         min_self_distances = {}
@@ -403,12 +626,29 @@ def print_all_self_distance_witnesses(event_log):
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print_all_self_distance_witnesses(event_log)
+    Event log loaded and formated from file: files/examples.csv
+    Witnesses of minimum self-distances:
+    Case ID 1: {}
+    Case ID 2: {'chatbot_node': [['tools']]}
+    Case ID 4: {'__start__': [['Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator']], 'Researcher': [['call_tool']], 'call_tool': [['Researcher']], 'chart_generator': [['call_tool']]}
+    Case ID 5: {'Researcher': [['call_tool']], 'call_tool': [['Researcher']], 'chart_generator': [['call_tool']]}
+    Case ID 6: {'Researcher': [['call_tool']], 'call_tool': [['Researcher', 'chart_generator']], 'chart_generator': [['call_tool']]}
+    Case ID 9: {'__start__': [['supervisor']], 'supervisor': [['__start__', 'agent', 'Researcher']]}
+    Case ID 10: {'__start__': [['supervisor']], 'supervisor': [['__start__', 'agent', 'tools', 'agent', 'Coder']], 'agent': [['tools']]}
+    Case ID 15: {'__start__': [['supervisor']], 'supervisor': [['__start__'], ['ResearchTeam'], ['PaperWritingTeam']], 'agent': [['tools']], 'ResearchTeam': [['supervisor', '__start__', 'supervisor']], 'PaperWritingTeam': [['supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor']], 'tools': [['agent', 'ChartGenerator', 'supervisor', '__start__', 'agent']], 'ChartGenerator': [['supervisor', '__start__', 'agent', 'tools', 'agent']]}
     """
     all_msd_witnesses = get_all_self_distance_witnesses(event_log)
 
-    print("\nWitnesses of minimum self-distances:")
+    print("Witnesses of minimum self-distances:")
     for case_id, witnesses in all_msd_witnesses.items():
         print(f"Case ID {case_id}: {witnesses}")
+
 
 #42
 def print_full_analysis(event_log):
@@ -417,27 +657,117 @@ def print_full_analysis(event_log):
 
     :param event_log: The event log data to analyze.
     :type event_log: pd.DataFrame
+
+    **Example**:
+
+    .. code-block:: python
+
+        csv_output = "files/examples.csv"
+        event_log = load_event_log(csv_output)
+        print_all_self_distance_witnesses(event_log)
+        # Event log loaded and formated from file: files/examples.csv
+        #
+        # ####################START###########################
+        #
+        # Start activities: {'__start__': 8}
+        #
+        # End activities: {'chatbot_node': 2, 'supervisor': 3, 'call_tool': 1, 'chart_generator': 2}
+        #
+        # Count of each activity: {'__start__': 20, 'supervisor': 19, 'Researcher': 15, 'call_tool': 14, 'agent': 9, 'chart_generator': 6, 'tools': 4, 'chatbot_node': 3, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'ChartGenerator': 2, 'Coder': 1, 'Search': 1, 'WebScraper': 1}
+        #
+        # All sequences:
+        # Case ID 1: ['__start__', 'chatbot_node']
+        # Case ID 2: ['__start__', 'chatbot_node', 'tools', 'chatbot_node']
+        # Case ID 4: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator', '__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool']
+        # Case ID 5: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator']
+        # Case ID 6: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator']
+        # Case ID 9: ['__start__', 'supervisor', '__start__', 'agent', 'Researcher', 'supervisor']
+        # Case ID 10: ['__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'Coder', 'supervisor']
+        # Case ID 15: ['__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor']
+        #
+        # ID of last sequence occurrence with probability of occurrence:
+        # Case ID 1: ('__start__', 'chatbot_node'), 0.125
+        # Case ID 2: ('__start__', 'chatbot_node', 'tools', 'chatbot_node'), 0.125
+        # Case ID 4: ('__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator', '__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool'), 0.125
+        # Case ID 5: ('__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator'), 0.125
+        # Case ID 6: ('__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator'), 0.125
+        # Case ID 9: ('__start__', 'supervisor', '__start__', 'agent', 'Researcher', 'supervisor'), 0.125
+        # Case ID 10: ('__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'Coder', 'supervisor'), 0.125
+        # Case ID 15: ('__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor'), 0.125
+        #
+        # Minimal self-distances for every activity:
+        # Case ID 1: {}
+        # Case ID 2: {'chatbot_node': 1}
+        # Case ID 4: {'Researcher': 1, '__start__': 6, 'call_tool': 1, 'chart_generator': 1}
+        # Case ID 5: {'Researcher': 1, 'call_tool': 1, 'chart_generator': 1}
+        # Case ID 6: {'Researcher': 1, 'call_tool': 2, 'chart_generator': 1}
+        # Case ID 9: {'__start__': 1, 'supervisor': 3}
+        # Case ID 10: {'__start__': 1, 'agent': 1, 'supervisor': 5}
+        # Case ID 15: {'ChartGenerator': 5, 'PaperWritingTeam': 15, 'ResearchTeam': 3, '__start__': 1, 'agent': 1, 'supervisor': 1, 'tools': 5}
+        #
+        # Witnesses of minimum self-distances:
+        # Case ID 1: {}
+        # Case ID 2: {'chatbot_node': [['tools']]}
+        # Case ID 4: {'__start__': [['Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator']], 'Researcher': [['call_tool']], 'call_tool': [['Researcher']], 'chart_generator': [['call_tool']]}
+        # Case ID 5: {'Researcher': [['call_tool']], 'call_tool': [['Researcher']], 'chart_generator': [['call_tool']]}
+        # Case ID 6: {'Researcher': [['call_tool']], 'call_tool': [['Researcher', 'chart_generator']], 'chart_generator': [['call_tool']]}
+        # Case ID 9: {'__start__': [['supervisor']], 'supervisor': [['__start__', 'agent', 'Researcher']]}
+        # Case ID 10: {'__start__': [['supervisor']], 'supervisor': [['__start__', 'agent', 'tools', 'agent', 'Coder']], 'agent': [['tools']]}
+        # Case ID 15: {'__start__': [['supervisor']], 'supervisor': [['__start__'], ['ResearchTeam'], ['PaperWritingTeam']], 'agent': [['tools']], 'ResearchTeam': [['supervisor', '__start__', 'supervisor']], 'PaperWritingTeam': [['supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor']], 'tools': [['agent', 'ChartGenerator', 'supervisor', '__start__', 'agent']], 'ChartGenerator': [['supervisor', '__start__', 'agent', 'tools', 'agent']]}
+        #
+        # Count of activity rework:
+        # Case ID 1: {}
+        # Case ID 2: {'chatbot_node': 2}
+        # Case ID 4: {'__start__': 2, 'Researcher': 9, 'call_tool': 9, 'chart_generator': 2}
+        # Case ID 5: {'Researcher': 3, 'call_tool': 3, 'chart_generator': 2}
+        # Case ID 6: {'Researcher': 2, 'call_tool': 2, 'chart_generator': 2}
+        # Case ID 9: {'__start__': 2, 'supervisor': 2}
+        # Case ID 10: {'__start__': 2, 'supervisor': 2, 'agent': 2}
+        # Case ID 15: {'__start__': 10, 'supervisor': 15, 'agent': 6, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'tools': 2, 'ChartGenerator': 2}
+        #
+        # Mean duration of every activity (in sec): {'ChartGenerator': 0.431036, 'Coder': 0.618058, 'PaperWritingTeam': 0.597055, 'ResearchTeam': 0.8091940000000001, 'Researcher': 3.5640768, 'Search': 0.598059, 'WebScraper': 0.8930849999999999, '__start__': 2.3303979999999997, 'agent': 0.030281333333333334, 'call_tool': 7.828810357142857, 'chart_generator': 56.312364, 'chatbot_node': 0.8704093333333334, 'supervisor': 0.03221426315789473, 'tools': 1.068717}
+        #
+        # Duration of the case:
+        # Case ID 1: 0.7335699999999999 s
+        # Case ID 2: 5.178459 s
+        # Case ID 4: 471.634856 s
+        # Case ID 5: 18.039546 s
+        # Case ID 6: 15.052201 s
+        # Case ID 9: 7.484676 s
+        # Case ID 10: 3.326793 s
+        # Case ID 15: 40.460205 s
+        #
+        # ######################END###########################
     """
 
-    print("\n####################START###########################")
+    print("\n####################START###########################\n")
 
     print_all_start_activities(event_log)
+    print()
 
     print_all_end_activities(event_log)
+    print()
 
     print_all_activities_count(event_log)
+    print()
 
     print_all_sequences(event_log)
+    print()
 
     print_all_sequences_with_probabilities(event_log)
+    print()
 
     print_all_minimum_self_distances(event_log)
+    print()
 
     print_all_self_distance_witnesses(event_log)
+    print()
 
     print_all_rework_counts(event_log)
+    print()
 
     print_all_activities_mean_service_time(event_log)
+    print()
 
     print_all_cases_durations(event_log)
 

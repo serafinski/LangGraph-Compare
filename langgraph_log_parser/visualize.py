@@ -11,6 +11,13 @@ def generate_prefix_tree(event_log, output_path='tree.png'):
     :type event_log: pd.DataFrame
     :param output_path: Path to save the prefix tree visualization.
     :type output_path: str
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> generate_prefix_tree(event_log, output_path='test.png')
+    Prefix Tree saved as: test.png
     """
 
     # Jeżeli użytkownik nie podał ścieżki
@@ -29,4 +36,4 @@ def generate_prefix_tree(event_log, output_path='tree.png'):
 
     # Zapisz wizualizacje prefix tree
     pm4py.save_vis_prefix_tree(prefix_tree, output_path)
-    print("\nPrefix Tree saved as:", output_path)
+    print("Prefix Tree saved as:", output_path)
