@@ -16,18 +16,15 @@ def generate_prefix_tree(event_log, output_path='tree.png'):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> generate_prefix_tree(event_log, output_path='test.png')
+    >>> generate_prefix_tree(event_log, 'files/tree.png')
+    Event log loaded and formated from file: files/examples.csv
     Prefix Tree saved as: test.png
     """
 
     # Jeżeli użytkownik nie podał ścieżki
-    if os.path.dirname(output_path) == '':
-        # Upewnij się, że folder istnieje
-        img_folder = 'img'
-        if not os.path.exists(img_folder):
-            os.makedirs(img_folder)
-        # Zapisz obraz w docelowej ścieżce
-        output_path = os.path.join(img_folder, output_path)
+    output_dir = os.path.dirname(output_path)
+    if output_dir and not os.path.exists(output_dir):
+        os.makedirs(output_dir)
 
     # Wygeneruj prefix tree
     prefix_tree = pm4py.discover_prefix_tree(

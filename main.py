@@ -11,7 +11,9 @@ from langgraph.graph.message import add_messages
 
 from langgraph_log_parser import *
 
-database = "checkpoints.sqlite"
+create_folder_structure("files/main")
+
+database = "files/main/db/main.sqlite"
 
 # Inicjalizacja .env
 load_dotenv()
@@ -62,15 +64,20 @@ graph = graph_builder.compile(checkpointer=memory)
 
 run_graph_iterations(graph, 1,5, {"messages": [("user", "Tell me a joke")]})
 
-output = "files/sql_to_log_output.log"
-csv_output = "files/csv_output.csv"
+output = "files/main/json"
+csv_output = "files/main/csv_output.csv"
 
-export_sqlite_to_log(database, output)
+export_sqlite_to_jsons(database, output)
 
-export_log_to_csv(output, csv_output)
+graph_config = GraphConfig(
+    nodes=["chatbot_node"]
+)
+
+export_jsons_to_csv(output, csv_output, graph_config)
+
 
 # ANALIZA
 print()
 event_log = load_event_log(csv_output)
 print_full_analysis(event_log)
-generate_prefix_tree(event_log, 'img/tree.png')
+generate_prefix_tree(event_log, 'files/main/img/tree.png')

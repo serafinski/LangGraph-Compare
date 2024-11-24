@@ -20,6 +20,14 @@ langgraph\_log\_parser.analyze\_case\_id
    :undoc-members:
    :show-inheritance:
 
+langgraph\_log\_parser.create\_structure
+-----------------------------------------------
+
+.. automodule:: langgraph_log_parser.create_structure
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 langgraph\_log\_parser.graph\_runner
 -------------------------------------------
 
@@ -28,18 +36,18 @@ langgraph\_log\_parser.graph\_runner
    :undoc-members:
    :show-inheritance:
 
-langgraph\_log\_parser.log\_to\_csv
-------------------------------------------
+langgraph\_log\_parser.jsons\_to\_csv
+--------------------------------------------
 
-.. automodule:: langgraph_log_parser.log_to_csv
+.. automodule:: langgraph_log_parser.jsons_to_csv
    :members:
    :undoc-members:
    :show-inheritance:
 
-langgraph\_log\_parser.sql\_to\_log
-------------------------------------------
+langgraph\_log\_parser.sql\_to\_jsons
+--------------------------------------------
 
-.. automodule:: langgraph_log_parser.sql_to_log
+.. automodule:: langgraph_log_parser.sql_to_jsons
    :members:
    :undoc-members:
    :show-inheritance:

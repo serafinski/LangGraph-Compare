@@ -21,7 +21,9 @@ from langgraph.prebuilt import create_react_agent
 
 from langgraph_log_parser import *
 
-database = "checkpoints.sqlite"
+create_folder_structure("files/supervision")
+
+database = "files/supervision/db/supervision.sqlite"
 
 
 # Inicjalizacja .env
@@ -182,15 +184,25 @@ run_graph_iterations(
     recursion_limit=100
 )
 
-output = "files/sql_to_log_output.log"
-csv_output = "files/csv_output.csv"
+output = "files/supervision/json"
+csv_output = "files/supervision/csv_output.csv"
 
-export_sqlite_to_log(database, output)
+export_sqlite_to_jsons(database, output)
 
-export_log_to_csv(output, csv_output)
+supervisor = SupervisorConfig(
+    name="supervisor",
+    supervisor_type="graph"
+)
+
+graph_config = GraphConfig(
+    supervisors=[supervisor],
+    nodes=["Researcher", "Coder"]
+)
+
+export_jsons_to_csv(output, csv_output, graph_config)
 
 # ANALIZA
 print()
 event_log = load_event_log(csv_output)
 print_full_analysis(event_log)
-generate_prefix_tree(event_log, 'img/tree.png')
+generate_prefix_tree(event_log, 'files/supervision/img/tree.png')

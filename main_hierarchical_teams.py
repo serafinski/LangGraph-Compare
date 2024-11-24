@@ -21,7 +21,9 @@ from langgraph.prebuilt import create_react_agent
 
 from langgraph_log_parser import *
 
-database = "checkpoints.sqlite"
+create_folder_structure("files/hierarchical")
+
+database = "files/hierarchical/db/supervision.sqlite"
 
 # Inicjalizacja .env
 load_dotenv()
@@ -237,19 +239,19 @@ supervisor_agent = create_team_supervisor(
 research_graph = StateGraph(ResearchTeamState)
 research_graph.add_node("Search", search_node)
 research_graph.add_node("WebScraper", research_node)
-research_graph.add_node("supervisor", supervisor_agent)
+research_graph.add_node("rg_supervisor", supervisor_agent)
 
 # Define the control flow
-research_graph.add_edge("Search", "supervisor")
-research_graph.add_edge("WebScraper", "supervisor")
+research_graph.add_edge("Search", "rg_supervisor")
+research_graph.add_edge("WebScraper", "rg_supervisor")
 research_graph.add_conditional_edges(
-    "supervisor",
+    "rg_supervisor",
     lambda x: x["next"],
     {"Search": "Search", "WebScraper": "WebScraper", "FINISH": END},
 )
 
 
-research_graph.add_edge(START, "supervisor")
+research_graph.add_edge(START, "rg_supervisor")
 chain = research_graph.compile(checkpointer=memory)
 
 
@@ -346,16 +348,16 @@ authoring_graph = StateGraph(DocWritingState)
 authoring_graph.add_node("DocWriter", doc_writing_node)
 authoring_graph.add_node("NoteTaker", note_taking_node)
 authoring_graph.add_node("ChartGenerator", chart_generating_node)
-authoring_graph.add_node("supervisor", doc_writing_supervisor)
+authoring_graph.add_node("ag_supervisor", doc_writing_supervisor)
 
 # Add the edges that always occur
-authoring_graph.add_edge("DocWriter", "supervisor")
-authoring_graph.add_edge("NoteTaker", "supervisor")
-authoring_graph.add_edge("ChartGenerator", "supervisor")
+authoring_graph.add_edge("DocWriter", "ag_supervisor")
+authoring_graph.add_edge("NoteTaker", "ag_supervisor")
+authoring_graph.add_edge("ChartGenerator", "ag_supervisor")
 
 # Add the edges where routing applies
 authoring_graph.add_conditional_edges(
-    "supervisor",
+    "ag_supervisor",
     lambda x: x["next"],
     {
         "DocWriter": "DocWriter",
@@ -365,7 +367,7 @@ authoring_graph.add_conditional_edges(
     },
 )
 
-authoring_graph.add_edge(START, "supervisor")
+authoring_graph.add_edge(START, "ag_supervisor")
 chain = authoring_graph.compile(checkpointer=memory)
 
 
@@ -429,14 +431,14 @@ super_graph.add_node("ResearchTeam", get_last_message | research_chain | join_gr
 super_graph.add_node(
     "PaperWritingTeam", get_last_message | authoring_chain | join_graph
 )
-super_graph.add_node("supervisor", supervisor_node)
+super_graph.add_node("test_supervisor", supervisor_node)
 
 # Define the graph connections, which controls how the logic
 # propagates through the program
-super_graph.add_edge("ResearchTeam", "supervisor")
-super_graph.add_edge("PaperWritingTeam", "supervisor")
+super_graph.add_edge("ResearchTeam", "test_supervisor")
+super_graph.add_edge("PaperWritingTeam", "test_supervisor")
 super_graph.add_conditional_edges(
-    "supervisor",
+    "test_supervisor",
     lambda x: x["next"],
     {
         "PaperWritingTeam": "PaperWritingTeam",
@@ -444,7 +446,7 @@ super_graph.add_conditional_edges(
         "FINISH": END,
     },
 )
-super_graph.add_edge(START, "supervisor")
+super_graph.add_edge(START, "test_supervisor")
 super_graph = super_graph.compile(checkpointer=memory)
 
 # config = {"configurable": {"thread_id": "15"},"recursion_limit": 150}
@@ -480,15 +482,50 @@ run_graph_iterations(
     recursion_limit=150
 )
 
-output = "files/sql_to_log_output.log"
-csv_output = "files/csv_output.csv"
+output = "files/hierarchical/json"
+csv_output = "files/hierarchical/csv_output.csv"
 
-export_sqlite_to_log(database, output)
+export_sqlite_to_jsons(database, output)
 
-export_log_to_csv(output, csv_output)
+test_supervisor = SupervisorConfig(
+    name="test_supervisor",
+    supervisor_type="graph"
+)
+
+# ResearchTeam subgraph supervisor
+rg_supervisor = SupervisorConfig(
+    name="rg_supervisor",
+    supervisor_type="subgraph"
+)
+
+ag_supervisor = SupervisorConfig(
+    name="ag_supervisor",
+    supervisor_type="subgraph"
+)
+
+# ResearchTeam subgraph
+research_team = SubgraphConfig(
+    name="ResearchTeam",
+    nodes=["Search", "WebScraper"],
+    supervisor=rg_supervisor
+)
+
+authoring_team = SubgraphConfig(
+    name="PaperWritingTeam",
+    nodes=["DocWriter", "NoteTaker","ChartGenerator"],
+    supervisor=ag_supervisor
+)
+
+# Complete graph configuration
+graph_config = GraphConfig(
+    supervisors=[test_supervisor],
+    subgraphs=[research_team, authoring_team]
+)
+
+export_jsons_to_csv(output, csv_output, graph_config)
 
 # ANALIZA
 print()
 event_log = load_event_log(csv_output)
 print_full_analysis(event_log)
-generate_prefix_tree(event_log, 'img/tree.png')
+generate_prefix_tree(event_log, 'files/hierarchical/img/tree.png')

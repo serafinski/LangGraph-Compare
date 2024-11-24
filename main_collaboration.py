@@ -22,7 +22,9 @@ from langgraph.prebuilt import ToolNode
 
 from langgraph_log_parser import *
 
-database = "checkpoints.sqlite"
+create_folder_structure("files/collaboration")
+
+database = "files/collaboration/db/collaboration.sqlite"
 
 # Inicjalizacja .env
 load_dotenv()
@@ -222,15 +224,19 @@ run_graph_iterations(
     recursion_limit=150
 )
 
-output = "files/sql_to_log_output.log"
-csv_output = "files/csv_output.csv"
+output = "files/collaboration/json"
+csv_output = "files/collaboration/csv_output.csv"
 
-export_sqlite_to_log(database, output)
+export_sqlite_to_jsons(database, output)
 
-export_log_to_csv(output, csv_output)
+graph_config = GraphConfig(
+    nodes=['Researcher','chart_generator', 'call_tool']
+)
+
+export_jsons_to_csv(output, csv_output, graph_config)
 
 # ANALIZA
 print()
 event_log = load_event_log(csv_output)
 print_full_analysis(event_log)
-generate_prefix_tree(event_log, 'img/tree.png')
+generate_prefix_tree(event_log, 'files/collaboration/img/tree.png')

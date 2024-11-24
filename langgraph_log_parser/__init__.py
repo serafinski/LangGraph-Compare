@@ -1,6 +1,6 @@
 __all__ = [
     # Modules
-    "analyze", "analyze_case_id", "graph_runner", "log_to_csv", "sql_to_log", "visualize",
+    "analyze", "analyze_case_id", "graph_runner", "jsons_to_csv", "sql_to_jsons", "visualize", "create_structure",
 
     # Functions - analyze
     "load_event_log",
@@ -32,26 +32,34 @@ __all__ = [
     # Functions - graph_runner
     "run_graph_iterations",
 
-    # Functions - log_to_csv
-    "export_log_to_csv",
+    # Functions - jsons_to_csv
+    "export_jsons_to_csv",
 
-    # Functions - sql_to_log
-    "export_sqlite_to_log",
+    # Functions - sql_to_jsons
+    "export_sqlite_to_jsons",
 
     # Functions - visualize
-    "generate_prefix_tree"
+    "generate_prefix_tree",
+
+    # Functions - create_folder_structure
+    "create_folder_structure",
+
+    #Classes
+    "SubgraphConfig", "SupervisorConfig", "GraphConfig"
 ]
 
 from . import analyze
 from . import analyze_case_id
 from . import graph_runner
-from . import log_to_csv
-from . import sql_to_log
+from . import jsons_to_csv
+from . import sql_to_jsons
 from . import visualize
+from . import create_structure
 
 from .analyze import *
 from .analyze_case_id import *
 from .graph_runner import *
-from .log_to_csv import *
-from .sql_to_log import *
+from .jsons_to_csv import *
+from .sql_to_jsons import *
 from .visualize import *
+from .create_structure import *
