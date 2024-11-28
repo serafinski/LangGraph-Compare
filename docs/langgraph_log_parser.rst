@@ -1,8 +1,13 @@
 Langgraph Log Parser Package
 ==============================
 
-Submodules
-----------
+langgraph\_log\_parser.load\_events
+-------------------------------------
+
+.. automodule:: langgraph_log_parser.load_events
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 langgraph\_log\_parser.analyze
 -------------------------------------

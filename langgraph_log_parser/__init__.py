@@ -1,9 +1,11 @@
 __all__ = [
     # Modules
-    "analyze", "analyze_case_id", "graph_runner", "jsons_to_csv", "sql_to_jsons", "visualize", "create_structure",
+    "load_events", "analyze", "analyze_case_id", "graph_runner", "jsons_to_csv", "sql_to_jsons", "visualize", "create_structure",
+
+    # Functions - load_csv
+    "load_event_log",
 
     # Functions - analyze
-    "load_event_log",
     "get_all_start_activities", "print_all_start_activities",
     "get_all_end_activities", "print_all_end_activities",
     "get_all_activities_count", "print_all_activities_count",
@@ -48,6 +50,7 @@ __all__ = [
     "SubgraphConfig", "SupervisorConfig", "GraphConfig"
 ]
 
+from . import load_events
 from . import analyze
 from . import analyze_case_id
 from . import graph_runner
@@ -56,6 +59,8 @@ from . import sql_to_jsons
 from . import visualize
 from . import create_structure
 
+
+from .load_events import *
 from .analyze import *
 from .analyze_case_id import *
 from .graph_runner import *
