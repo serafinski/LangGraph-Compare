@@ -41,7 +41,7 @@ __all__ = [
     "export_sqlite_to_jsons",
 
     # Functions - visualize
-    "generate_prefix_tree",
+    "generate_prefix_tree", "generate_performance_dfg",
 
     # Functions - create_folder_structure
     "create_folder_structure",
