@@ -235,10 +235,10 @@ In case of printing analysis for single :code:`case_id` we will use :func:`langg
     # Using to load events from .csv file
     event_log = load_event_log(csv_output)
 
-    id = 15
+    case_id = 15
 
     # This function will print an analysis in console for single case_id
-    print_full_analysis_by_id(event_log,id)
+    print_full_analysis_by_id(event_log,case_id)
 
 This will return information for single :code:`thread_id` `(case_id)` about the following:
 
