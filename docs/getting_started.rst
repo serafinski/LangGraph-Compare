@@ -123,6 +123,8 @@ Post deserialization - function saves every single thread to a separate :code:`j
 
 For more details, refer to the documentation of the :mod:`langgraph_log_parser.sql_to_jsons` module.
 
+.. _exporting_jsons_to_csv:
+
 Exporting JSON's to CSV
 -----------------------
 We retrieved the data from the database. Now it's time to create a :code:`.csv` file that can be loaded as an event log.
@@ -142,7 +144,7 @@ Because of that we will only have one node in :code:`nodes` list. Once graph con
 
 .. code-block:: python
 
-    from langgraph_log_parser.jsons_to_csv import export_jsons_to_csv
+    from langgraph_log_parser.jsons_to_csv import GraphConfig, export_jsons_to_csv
 
     # Taking json's to previously auto generated directory
     output = "test/json"
