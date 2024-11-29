@@ -22,7 +22,7 @@ Usage
 Installation
 ------------
 
-To use LangGraph Log Parser, first install it using pip:
+To use `LangGraph Log Parser <https://pypi.org/project/langgraph_log_parser/>`_, first install it using pip:
 
 .. code-block:: console
 
