@@ -117,7 +117,6 @@ def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, confi
     has_subgraphs = bool(graph_config.subgraphs)
     has_supervisors = bool(graph_config.supervisors)
     visited_global_start = False
-    current_subgraph = None
     entries_to_write = []
 
     def _get_subgraph_context(json_entry: Dict) -> Optional[str]:

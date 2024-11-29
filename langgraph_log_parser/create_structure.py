@@ -15,7 +15,6 @@ def create_folder_structure(main_folder_name):
 
     >>> create_folder_structure("test_directory")
     Successfully created 'test_directory' with subfolders: db, img, json
-    True
     """
     # Check if folder already exists
     if os.path.exists(main_folder_name):

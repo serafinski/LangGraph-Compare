@@ -22,9 +22,9 @@ def get_sequence_by_case_id(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_sequence_by_case_id(event_log,15))
+    >>> print(get_sequence_by_case_id(event_log,19))
     Event log loaded and formated from file: files/examples.csv
-    ['__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor']
+    ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']
     """
     # Sprawdź, czy case_id istnieje
     if case_id not in event_log['case_id'].unique():
@@ -52,9 +52,9 @@ def print_sequence_by_case_id(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_sequence_by_case_id(event_log,15)
+    >>> print_sequence_by_case_id(event_log,19)
     Event log loaded and formated from file: files/examples.csv
-    Activity sequence for case ID 15: ['__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor']
+    Activity sequence for case ID 19: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']
     """
     sequence = get_sequence_by_case_id(event_log, case_id)
     print(f"Activity sequence for case ID {case_id}: {sequence}")
@@ -76,9 +76,9 @@ def get_sequence_with_probability_by_case_id(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_sequence_with_probability_by_case_id(event_log,15))
+    >>> print(get_sequence_with_probability_by_case_id(event_log,19))
     Event log loaded and formated from file: files/examples.csv
-    (['__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor'], 0.125)
+    (['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor'], 0.3333333333333333)
     """
     # Sprawdź, czy case_id istnieje
     if case_id not in event_log['case_id'].unique():
@@ -108,12 +108,12 @@ def print_sequence_with_probability_by_case_id(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_sequence_with_probability_by_case_id(event_log,15)
+    >>> print_sequence_with_probability_by_case_id(event_log,19)
     Event log loaded and formated from file: files/examples.csv
-    Activity sequence with probability for case ID 15: Sequence: ['__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor'], Probability: 0.125
+    Activity sequence with probability for case ID 19: Sequence: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']; Probability: 0.3333333333333333
     """
     sequence, probability = get_sequence_with_probability_by_case_id(event_log, case_id)
-    print(f"Activity sequence with probability for case ID {case_id}: Sequence: {sequence}, Probability: {probability}")
+    print(f"Activity sequence with probability for case ID {case_id}: Sequence: {sequence}; Probability: {probability}")
 
 #18
 def get_minimum_self_distances_by_case_id(event_log, case_id):
@@ -132,9 +132,9 @@ def get_minimum_self_distances_by_case_id(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_minimum_self_distances_by_case_id(event_log,15))
+    >>> print(get_minimum_self_distances_by_case_id(event_log,19))
     Event log loaded and formated from file: files/examples.csv
-    {'ChartGenerator': 5, 'PaperWritingTeam': 15, 'ResearchTeam': 3, '__start__': 1, 'agent': 1, 'supervisor': 1, 'tools': 5}
+    {'DocWriter': 1, 'Search': 6, 'WebScraper': 4, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
     """
     # Sprawdź, czy case_id istnieje w event logu
     if case_id not in event_log['case_id'].unique():
@@ -166,9 +166,9 @@ def print_minimum_self_distances_by_case_id(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_minimum_self_distances_by_case_id(event_log,15)
+    >>> print_minimum_self_distances_by_case_id(event_log,19)
     Event log loaded and formated from file: files/examples.csv
-    Minimum self distances for case ID 15: {'ChartGenerator': 5, 'PaperWritingTeam': 15, 'ResearchTeam': 3, '__start__': 1, 'agent': 1, 'supervisor': 1, 'tools': 5}
+    Minimum self distances for case ID 19: {'DocWriter': 1, 'Search': 6, 'WebScraper': 4, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
     """
 
     min_self_distances = get_minimum_self_distances_by_case_id(event_log, case_id)
@@ -191,9 +191,9 @@ def get_rework_by_case_id(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_rework_by_case_id(event_log,15))
+    >>> print(get_rework_by_case_id(event_log,19))
     Event log loaded and formated from file: files/examples.csv
-    {'__start__': 10, 'supervisor': 15, 'agent': 6, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'tools': 2, 'ChartGenerator': 2}
+    {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'DocWriter': 4}
     """
     # Sprawdź, czy case_id istnieje w event_log'u
     if case_id not in event_log['case_id'].unique():
@@ -231,9 +231,9 @@ def print_rework_by_case_id(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_rework_by_case_id(event_log,15)
+    >>> print_rework_by_case_id(event_log,19)
     Event log loaded and formated from file: files/examples.csv
-    Rework counts for case ID 15: {'__start__': 10, 'supervisor': 15, 'agent': 6, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'tools': 2, 'ChartGenerator': 2}
+    Rework counts for case ID 19: {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'DocWriter': 4}
     """
     rework_counts = get_rework_by_case_id(event_log, case_id)
     print(f"Rework counts for case ID {case_id}: {rework_counts}")
@@ -255,9 +255,9 @@ def get_case_duration_by_id(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_case_duration_by_id(event_log,15))
+    >>> print(get_case_duration_by_id(event_log,19))
     Event log loaded and formated from file: files/examples.csv
-    40.460205
+    120.730501
     """
     # Konwersja na string'a - bo get_case_duration przyjmuje tylko stringi
     case_id_str = str(case_id)
@@ -284,15 +284,15 @@ def print_case_duration_by_id(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_case_duration_by_id(event_log,15)
+    >>> print_case_duration_by_id(event_log,19)
     Event log loaded and formated from file: files/examples.csv
-    Duration for case ID 15: 40.460205 s
+    Duration for case ID 19: 120.730501 s
     """
     duration = get_case_duration_by_id(event_log, case_id)
     print(f"Duration for case ID {case_id}: {duration} s")
 
 #34
-def get_start_activity(event_log, case_id):
+def get_start_activity_by_case_id(event_log, case_id):
     """
     Retrieve the first activity for the specified case ID.
 
@@ -307,7 +307,7 @@ def get_start_activity(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_start_activity(event_log,15))
+    >>> print(get_start_activity_by_case_id(event_log,19))
     Event log loaded and formated from file: files/examples.csv
     __start__
     """
@@ -315,7 +315,7 @@ def get_start_activity(event_log, case_id):
     return sequence[0]
 
 #35
-def print_start_activity(event_log, case_id):
+def print_start_activity_by_case_id(event_log, case_id):
     """
     Print the first activity for the specified case ID.
 
@@ -328,15 +328,15 @@ def print_start_activity(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_start_activity(event_log,15)
+    >>> print_start_activity_by_case_id(event_log,19)
     Event log loaded and formated from file: files/examples.csv
-    Start activity for case ID 15: supervisor
+    Start activity for case ID 19: __start__
     """
-    start_activity = get_start_activity(event_log, case_id)
+    start_activity = get_start_activity_by_case_id(event_log, case_id)
     print(f"Start activity for case ID {case_id}: {start_activity}")
 
 #36
-def get_end_activity(event_log, case_id):
+def get_end_activity_by_case_id(event_log, case_id):
     """
     Retrieve the last activity for the specified case ID.
 
@@ -351,15 +351,15 @@ def get_end_activity(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_end_activity(event_log,15))
+    >>> print(get_end_activity_by_case_id(event_log,19))
     Event log loaded and formated from file: files/examples.csv
-    supervisor
+    test_supervisor
     """
     sequence = get_sequence_by_case_id(event_log, case_id)
     return sequence[-1]
 
 #37
-def print_end_activity(event_log, case_id):
+def print_end_activity_by_case_id(event_log, case_id):
     """
     Print the last activity for the specified case ID.
 
@@ -372,11 +372,11 @@ def print_end_activity(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_end_activity(event_log,15)
+    >>> print_end_activity_by_case_id(event_log,19)
     Event log loaded and formated from file: files/examples.csv
-    End activity for case ID 15: supervisor
+    End activity for case ID 19: test_supervisor
     """
-    end_activity = get_end_activity(event_log, case_id)
+    end_activity = get_end_activity_by_case_id(event_log, case_id)
     print(f"End activity for case ID {case_id}: {end_activity}")
 
 #38
@@ -395,9 +395,9 @@ def get_activities_count_by_case_id(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_activities_count_by_case_id(event_log,15))
+    >>> print(get_activities_count_by_case_id(event_log,19))
     Event log loaded and formated from file: files/examples.csv
-    {'__start__': 10, 'supervisor': 15, 'agent': 6, 'Search': 1, 'WebScraper': 1, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'tools': 2, 'ChartGenerator': 2}
+    {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'ChartGenerator': 1, 'DocWriter': 4}
     """
     sequence = get_sequence_by_case_id(event_log, case_id)
     return dict(Counter(sequence))
@@ -416,9 +416,9 @@ def print_activities_count_by_case_id(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_activities_count_by_case_id(event_log,15)
+    >>> print_activities_count_by_case_id(event_log,19)
     Event log loaded and formated from file: files/examples.csv
-    Count of each activity for case ID 15: {'__start__': 10, 'supervisor': 15, 'agent': 6, 'Search': 1, 'WebScraper': 1, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'tools': 2, 'ChartGenerator': 2}
+    Count of each activity for case ID 19: {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'ChartGenerator': 1, 'DocWriter': 4}
     """
     activities_count = get_activities_count_by_case_id(event_log, case_id)
     print(f"Count of each activity for case ID {case_id}: {activities_count}")
@@ -439,9 +439,9 @@ def get_sum_service_time_by_case_id(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_sum_service_time_by_case_id(event_log,15))
+    >>> print(get_sum_service_time_by_case_id(event_log,19))
     Event log loaded and formated from file: files/examples.csv
-    {'ChartGenerator': 0.862072, 'PaperWritingTeam': 1.19411, 'ResearchTeam': 2.427582, 'Search': 0.598059, 'WebScraper': 0.8930849999999999, '__start__': 32.196072, 'agent': 0.174531, 'supervisor': 0.48404899999999995, 'tools': 1.630645}
+    {'ChartGenerator': 0.608224, 'DocWriter': 2.0285469999999997, 'Search': 1.7249849999999998, 'WebScraper': 2.4464859999999997, '__start__': 0.603216, 'ag_supervisor': 0.10220199999999999, 'rg_supervisor': 23.0226, 'test_supervisor': 0.747701}
     """
 
     # Konwersja na string'a - bo get_case_duration przyjmuje tylko stringi
@@ -481,9 +481,9 @@ def print_sum_service_time_by_case_id(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_sum_service_time_by_case_id(event_log,15)
+    >>> print_sum_service_time_by_case_id(event_log,19)
     Event log loaded and formated from file: files/examples.csv
-    Sum service time of each activity for case ID 15 (in sec): {'ChartGenerator': 0.862072, 'PaperWritingTeam': 1.19411, 'ResearchTeam': 2.427582, 'Search': 0.598059, 'WebScraper': 0.8930849999999999, '__start__': 32.196072, 'agent': 0.174531, 'supervisor': 0.48404899999999995, 'tools': 1.630645}
+    Sum service time of each activity for case ID 19 (in sec): {'ChartGenerator': 0.608224, 'DocWriter': 2.0285469999999997, 'Search': 1.7249849999999998, 'WebScraper': 2.4464859999999997, '__start__': 0.603216, 'ag_supervisor': 0.10220199999999999, 'rg_supervisor': 23.0226, 'test_supervisor': 0.747701}
     """
     sum_time = get_sum_service_time_by_case_id(event_log, case_id)
     print(f"Sum service time of each activity for case ID {case_id} (in sec): {sum_time}")
@@ -505,9 +505,9 @@ def get_self_distance_witnesses_by_case_id(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_self_distance_witnesses_by_case_id(event_log,15))
+    >>> print(get_self_distance_witnesses_by_case_id(event_log,19))
     Event log loaded and formated from file: files/examples.csv
-    {'__start__': [['supervisor']], 'supervisor': [['ResearchTeam'], ['PaperWritingTeam'], ['__start__']], 'agent': [['tools']], 'ResearchTeam': [['supervisor', '__start__', 'supervisor']], 'PaperWritingTeam': [['supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor']], 'tools': [['agent', 'ChartGenerator', 'supervisor', '__start__', 'agent']], 'ChartGenerator': [['supervisor', '__start__', 'agent', 'tools', 'agent']]}
+    {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'ag_supervisor'], ['__start__', 'rg_supervisor']], 'rg_supervisor': [['Search'], ['WebScraper']], 'Search': [['rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'WebScraper': [['rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'ag_supervisor': [['DocWriter'], ['ChartGenerator']], 'DocWriter': [['ag_supervisor']]}
     """
     # Konwersja case_id do int dla spójności
     event_log['case_id'] = event_log['case_id'].astype(int)
@@ -572,9 +572,9 @@ def print_self_distance_witnesses_by_case_id(event_log, case_id):
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_self_distance_witnesses_by_case_id(event_log,15)
+    >>> print_self_distance_witnesses_by_case_id(event_log,19)
     Event log loaded and formated from file: files/examples.csv
-    Minimum self distance witnesses for case ID 15: {'__start__': [['supervisor']], 'supervisor': [['__start__'], ['ResearchTeam'], ['PaperWritingTeam']], 'agent': [['tools']], 'ResearchTeam': [['supervisor', '__start__', 'supervisor']], 'PaperWritingTeam': [['supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor']], 'tools': [['agent', 'ChartGenerator', 'supervisor', '__start__', 'agent']], 'ChartGenerator': [['supervisor', '__start__', 'agent', 'tools', 'agent']]}
+    Minimum self distance witnesses for case ID 19: {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'ag_supervisor'], ['__start__', 'rg_supervisor']], 'rg_supervisor': [['Search'], ['WebScraper']], 'Search': [['rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'WebScraper': [['rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'ag_supervisor': [['DocWriter'], ['ChartGenerator']], 'DocWriter': [['ag_supervisor']]}
     """
     witnesses = get_self_distance_witnesses_by_case_id(event_log, case_id)
     print(f"Minimum self distance witnesses for case ID {case_id}: {witnesses}")
@@ -595,40 +595,40 @@ def print_full_analysis_by_id(event_log, case_id):
 
         csv_output = "files/examples.csv"
         event_log = load_event_log(csv_output)
-        print_full_analysis_by_id(event_log,15)
+        print_full_analysis_by_id(event_log,19)
         # Event log loaded and formated from file: files/examples.csv
         #
         # ####################START###########################
         #
-        # Start activity for case ID 15: __start__
+        # Start activity for case ID 19: __start__
         #
-        # End activity for case ID 15: supervisor
+        # End activity for case ID 19: test_supervisor
         #
-        # Count of each activity for case ID 15: {'__start__': 10, 'supervisor': 15, 'agent': 6, 'Search': 1, 'WebScraper': 1, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'tools': 2, 'ChartGenerator': 2}
+        # Count of each activity for case ID 19: {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'ChartGenerator': 1, 'DocWriter': 4}
         #
-        # Activity sequence for case ID 15: ['__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor']
+        # Activity sequence for case ID 19: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']
         #
-        # Activity sequence with probability for case ID 15: Sequence: ['__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor'], Probability: 0.125
+        # Activity sequence with probability for case ID 19: Sequence: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']; Probability: 0.3333333333333333
         #
-        # Minimum self distances for case ID 15: {'ChartGenerator': 5, 'PaperWritingTeam': 15, 'ResearchTeam': 3, '__start__': 1, 'agent': 1, 'supervisor': 1, 'tools': 5}
+        # Minimum self distances for case ID 19: {'DocWriter': 1, 'Search': 6, 'WebScraper': 4, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
         #
-        # Minimum self distance witnesses for case ID 15: {'__start__': [['supervisor']], 'supervisor': [['PaperWritingTeam'], ['__start__'], ['ResearchTeam']], 'agent': [['tools']], 'ResearchTeam': [['supervisor', '__start__', 'supervisor']], 'PaperWritingTeam': [['supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor']], 'tools': [['agent', 'ChartGenerator', 'supervisor', '__start__', 'agent']], 'ChartGenerator': [['supervisor', '__start__', 'agent', 'tools', 'agent']]}
+        # Minimum self distance witnesses for case ID 19: {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'rg_supervisor'], ['__start__', 'ag_supervisor']], 'rg_supervisor': [['WebScraper'], ['Search']], 'Search': [['rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'WebScraper': [['rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'ag_supervisor': [['DocWriter'], ['ChartGenerator']], 'DocWriter': [['ag_supervisor']]}
         #
-        # Rework counts for case ID 15: {'__start__': 10, 'supervisor': 15, 'agent': 6, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'tools': 2, 'ChartGenerator': 2}
+        # Rework counts for case ID 19: {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'DocWriter': 4}
         #
-        # Sum service time of each activity for case ID 15 (in sec): {'ChartGenerator': 0.862072, 'PaperWritingTeam': 1.19411, 'ResearchTeam': 2.427582, 'Search': 0.598059, 'WebScraper': 0.8930849999999999, '__start__': 32.196072, 'agent': 0.174531, 'supervisor': 0.48404899999999995, 'tools': 1.630645}
+        # Sum service time of each activity for case ID 19 (in sec): {'ChartGenerator': 0.608224, 'DocWriter': 2.0285469999999997, 'Search': 1.7249849999999998, 'WebScraper': 2.4464859999999997, '__start__': 0.603216, 'ag_supervisor': 0.10220199999999999, 'rg_supervisor': 23.0226, 'test_supervisor': 0.747701}
         #
-        # Duration for case ID 15: 40.460205 s
+        # Duration for case ID 19: 120.730501 s
         #
         # ######################END###########################
     """
 
     print("\n####################START###########################\n")
 
-    print_start_activity(event_log, case_id)
+    print_start_activity_by_case_id(event_log, case_id)
     print()
 
-    print_end_activity(event_log, case_id)
+    print_end_activity_by_case_id(event_log, case_id)
     print()
 
     print_activities_count_by_case_id(event_log, case_id)

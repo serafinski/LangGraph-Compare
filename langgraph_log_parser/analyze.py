@@ -22,7 +22,7 @@ def get_all_start_activities(event_log):
     >>> event_log = load_event_log(csv_output)
     >>> print(get_all_start_activities(event_log))
     Event log loaded and formated from file: files/examples.csv
-    {'__start__': 8}
+    {'__start__': 3}
     """
     start_activities = pm4py.get_start_activities(event_log)
     return start_activities
@@ -42,7 +42,7 @@ def print_all_start_activities(event_log):
     >>> event_log = load_event_log(csv_output)
     >>> print_all_start_activities(event_log)
     Event log loaded and formated from file: files/examples.csv
-    Start activities: {'__start__': 8}
+    Start activities: {'__start__': 3}
     """
     start_activities = get_all_start_activities(event_log)
     print("Start activities:", start_activities)
@@ -64,7 +64,7 @@ def get_all_end_activities(event_log):
     >>> event_log = load_event_log(csv_output)
     >>> print(get_all_end_activities(event_log))
     Event log loaded and formated from file: files/examples.csv
-    {'chatbot_node': 2, 'supervisor': 3, 'call_tool': 1, 'chart_generator': 2}
+    {'test_supervisor': 3}
     """
     end_activities = pm4py.get_end_activities(event_log)
     return end_activities
@@ -84,7 +84,7 @@ def print_all_end_activities(event_log):
     >>> event_log = load_event_log(csv_output)
     >>> print_all_end_activities(event_log)
     Event log loaded and formated from file: files/examples.csv
-    End activities: {'chatbot_node': 2, 'supervisor': 3, 'call_tool': 1, 'chart_generator': 2}
+    End activities: {'test_supervisor': 3}
     """
     end_activities = get_all_end_activities(event_log)
     print("End activities:", end_activities)
@@ -106,7 +106,7 @@ def get_all_activities_count(event_log):
     >>> event_log = load_event_log(csv_output)
     >>> print(get_all_activities_count(event_log))
     Event log loaded and formated from file: files/examples.csv
-    {'__start__': 20, 'supervisor': 19, 'Researcher': 15, 'call_tool': 14, 'agent': 9, 'chart_generator': 6, 'tools': 4, 'chatbot_node': 3, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'ChartGenerator': 2, 'Coder': 1, 'Search': 1, 'WebScraper': 1}
+    {'__start__': 27, 'ag_supervisor': 27, 'test_supervisor': 27, 'rg_supervisor': 22, 'DocWriter': 8, 'Search': 5, 'WebScraper': 5, 'ChartGenerator': 3, 'NoteTaker': 3}
     """
     activities = pm4py.get_event_attribute_values(event_log, 'concept:name')
     return activities
@@ -126,7 +126,7 @@ def print_all_activities_count(event_log):
     >>> event_log = load_event_log(csv_output)
     >>> print_all_activities_count(event_log)
     Event log loaded and formated from file: files/examples.csv
-    Count of each activity: {'__start__': 20, 'supervisor': 19, 'Researcher': 15, 'call_tool': 14, 'agent': 9, 'chart_generator': 6, 'tools': 4, 'chatbot_node': 3, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'ChartGenerator': 2, 'Coder': 1, 'Search': 1, 'WebScraper': 1}
+    Count of each activity: {'__start__': 27, 'ag_supervisor': 27, 'test_supervisor': 27, 'rg_supervisor': 22, 'DocWriter': 8, 'Search': 5, 'WebScraper': 5, 'ChartGenerator': 3, 'NoteTaker': 3}
     """
     activities = get_all_activities_count(event_log)
     print("Count of each activity:", activities)
@@ -148,7 +148,7 @@ def get_all_sequences(event_log):
     >>> event_log = load_event_log(csv_output)
     >>> print(get_all_sequences(event_log))
     Event log loaded and formated from file: files/examples.csv
-    {1: ['__start__', 'chatbot_node'], 2: ['__start__', 'chatbot_node', 'tools', 'chatbot_node'], 4: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator', '__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool'], 5: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator'], 6: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator'], 9: ['__start__', 'supervisor', '__start__', 'agent', 'Researcher', 'supervisor'], 10: ['__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'Coder', 'supervisor'], 15: ['__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor']}
+    {18: ['__start__', 'ag_supervisor', 'test_supervisor'], 19: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor'], 20: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']}
     """
     # Tworzymy słownik, który będzie przechowywał sekwencje aktywności dla każdego case_id
     sequences_by_case = defaultdict(list)
@@ -180,14 +180,9 @@ def print_all_sequences(event_log):
     >>> print_all_sequences(event_log)
     Event log loaded and formated from file: files/examples.csv
     All sequences:
-    Case ID 1: ['__start__', 'chatbot_node']
-    Case ID 2: ['__start__', 'chatbot_node', 'tools', 'chatbot_node']
-    Case ID 4: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator', '__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool']
-    Case ID 5: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator']
-    Case ID 6: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator']
-    Case ID 9: ['__start__', 'supervisor', '__start__', 'agent', 'Researcher', 'supervisor']
-    Case ID 10: ['__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'Coder', 'supervisor']
-    Case ID 15: ['__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor']
+    Case ID 18: ['__start__', 'ag_supervisor', 'test_supervisor']
+    Case ID 19: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']
+    Case ID 20: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']
     """
     # Sekwencja dla każdego case_id
     sequences_by_case = get_all_sequences(event_log)
@@ -217,7 +212,7 @@ def get_all_sequences_with_probabilities(event_log):
     >>> event_log = load_event_log(csv_output)
     >>> print(get_all_sequences_with_probabilities(event_log))
     Event log loaded and formated from file: files/examples.csv
-    [(1, ('__start__', 'chatbot_node'), 0.125), (2, ('__start__', 'chatbot_node', 'tools', 'chatbot_node'), 0.125), (4, ('__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator', '__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool'), 0.125), (5, ('__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator'), 0.125), (6, ('__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator'), 0.125), (9, ('__start__', 'supervisor', '__start__', 'agent', 'Researcher', 'supervisor'), 0.125), (10, ('__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'Coder', 'supervisor'), 0.125), (15, ('__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor'), 0.125)]
+    [(18, ('__start__', 'ag_supervisor', 'test_supervisor'), 0.3333333333333333), (19, ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor'), 0.3333333333333333), (20, ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor'), 0.3333333333333333)]
     """
     sequences_by_case = get_all_sequences(event_log)
 
@@ -251,14 +246,9 @@ def print_all_sequences_with_probabilities(event_log):
     >>> print_all_sequences_with_probabilities(event_log)
     Event log loaded and formated from file: files/examples.csv
     ID of last sequence occurrence with probability of occurrence:
-    Case ID 1: ('__start__', 'chatbot_node'), 0.125
-    Case ID 2: ('__start__', 'chatbot_node', 'tools', 'chatbot_node'), 0.125
-    Case ID 4: ('__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator', '__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool'), 0.125
-    Case ID 5: ('__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator'), 0.125
-    Case ID 6: ('__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator'), 0.125
-    Case ID 9: ('__start__', 'supervisor', '__start__', 'agent', 'Researcher', 'supervisor'), 0.125
-    Case ID 10: ('__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'Coder', 'supervisor'), 0.125
-    Case ID 15: ('__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor'), 0.125
+    Case ID 18: ('__start__', 'ag_supervisor', 'test_supervisor'), 0.3333333333333333
+    Case ID 19: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor'), 0.3333333333333333
+    Case ID 20: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor'), 0.3333333333333333
     """
     sequences_with_probabilities = get_all_sequences_with_probabilities(event_log)
 
@@ -283,7 +273,7 @@ def get_all_minimum_self_distances(event_log):
     >>> event_log = load_event_log(csv_output)
     >>> print(get_all_minimum_self_distances(event_log))
     Event log loaded and formated from file: files/examples.csv
-    {'1': {}, '2': {'chatbot_node': 1}, '4': {'Researcher': 1, '__start__': 6, 'call_tool': 1, 'chart_generator': 1}, '5': {'Researcher': 1, 'call_tool': 1, 'chart_generator': 1}, '6': {'Researcher': 1, 'call_tool': 2, 'chart_generator': 1}, '9': {'__start__': 1, 'supervisor': 3}, '10': {'__start__': 1, 'agent': 1, 'supervisor': 5}, '15': {'ChartGenerator': 5, 'PaperWritingTeam': 15, 'ResearchTeam': 3, '__start__': 1, 'agent': 1, 'supervisor': 1, 'tools': 5}}
+    {'18': {}, '19': {'DocWriter': 1, 'Search': 6, 'WebScraper': 4, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}, '20': {'ChartGenerator': 1, 'DocWriter': 3, 'NoteTaker': 3, 'Search': 36, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}}
     """
     unique_case_ids = event_log['case:concept:name'].unique()
     sorted_case_ids = np.sort(unique_case_ids.astype(int)).astype(str)
@@ -323,14 +313,9 @@ def print_all_minimum_self_distances(event_log):
     >>> print_all_minimum_self_distances(event_log)
     Event log loaded and formated from file: files/examples.csv
     Minimal self-distances for every activity:
-    Case ID 1: {}
-    Case ID 2: {'chatbot_node': 1}
-    Case ID 4: {'Researcher': 1, '__start__': 6, 'call_tool': 1, 'chart_generator': 1}
-    Case ID 5: {'Researcher': 1, 'call_tool': 1, 'chart_generator': 1}
-    Case ID 6: {'Researcher': 1, 'call_tool': 2, 'chart_generator': 1}
-    Case ID 9: {'__start__': 1, 'supervisor': 3}
-    Case ID 10: {'__start__': 1, 'agent': 1, 'supervisor': 5}
-    Case ID 15: {'ChartGenerator': 5, 'PaperWritingTeam': 15, 'ResearchTeam': 3, '__start__': 1, 'agent': 1, 'supervisor': 1, 'tools': 5}
+    Case ID 18: {}
+    Case ID 19: {'DocWriter': 1, 'Search': 6, 'WebScraper': 4, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
+    Case ID 20: {'ChartGenerator': 1, 'DocWriter': 3, 'NoteTaker': 3, 'Search': 36, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
     """
     min_self_distances = get_all_minimum_self_distances(event_log)
 
@@ -355,7 +340,7 @@ def get_all_rework_counts(event_log):
     >>> event_log = load_event_log(csv_output)
     >>> print(get_all_rework_counts(event_log))
     Event log loaded and formated from file: files/examples.csv
-    {'1': {}, '2': {'chatbot_node': 2}, '4': {'__start__': 2, 'Researcher': 9, 'call_tool': 9, 'chart_generator': 2}, '5': {'Researcher': 3, 'call_tool': 3, 'chart_generator': 2}, '6': {'Researcher': 2, 'call_tool': 2, 'chart_generator': 2}, '9': {'__start__': 2, 'supervisor': 2}, '10': {'__start__': 2, 'supervisor': 2, 'agent': 2}, '15': {'__start__': 10, 'supervisor': 15, 'agent': 6, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'tools': 2, 'ChartGenerator': 2}}
+    {'18': {}, '19': {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'DocWriter': 4}, '20': {'__start__': 8, 'test_supervisor': 8, 'rg_supervisor': 7, 'Search': 2, 'ag_supervisor': 12, 'ChartGenerator': 2, 'DocWriter': 4, 'NoteTaker': 3}}
     """
     rework_counts_by_case = {}
     unique_case_ids = event_log['case:concept:name'].unique()
@@ -396,14 +381,9 @@ def print_all_rework_counts(event_log):
     >>> print_all_rework_counts(event_log)
     Event log loaded and formated from file: files/examples.csv
     Count of activity rework:
-    Case ID 1: {}
-    Case ID 2: {'chatbot_node': 2}
-    Case ID 4: {'__start__': 2, 'Researcher': 9, 'call_tool': 9, 'chart_generator': 2}
-    Case ID 5: {'Researcher': 3, 'call_tool': 3, 'chart_generator': 2}
-    Case ID 6: {'Researcher': 2, 'call_tool': 2, 'chart_generator': 2}
-    Case ID 9: {'__start__': 2, 'supervisor': 2}
-    Case ID 10: {'__start__': 2, 'supervisor': 2, 'agent': 2}
-    Case ID 15: {'__start__': 10, 'supervisor': 15, 'agent': 6, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'tools': 2, 'ChartGenerator': 2}
+    Case ID 18: {}
+    Case ID 19: {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'DocWriter': 4}
+    Case ID 20: {'__start__': 8, 'test_supervisor': 8, 'rg_supervisor': 7, 'Search': 2, 'ag_supervisor': 12, 'ChartGenerator': 2, 'DocWriter': 4, 'NoteTaker': 3}
     """
     rework_counts_by_case = get_all_rework_counts(event_log)
 
@@ -428,7 +408,7 @@ def get_all_activities_mean_service_time(event_log):
     >>> event_log = load_event_log(csv_output)
     >>> print(get_all_activities_mean_service_time(event_log))
     Event log loaded and formated from file: files/examples.csv
-    {'ChartGenerator': 0.431036, 'Coder': 0.618058, 'PaperWritingTeam': 0.597055, 'ResearchTeam': 0.8091940000000001, 'Researcher': 3.5640768, 'Search': 0.598059, 'WebScraper': 0.8930849999999999, '__start__': 2.3303979999999997, 'agent': 0.030281333333333334, 'call_tool': 7.828810357142857, 'chart_generator': 56.312364, 'chatbot_node': 0.8704093333333334, 'supervisor': 0.03221426315789473, 'tools': 1.068717}
+    {'ChartGenerator': 0.587241, 'DocWriter': 1.0209089999999998, 'NoteTaker': 0.5753873333333334, 'Search': 0.580575, 'WebScraper': 0.6020846, '__start__': 0.0411957037037037, 'ag_supervisor': 0.007210296296296296, 'rg_supervisor': 1.8212668636363636, 'test_supervisor': 0.04827048148148148}
     """
     mean_serv_time = pm4py.get_service_time(
         event_log, start_timestamp_key='timestamp', timestamp_key='end_timestamp', aggregation_measure='mean'
@@ -450,7 +430,7 @@ def print_all_activities_mean_service_time(event_log):
     >>> event_log = load_event_log(csv_output)
     >>> print_all_activities_mean_service_time(event_log)
     Event log loaded and formated from file: files/examples.csv
-    Mean duration of every activity (in sec): {'ChartGenerator': 0.431036, 'Coder': 0.618058, 'PaperWritingTeam': 0.597055, 'ResearchTeam': 0.8091940000000001, 'Researcher': 3.5640768, 'Search': 0.598059, 'WebScraper': 0.8930849999999999, '__start__': 2.3303979999999997, 'agent': 0.030281333333333334, 'call_tool': 7.828810357142857, 'chart_generator': 56.312364, 'chatbot_node': 0.8704093333333334, 'supervisor': 0.03221426315789473, 'tools': 1.068717}
+    Mean duration of every activity (in sec): {'ChartGenerator': 0.587241, 'DocWriter': 1.0209089999999998, 'NoteTaker': 0.5753873333333334, 'Search': 0.580575, 'WebScraper': 0.6020846, '__start__': 0.0411957037037037, 'ag_supervisor': 0.007210296296296296, 'rg_supervisor': 1.8212668636363636, 'test_supervisor': 0.04827048148148148}
     """
     mean_serv_time = get_all_activities_mean_service_time(event_log)
     print("Mean duration of every activity (in sec):", mean_serv_time)
@@ -472,7 +452,7 @@ def get_all_cases_durations(event_log):
     >>> event_log = load_event_log(csv_output)
     >>> print(get_all_cases_durations(event_log))
     Event log loaded and formated from file: files/examples.csv
-    {'1': 0.7335699999999999, '2': 5.178459, '4': 471.634856, '5': 18.039546, '6': 15.052201, '9': 7.484676, '10': 3.326793, '15': 40.460205}
+    {'18': 4.580137, '19': 120.730501, '20': 74.653202}
     """
     # Pobranie unikalnych identyfikatorów przypadków (case_id)
     unique_case_ids = event_log['case:concept:name'].unique()
@@ -501,14 +481,9 @@ def print_all_cases_durations(event_log):
     >>> print_all_cases_durations(event_log)
     Event log loaded and formated from file: files/examples.csv
     Duration of the case:
-    Case ID 1: 0.7335699999999999 s
-    Case ID 2: 5.178459 s
-    Case ID 4: 471.634856 s
-    Case ID 5: 18.039546 s
-    Case ID 6: 15.052201 s
-    Case ID 9: 7.484676 s
-    Case ID 10: 3.326793 s
-    Case ID 15: 40.460205 s
+    Case ID 18: 4.580137 s
+    Case ID 19: 120.730501 s
+    Case ID 20: 74.653202 s
     """
     case_durations = get_all_cases_durations(event_log)
     print("Duration of the case:")
@@ -533,7 +508,7 @@ def get_all_self_distance_witnesses(event_log):
     >>> event_log = load_event_log(csv_output)
     >>> print(get_all_self_distance_witnesses(event_log))
     Event log loaded and formated from file: files/examples.csv
-    {1: {}, 2: {'chatbot_node': [['tools']]}, 4: {'__start__': [['Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator']], 'Researcher': [['call_tool']], 'call_tool': [['Researcher']], 'chart_generator': [['call_tool']]}, 5: {'Researcher': [['call_tool']], 'call_tool': [['Researcher']], 'chart_generator': [['call_tool']]}, 6: {'Researcher': [['call_tool']], 'call_tool': [['Researcher', 'chart_generator']], 'chart_generator': [['call_tool']]}, 9: {'__start__': [['supervisor']], 'supervisor': [['__start__', 'agent', 'Researcher']]}, 10: {'__start__': [['supervisor']], 'supervisor': [['__start__', 'agent', 'tools', 'agent', 'Coder']], 'agent': [['tools']]}, 15: {'__start__': [['supervisor']], 'supervisor': [['__start__'], ['PaperWritingTeam'], ['ResearchTeam']], 'agent': [['tools']], 'ResearchTeam': [['supervisor', '__start__', 'supervisor']], 'PaperWritingTeam': [['supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor']], 'tools': [['agent', 'ChartGenerator', 'supervisor', '__start__', 'agent']], 'ChartGenerator': [['supervisor', '__start__', 'agent', 'tools', 'agent']]}}
+    {18: {}, 19: {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'rg_supervisor'], ['__start__', 'ag_supervisor']], 'rg_supervisor': [['Search'], ['WebScraper']], 'Search': [['rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'WebScraper': [['rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'ag_supervisor': [['DocWriter'], ['ChartGenerator']], 'DocWriter': [['ag_supervisor']]}, 20: {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'rg_supervisor']], 'rg_supervisor': [['Search'], ['WebScraper']], 'Search': [['rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'ag_supervisor': [['DocWriter'], ['ChartGenerator'], ['NoteTaker']], 'ChartGenerator': [['ag_supervisor']], 'DocWriter': [['ag_supervisor', 'NoteTaker', 'ag_supervisor']], 'NoteTaker': [['ag_supervisor', 'DocWriter', 'ag_supervisor']]}}
     """
     # Konwersja case_id do int'a
     event_log['case_id'] = event_log['case_id'].astype(int)
@@ -608,14 +583,9 @@ def print_all_self_distance_witnesses(event_log):
     >>> print_all_self_distance_witnesses(event_log)
     Event log loaded and formated from file: files/examples.csv
     Witnesses of minimum self-distances:
-    Case ID 1: {}
-    Case ID 2: {'chatbot_node': [['tools']]}
-    Case ID 4: {'__start__': [['Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator']], 'Researcher': [['call_tool']], 'call_tool': [['Researcher']], 'chart_generator': [['call_tool']]}
-    Case ID 5: {'Researcher': [['call_tool']], 'call_tool': [['Researcher']], 'chart_generator': [['call_tool']]}
-    Case ID 6: {'Researcher': [['call_tool']], 'call_tool': [['Researcher', 'chart_generator']], 'chart_generator': [['call_tool']]}
-    Case ID 9: {'__start__': [['supervisor']], 'supervisor': [['__start__', 'agent', 'Researcher']]}
-    Case ID 10: {'__start__': [['supervisor']], 'supervisor': [['__start__', 'agent', 'tools', 'agent', 'Coder']], 'agent': [['tools']]}
-    Case ID 15: {'__start__': [['supervisor']], 'supervisor': [['__start__'], ['ResearchTeam'], ['PaperWritingTeam']], 'agent': [['tools']], 'ResearchTeam': [['supervisor', '__start__', 'supervisor']], 'PaperWritingTeam': [['supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor']], 'tools': [['agent', 'ChartGenerator', 'supervisor', '__start__', 'agent']], 'ChartGenerator': [['supervisor', '__start__', 'agent', 'tools', 'agent']]}
+    Case ID 18: {}
+    Case ID 19: {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'rg_supervisor'], ['__start__', 'ag_supervisor']], 'rg_supervisor': [['Search'], ['WebScraper']], 'Search': [['rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'WebScraper': [['rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'ag_supervisor': [['DocWriter'], ['ChartGenerator']], 'DocWriter': [['ag_supervisor']]}
+    Case ID 20: {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'rg_supervisor']], 'rg_supervisor': [['Search'], ['WebScraper']], 'Search': [['rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'ag_supervisor': [['DocWriter'], ['ChartGenerator'], ['NoteTaker']], 'ChartGenerator': [['ag_supervisor']], 'DocWriter': [['ag_supervisor', 'NoteTaker', 'ag_supervisor']], 'NoteTaker': [['ag_supervisor', 'DocWriter', 'ag_supervisor']]}
     """
     all_msd_witnesses = get_all_self_distance_witnesses(event_log)
 
@@ -641,75 +611,45 @@ def print_full_analysis(event_log):
         print_all_self_distance_witnesses(event_log)
         # Event log loaded and formated from file: files/examples.csv
         #
-        # ####################START###########################
+        # ###################START###########################
         #
-        # Start activities: {'__start__': 8}
+        # Start activities: {'__start__': 3}
         #
-        # End activities: {'chatbot_node': 2, 'supervisor': 3, 'call_tool': 1, 'chart_generator': 2}
+        # End activities: {'test_supervisor': 3}
         #
-        # Count of each activity: {'__start__': 20, 'supervisor': 19, 'Researcher': 15, 'call_tool': 14, 'agent': 9, 'chart_generator': 6, 'tools': 4, 'chatbot_node': 3, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'ChartGenerator': 2, 'Coder': 1, 'Search': 1, 'WebScraper': 1}
+        # Count of each activity: {'__start__': 27, 'ag_supervisor': 27, 'test_supervisor': 27, 'rg_supervisor': 22, 'DocWriter': 8, 'Search': 5, 'WebScraper': 5, 'ChartGenerator': 3, 'NoteTaker': 3}
         #
         # All sequences:
-        # Case ID 1: ['__start__', 'chatbot_node']
-        # Case ID 2: ['__start__', 'chatbot_node', 'tools', 'chatbot_node']
-        # Case ID 4: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator', '__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool']
-        # Case ID 5: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator']
-        # Case ID 6: ['__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator']
-        # Case ID 9: ['__start__', 'supervisor', '__start__', 'agent', 'Researcher', 'supervisor']
-        # Case ID 10: ['__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'Coder', 'supervisor']
-        # Case ID 15: ['__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor']
+        # Case ID 18: ['__start__', 'ag_supervisor', 'test_supervisor']
+        # Case ID 19: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']
+        # Case ID 20: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']
         #
         # ID of last sequence occurrence with probability of occurrence:
-        # Case ID 1: ('__start__', 'chatbot_node'), 0.125
-        # Case ID 2: ('__start__', 'chatbot_node', 'tools', 'chatbot_node'), 0.125
-        # Case ID 4: ('__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator', '__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'call_tool'), 0.125
-        # Case ID 5: ('__start__', 'Researcher', 'call_tool', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator'), 0.125
-        # Case ID 6: ('__start__', 'Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator'), 0.125
-        # Case ID 9: ('__start__', 'supervisor', '__start__', 'agent', 'Researcher', 'supervisor'), 0.125
-        # Case ID 10: ('__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'Coder', 'supervisor'), 0.125
-        # Case ID 15: ('__start__', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'Search', 'supervisor', '__start__', 'agent', 'WebScraper', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', 'PaperWritingTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor', '__start__', 'supervisor', 'ResearchTeam', 'supervisor'), 0.125
+        # Case ID 18: ('__start__', 'ag_supervisor', 'test_supervisor'), 0.3333333333333333
+        # Case ID 19: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor'), 0.3333333333333333
+        # Case ID 20: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor'), 0.3333333333333333
         #
         # Minimal self-distances for every activity:
-        # Case ID 1: {}
-        # Case ID 2: {'chatbot_node': 1}
-        # Case ID 4: {'Researcher': 1, '__start__': 6, 'call_tool': 1, 'chart_generator': 1}
-        # Case ID 5: {'Researcher': 1, 'call_tool': 1, 'chart_generator': 1}
-        # Case ID 6: {'Researcher': 1, 'call_tool': 2, 'chart_generator': 1}
-        # Case ID 9: {'__start__': 1, 'supervisor': 3}
-        # Case ID 10: {'__start__': 1, 'agent': 1, 'supervisor': 5}
-        # Case ID 15: {'ChartGenerator': 5, 'PaperWritingTeam': 15, 'ResearchTeam': 3, '__start__': 1, 'agent': 1, 'supervisor': 1, 'tools': 5}
+        # Case ID 18: {}
+        # Case ID 19: {'DocWriter': 1, 'Search': 6, 'WebScraper': 4, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
+        # Case ID 20: {'ChartGenerator': 1, 'DocWriter': 3, 'NoteTaker': 3, 'Search': 36, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
         #
         # Witnesses of minimum self-distances:
-        # Case ID 1: {}
-        # Case ID 2: {'chatbot_node': [['tools']]}
-        # Case ID 4: {'__start__': [['Researcher', 'call_tool', 'Researcher', 'chart_generator', 'call_tool', 'chart_generator']], 'Researcher': [['call_tool']], 'call_tool': [['Researcher']], 'chart_generator': [['call_tool']]}
-        # Case ID 5: {'Researcher': [['call_tool']], 'call_tool': [['Researcher']], 'chart_generator': [['call_tool']]}
-        # Case ID 6: {'Researcher': [['call_tool']], 'call_tool': [['Researcher', 'chart_generator']], 'chart_generator': [['call_tool']]}
-        # Case ID 9: {'__start__': [['supervisor']], 'supervisor': [['__start__', 'agent', 'Researcher']]}
-        # Case ID 10: {'__start__': [['supervisor']], 'supervisor': [['__start__', 'agent', 'tools', 'agent', 'Coder']], 'agent': [['tools']]}
-        # Case ID 15: {'__start__': [['supervisor']], 'supervisor': [['__start__'], ['ResearchTeam'], ['PaperWritingTeam']], 'agent': [['tools']], 'ResearchTeam': [['supervisor', '__start__', 'supervisor']], 'PaperWritingTeam': [['supervisor', '__start__', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor', '__start__', 'agent', 'tools', 'agent', 'ChartGenerator', 'supervisor']], 'tools': [['agent', 'ChartGenerator', 'supervisor', '__start__', 'agent']], 'ChartGenerator': [['supervisor', '__start__', 'agent', 'tools', 'agent']]}
+        # Case ID 18: {}
+        # Case ID 19: {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'ag_supervisor'], ['__start__', 'rg_supervisor']], 'rg_supervisor': [['Search'], ['WebScraper']], 'Search': [['rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'WebScraper': [['rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'ag_supervisor': [['DocWriter'], ['ChartGenerator']], 'DocWriter': [['ag_supervisor']]}
+        # Case ID 20: {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'rg_supervisor']], 'rg_supervisor': [['Search'], ['WebScraper']], 'Search': [['rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'ag_supervisor': [['DocWriter'], ['NoteTaker'], ['ChartGenerator']], 'ChartGenerator': [['ag_supervisor']], 'DocWriter': [['ag_supervisor', 'NoteTaker', 'ag_supervisor']], 'NoteTaker': [['ag_supervisor', 'DocWriter', 'ag_supervisor']]}
         #
         # Count of activity rework:
-        # Case ID 1: {}
-        # Case ID 2: {'chatbot_node': 2}
-        # Case ID 4: {'__start__': 2, 'Researcher': 9, 'call_tool': 9, 'chart_generator': 2}
-        # Case ID 5: {'Researcher': 3, 'call_tool': 3, 'chart_generator': 2}
-        # Case ID 6: {'Researcher': 2, 'call_tool': 2, 'chart_generator': 2}
-        # Case ID 9: {'__start__': 2, 'supervisor': 2}
-        # Case ID 10: {'__start__': 2, 'supervisor': 2, 'agent': 2}
-        # Case ID 15: {'__start__': 10, 'supervisor': 15, 'agent': 6, 'ResearchTeam': 3, 'PaperWritingTeam': 2, 'tools': 2, 'ChartGenerator': 2}
+        # Case ID 18: {}
+        # Case ID 19: {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'DocWriter': 4}
+        # Case ID 20: {'__start__': 8, 'test_supervisor': 8, 'rg_supervisor': 7, 'Search': 2, 'ag_supervisor': 12, 'ChartGenerator': 2, 'DocWriter': 4, 'NoteTaker': 3}
         #
-        # Mean duration of every activity (in sec): {'ChartGenerator': 0.431036, 'Coder': 0.618058, 'PaperWritingTeam': 0.597055, 'ResearchTeam': 0.8091940000000001, 'Researcher': 3.5640768, 'Search': 0.598059, 'WebScraper': 0.8930849999999999, '__start__': 2.3303979999999997, 'agent': 0.030281333333333334, 'call_tool': 7.828810357142857, 'chart_generator': 56.312364, 'chatbot_node': 0.8704093333333334, 'supervisor': 0.03221426315789473, 'tools': 1.068717}
+        # Mean duration of every activity (in sec): {'ChartGenerator': 0.587241, 'DocWriter': 1.0209089999999998, 'NoteTaker': 0.5753873333333334, 'Search': 0.580575, 'WebScraper': 0.6020846, '__start__': 0.0411957037037037, 'ag_supervisor': 0.007210296296296296, 'rg_supervisor': 1.8212668636363636, 'test_supervisor': 0.04827048148148148}
         #
         # Duration of the case:
-        # Case ID 1: 0.7335699999999999 s
-        # Case ID 2: 5.178459 s
-        # Case ID 4: 471.634856 s
-        # Case ID 5: 18.039546 s
-        # Case ID 6: 15.052201 s
-        # Case ID 9: 7.484676 s
-        # Case ID 10: 3.326793 s
-        # Case ID 15: 40.460205 s
+        # Case ID 18: 4.580137 s
+        # Case ID 19: 120.730501 s
+        # Case ID 20: 74.653202 s
         #
         # ######################END###########################
     """
