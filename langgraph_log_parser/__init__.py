@@ -1,6 +1,7 @@
 __all__ = [
     # Modules
-    "load_events", "analyze", "analyze_case_id", "graph_runner", "jsons_to_csv", "sql_to_jsons", "visualize", "create_structure",
+    "load_events", "analyze", "analyze_case_id", "graph_runner", "jsons_to_csv", "sql_to_jsons", "visualize",
+    "create_experiment",
 
     # Functions - load_csv
     "load_event_log",
@@ -43,10 +44,10 @@ __all__ = [
     # Functions - visualize
     "generate_prefix_tree", "generate_performance_dfg",
 
-    # Functions - create_folder_structure
-    "create_folder_structure",
+    # Functions - initialize_experiment
+    "initialize_experiment",
 
-    #Classes
+    #Classes - jsons_to_csv
     "SubgraphConfig", "SupervisorConfig", "GraphConfig"
 ]
 
@@ -57,7 +58,7 @@ from . import graph_runner
 from . import jsons_to_csv
 from . import sql_to_jsons
 from . import visualize
-from . import create_structure
+from . import create_experiment
 
 
 from .load_events import *
@@ -67,4 +68,4 @@ from .graph_runner import *
 from .jsons_to_csv import *
 from .sql_to_jsons import *
 from .visualize import *
-from .create_structure import *
+from .create_experiment import *

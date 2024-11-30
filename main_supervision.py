@@ -21,15 +21,12 @@ from langgraph.prebuilt import create_react_agent
 
 from langgraph_log_parser import *
 
-create_folder_structure("files/supervision")
-
-database = "files/supervision/db/supervision.sqlite"
-
+exp = initialize_experiment("supervision")
 
 # Inicjalizacja .env
 load_dotenv()
 
-conn = sqlite3.connect(database, check_same_thread=False)
+conn = sqlite3.connect(exp.database, check_same_thread=False)
 memory = SqliteSaver(conn)
 
 #####
@@ -153,7 +150,7 @@ user_input = {
 
 run_graph_iterations(
     graph=graph,
-    starting_thread_id=12,
+    starting_thread_id=1,
     num_repetitions=3,
     user_input_template=user_input,
     recursion_limit=100
@@ -178,16 +175,13 @@ user_input = {
 
 run_graph_iterations(
     graph=graph,
-    starting_thread_id=15,
+    starting_thread_id=4,
     num_repetitions=3,
     user_input_template=user_input,
     recursion_limit=100
 )
 
-output = "files/supervision/json"
-csv_output = "files/supervision/csv_output.csv"
-
-export_sqlite_to_jsons(database, output)
+export_sqlite_to_jsons(exp.database, exp.json_dir)
 
 supervisor = SupervisorConfig(
     name="supervisor",
@@ -199,10 +193,11 @@ graph_config = GraphConfig(
     nodes=["Researcher", "Coder"]
 )
 
-export_jsons_to_csv(output, csv_output, graph_config)
+export_jsons_to_csv(exp.json_dir, exp.get_csv_path(), graph_config)
 
 # ANALIZA
 print()
-event_log = load_event_log(csv_output)
+event_log = load_event_log(exp.get_csv_path())
 print_full_analysis(event_log)
-generate_prefix_tree(event_log, 'files/supervision/img/tree.png')
+generate_prefix_tree(event_log, exp.get_img_path())
+generate_performance_dfg(event_log, exp.get_img_path())

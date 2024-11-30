@@ -13,14 +13,12 @@ from langgraph.prebuilt import ToolNode, tools_condition
 
 from langgraph_log_parser import *
 
-create_folder_structure("files/tavily")
-
-database = "files/tavily/db/tavily.sqlite"
+exp = initialize_experiment("tavily")
 
 # Inicjalizacja .env
 load_dotenv()
 
-conn = sqlite3.connect(database, check_same_thread=False)
+conn = sqlite3.connect(exp.database, check_same_thread=False)
 memory = SqliteSaver(conn)
 
 class State(TypedDict):
@@ -67,21 +65,19 @@ graph = graph_builder.compile(checkpointer=memory)
 
 user_input = {"messages": [("user", "Tell me about PJATK in Warsaw")]}
 
-run_graph_iterations(graph, 6, 3, user_input)
+run_graph_iterations(graph, 1, 3, user_input)
 
-output = "files/tavily/json"
-csv_output = "files/tavily/csv_output.csv"
-
-export_sqlite_to_jsons(database, output)
+export_sqlite_to_jsons(exp.database, exp.json_dir)
 
 graph_config = GraphConfig(
     nodes=["chatbot_node", "tools"]
 )
 
-export_jsons_to_csv(output, csv_output, graph_config)
+export_jsons_to_csv(exp.json_dir, exp.get_csv_path(), graph_config)
 
 # ANALIZA
 print()
-event_log = load_event_log(csv_output)
+event_log = load_event_log(exp.get_csv_path())
 print_full_analysis(event_log)
-generate_prefix_tree(event_log, 'files/tavily/img/tree.png')
+generate_prefix_tree(event_log, exp.get_img_path())
+generate_performance_dfg(event_log, exp.get_img_path())

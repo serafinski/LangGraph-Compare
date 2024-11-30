@@ -1,25 +1,31 @@
 import os
 import pandas as pd
 import pm4py
+from typing import Optional
 
 
-def generate_prefix_tree(event_log: pd.DataFrame, output_path: str = 'tree.png') -> None:
+def generate_prefix_tree(event_log: pd.DataFrame, output_path: Optional[str] = None) -> None:
     """
     Generate and save a prefix tree visualization.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
-    :param output_path: Path to save the prefix tree visualization.
-    :type output_path: str
+    :param output_path: Path to save the prefix tree visualization, defaults to 'tree.png'
+    :type output_path: Optional[str]
 
     **Example:**
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> generate_prefix_tree(event_log, 'files/tree.png')
+    >>> generate_prefix_tree(event_log)  # Will use default 'tree.png'
     Event log loaded and formated from file: files/examples.csv
-    Prefix Tree saved as: test.png
+    Prefix Tree saved as: tree.png
     """
+
+    # Use the provided path or construct default
+    if output_path is None or os.path.isdir(output_path):
+        base_path = output_path or '.'
+        output_path = os.path.join(base_path, 'tree.png')
 
     # Jeżeli użytkownik nie podał ścieżki
     output_dir = os.path.dirname(output_path)
@@ -36,7 +42,7 @@ def generate_prefix_tree(event_log: pd.DataFrame, output_path: str = 'tree.png')
     print("Prefix Tree saved as:", output_path)
 
 
-def generate_performance_dfg(event_log: pd.DataFrame, output_path: str = 'dfg_performance.png') -> None:
+def generate_performance_dfg(event_log: pd.DataFrame, output_path: Optional[str] = None) -> None:
     """
     Generate and save a visualization of directly-follows graph annotated with performance.
 
@@ -49,10 +55,14 @@ def generate_performance_dfg(event_log: pd.DataFrame, output_path: str = 'dfg_pe
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> generate_performance_dfg(event_log, 'dfg_performance.png')
+    >>> generate_performance_dfg(event_log)  # Will use default 'dfg_performance.png'
     Event log loaded and formated from file: files/examples.csv
     Performance DFG saved as: dfg_performance.png
     """
+
+    if output_path is None or os.path.isdir(output_path):
+        base_path = output_path or '.'
+        output_path = os.path.join(base_path, 'dfg_performance.png')
 
     # Jeżeli użytkownik nie podał ścieżki
     output_dir = os.path.dirname(output_path)

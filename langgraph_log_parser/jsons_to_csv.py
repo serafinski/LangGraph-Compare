@@ -50,11 +50,11 @@ class GraphConfig:
     :type nodes: Optional[List[str]]
     """
     # Optional graph-level supervisors
-    supervisors: Optional[List[SupervisorConfig]]
+    supervisors: Optional[List[SupervisorConfig]] = None
     # Optional subgraphs
-    subgraphs: Optional[List[SubgraphConfig]]
+    subgraphs: Optional[List[SubgraphConfig]] = None
     # Optional nodes list for non-subgraph mode
-    nodes: Optional[List[str]]
+    nodes: Optional[List[str]] = None
 
 
 def _build_config_mappings(graph_config: GraphConfig) -> Dict[str, Any]:

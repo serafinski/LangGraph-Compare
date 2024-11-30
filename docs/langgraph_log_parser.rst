@@ -25,10 +25,10 @@ langgraph\_log\_parser.analyze\_case\_id
    :undoc-members:
    :show-inheritance:
 
-langgraph\_log\_parser.create\_structure
+langgraph\_log\_parser.create\_experiment
 -----------------------------------------------
 
-.. automodule:: langgraph_log_parser.create_structure
+.. automodule:: langgraph_log_parser.create_experiment
    :members:
    :undoc-members:
    :show-inheritance:
