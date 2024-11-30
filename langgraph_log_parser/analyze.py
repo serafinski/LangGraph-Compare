@@ -7,7 +7,7 @@ pd.set_option('display.max_columns', None)
 
 
 #2
-def get_all_start_activities(event_log):
+def get_all_start_activities(event_log: pd.DataFrame) -> dict[str, int]:
     """
     Get the start activities of the event log.
 
@@ -29,7 +29,7 @@ def get_all_start_activities(event_log):
 
 
 #3
-def print_all_start_activities(event_log):
+def print_all_start_activities(event_log: pd.DataFrame) -> None:
     """
     Print the start activities of the event log.
 
@@ -49,7 +49,7 @@ def print_all_start_activities(event_log):
 
 
 #4
-def get_all_end_activities(event_log):
+def get_all_end_activities(event_log: pd.DataFrame) -> dict[str, int]:
     """
     Get the end activities of the event log.
 
@@ -71,7 +71,7 @@ def get_all_end_activities(event_log):
 
 
 #5
-def print_all_end_activities(event_log):
+def print_all_end_activities(event_log: pd.DataFrame) -> None:
     """
     Print the end activities of the event log.
 
@@ -91,7 +91,7 @@ def print_all_end_activities(event_log):
 
 
 #6
-def get_all_activities_count(event_log):
+def get_all_activities_count(event_log: pd.DataFrame) -> dict[str, int]:
     """
     Get the counts of every activity in the event log.
 
@@ -113,7 +113,7 @@ def get_all_activities_count(event_log):
 
 
 #7
-def print_all_activities_count(event_log):
+def print_all_activities_count(event_log: pd.DataFrame) -> None:
     """
     Print the counts of every activity in the event log.
 
@@ -133,7 +133,7 @@ def print_all_activities_count(event_log):
 
 
 #8
-def get_all_sequences(event_log):
+def get_all_sequences(event_log: pd.DataFrame) -> dict[int, list[str]]:
     """
     Return activity sequences for every case ID.
 
@@ -166,7 +166,7 @@ def get_all_sequences(event_log):
 
 
 #9
-def print_all_sequences(event_log):
+def print_all_sequences(event_log: pd.DataFrame) -> None:
     """
     Print sequences for every case ID in the event log, sorted numerically by case ID.
 
@@ -196,7 +196,7 @@ def print_all_sequences(event_log):
 
 
 #10
-def get_all_sequences_with_probabilities(event_log):
+def get_all_sequences_with_probabilities(event_log: pd.DataFrame) -> list[tuple[int, tuple[str, ...], float]]:
     """
     Return sequences with probabilities for each case ID.
     If sequence already occurred it only lists the ID of the latest occurrence.
@@ -231,7 +231,7 @@ def get_all_sequences_with_probabilities(event_log):
 
 
 #11
-def print_all_sequences_with_probabilities(event_log):
+def print_all_sequences_with_probabilities(event_log: pd.DataFrame) -> None:
     """
     Print sequences with probabilities for each case ID.
     If sequence already occurred it only prints the ID of the latest occurrence.
@@ -258,7 +258,7 @@ def print_all_sequences_with_probabilities(event_log):
 
 
 # 16
-def get_all_minimum_self_distances(event_log):
+def get_all_minimum_self_distances(event_log: pd.DataFrame) -> dict[str, dict[str, int]]:
     """
     Calculate the minimum self-distances for each activity in each case.
 
@@ -299,7 +299,7 @@ def get_all_minimum_self_distances(event_log):
 
 
 #17
-def print_all_minimum_self_distances(event_log):
+def print_all_minimum_self_distances(event_log: pd.DataFrame) -> None:
     """
     Calculate and print the minimum self-distances for each activity in each case.
 
@@ -325,7 +325,7 @@ def print_all_minimum_self_distances(event_log):
 
 
 #24
-def get_all_rework_counts(event_log):
+def get_all_rework_counts(event_log: pd.DataFrame) -> dict[str, dict[str, int]]:
     """
     Return the rework counts for each activity in each case.
 
@@ -367,7 +367,7 @@ def get_all_rework_counts(event_log):
 
 
 #25
-def print_all_rework_counts(event_log):
+def print_all_rework_counts(event_log: pd.DataFrame) -> None:
     """
     Print the rework counts for each activity in each case.
 
@@ -393,7 +393,7 @@ def print_all_rework_counts(event_log):
 
 
 #28
-def get_all_activities_mean_service_time(event_log):
+def get_all_activities_mean_service_time(event_log: pd.DataFrame) -> dict[str, float]:
     """
     Calculate the mean service time for each activity.
 
@@ -417,7 +417,7 @@ def get_all_activities_mean_service_time(event_log):
 
 
 #29
-def print_all_activities_mean_service_time(event_log):
+def print_all_activities_mean_service_time(event_log: pd.DataFrame) -> None:
     """
     Print the mean service time for each activity.
 
@@ -437,7 +437,7 @@ def print_all_activities_mean_service_time(event_log):
 
 
 #30
-def get_all_cases_durations(event_log):
+def get_all_cases_durations(event_log: pd.DataFrame) -> dict[str, float]:
     """
     Calculate the duration of each case in seconds.
 
@@ -467,7 +467,7 @@ def get_all_cases_durations(event_log):
 
 
 #31
-def print_all_cases_durations(event_log):
+def print_all_cases_durations(event_log: pd.DataFrame) -> None:
     """
     Print the duration of each case in seconds.
 
@@ -492,7 +492,7 @@ def print_all_cases_durations(event_log):
         print(f"Case ID {case_id}: {duration} s")
 
 
-def get_all_self_distance_witnesses(event_log):
+def get_all_self_distance_witnesses(event_log: pd.DataFrame) -> dict[int, dict[str, list[list[str]]]]:
     """
     Compute the minimum self-distance witnesses for each activity in each case of the event log.
 
@@ -569,7 +569,7 @@ def get_all_self_distance_witnesses(event_log):
     return all_msd_witnesses
 
 
-def print_all_self_distance_witnesses(event_log):
+def print_all_self_distance_witnesses(event_log: pd.DataFrame) -> None:
     """
     Print the minimum self-distance witnesses for each activity in each case.
 
@@ -595,7 +595,7 @@ def print_all_self_distance_witnesses(event_log):
 
 
 #42
-def print_full_analysis(event_log):
+def print_full_analysis(event_log: pd.DataFrame) -> None:
     """
     Run multiple analyses on the event log and print the results.
 

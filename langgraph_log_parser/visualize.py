@@ -3,7 +3,7 @@ import pandas as pd
 import pm4py
 
 
-def generate_prefix_tree(event_log, output_path='tree.png'):
+def generate_prefix_tree(event_log: pd.DataFrame, output_path: str = 'tree.png') -> None:
     """
     Generate and save a prefix tree visualization.
 
@@ -36,7 +36,7 @@ def generate_prefix_tree(event_log, output_path='tree.png'):
     print("Prefix Tree saved as:", output_path)
 
 
-def generate_performance_dfg(event_log, output_path='dfg_performance.png'):
+def generate_performance_dfg(event_log: pd.DataFrame, output_path: str = 'dfg_performance.png') -> None:
     """
     Generate and save a visualization of directly-follows graph annotated with performance.
 

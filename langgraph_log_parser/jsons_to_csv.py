@@ -1,7 +1,7 @@
 import os
 import json
 import csv
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
 from glob import glob
 
@@ -43,18 +43,21 @@ class GraphConfig:
     Overall graph configuration.
 
     :param supervisors: Optional list of graph-level supervisors.
-    :type supervisors: List[SupervisorConfig], optional
+    :type supervisors: Optional[List[SupervisorConfig]]
     :param subgraphs: Optional list of subgraphs.
-    :type subgraphs: List[SubgraphConfig], optional
+    :type subgraphs: Optional[List[SubgraphConfig]]
     :param nodes: Optional list of nodes for non-subgraph mode.
-    :type nodes: List[str], optional
+    :type nodes: Optional[List[str]]
     """
-    supervisors: List[SupervisorConfig] = None  # Optional graph-level supervisors
-    subgraphs: List[SubgraphConfig] = None  # Optional subgraphs
-    nodes: List[str] = None  # Optional nodes list for non-subgraph mode
+    # Optional graph-level supervisors
+    supervisors: Optional[List[SupervisorConfig]]
+    # Optional subgraphs
+    subgraphs: Optional[List[SubgraphConfig]]
+    # Optional nodes list for non-subgraph mode
+    nodes: Optional[List[str]]
 
 
-def _build_config_mappings(graph_config: GraphConfig):
+def _build_config_mappings(graph_config: GraphConfig) -> Dict[str, Any]:
     """
     Build lookup structures from graph configuration.
 
@@ -100,7 +103,7 @@ def _build_config_mappings(graph_config: GraphConfig):
     }
 
 
-def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, config: Dict) -> List[Dict]:
+def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, config: Dict) -> List[Dict[str, Any]]:
     """
     Process a single JSON and return entries to write.
 
@@ -268,7 +271,7 @@ def export_jsons_to_csv(
         csv_path: str,
         graph_config: GraphConfig,
         csv_fields: Optional[List[str]] = None
-):
+) -> None:
     """
     Process all JSON files in the input folder and combine them into a single CSV file.
 

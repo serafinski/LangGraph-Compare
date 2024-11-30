@@ -8,7 +8,7 @@ def run_graph_iterations(
         num_repetitions: int,
         user_input_template: Dict[str, Any],
         recursion_limit: int = 100
-):
+) -> None:
     """
     Run the provided graph `num_repetitions` times, incrementing the thread_id each time.
 

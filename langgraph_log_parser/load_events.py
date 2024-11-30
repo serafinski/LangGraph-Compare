@@ -2,7 +2,7 @@ import pandas as pd
 import pm4py
 
 #1
-def load_event_log(file_path):
+def load_event_log(file_path: str) -> pd.DataFrame:
     """
     Load CSV data into a formatted PM4Py DataFrame.
 

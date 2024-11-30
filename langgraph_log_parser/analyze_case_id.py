@@ -6,14 +6,14 @@ from collections import Counter
 pd.set_option('display.max_columns', None)
 
 # 12
-def get_sequence_by_case_id(event_log, case_id):
+def get_sequence_by_case_id(event_log: pd.DataFrame, case_id: int) -> list[str]:
     """
     Return the activity sequence for a specific case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to retrieve the sequence for.
-    :type case_id: int or str
+    :type case_id: int
     :return: The activity sequence for the specified case ID.
     :rtype: list
     :raises ValueError: If the case ID does not exist in the event log.
@@ -39,14 +39,14 @@ def get_sequence_by_case_id(event_log, case_id):
     return sequence
 
 #13
-def print_sequence_by_case_id(event_log, case_id):
+def print_sequence_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the activity sequence for a specific case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to retrieve the sequence for.
-    :type case_id: int or str
+    :type case_id: int
 
     **Example:**
 
@@ -60,14 +60,14 @@ def print_sequence_by_case_id(event_log, case_id):
     print(f"Activity sequence for case ID {case_id}: {sequence}")
 
 #14
-def get_sequence_with_probability_by_case_id(event_log, case_id):
+def get_sequence_with_probability_by_case_id(event_log: pd.DataFrame, case_id: int) -> tuple[list[str], float]:
     """
     Return the activity sequence with its probability for a specific case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to retrieve the sequence and probability for.
-    :type case_id: int or str
+    :type case_id: int
     :return: A tuple containing (sequence, probability) for the specified case ID.
     :rtype: tuple
     :raises ValueError: If the case ID does not exist in the event log.
@@ -95,14 +95,14 @@ def get_sequence_with_probability_by_case_id(event_log, case_id):
     return sequence, probability
 
 #15
-def print_sequence_with_probability_by_case_id(event_log, case_id):
+def print_sequence_with_probability_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the activity sequence with its probability for a specific case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to retrieve and print the sequence and probability for.
-    :type case_id: int or str
+    :type case_id: int
 
     **Example:**
 
@@ -116,14 +116,14 @@ def print_sequence_with_probability_by_case_id(event_log, case_id):
     print(f"Activity sequence with probability for case ID {case_id}: Sequence: {sequence}; Probability: {probability}")
 
 #18
-def get_minimum_self_distances_by_case_id(event_log, case_id):
+def get_minimum_self_distances_by_case_id(event_log: pd.DataFrame, case_id: int) -> dict[str, int]:
     """
     Return the minimum self-distances for all activities for a specific case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to retrieve the minimum self-distances for.
-    :type case_id: int or str
+    :type case_id: int
     :return: A dictionary of activities with their minimum self-distances for the specified case ID.
     :rtype: dict
     :raises ValueError: If the case ID does not exist in the event log.
@@ -153,14 +153,14 @@ def get_minimum_self_distances_by_case_id(event_log, case_id):
     return msd
 
 #19
-def print_minimum_self_distances_by_case_id(event_log, case_id):
+def print_minimum_self_distances_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the minimum self-distances for all activities for a specific case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to retrieve and print the minimum self-distances for.
-    :type case_id: int or str
+    :type case_id: int
 
     **Example:**
 
@@ -175,14 +175,14 @@ def print_minimum_self_distances_by_case_id(event_log, case_id):
     print(f"Minimum self distances for case ID {case_id}: {min_self_distances}")
 
 #26
-def get_rework_by_case_id(event_log, case_id):
+def get_rework_by_case_id(event_log: pd.DataFrame, case_id: int) -> dict[str, int]:
     """
     Return the rework counts for each activity for a specific case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to retrieve the rework counts for.
-    :type case_id: int or str
+    :type case_id: int
     :return: A dictionary of activities with their rework counts for the specified case ID.
     :rtype: dict
     :raises ValueError: If the case ID does not exist in the event log.
@@ -218,14 +218,14 @@ def get_rework_by_case_id(event_log, case_id):
     return rework_counts
 
 #27
-def print_rework_by_case_id(event_log, case_id):
+def print_rework_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the rework counts for each activity for a specific case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to retrieve and print the rework counts for.
-    :type case_id: int or str
+    :type case_id: int
 
     **Example:**
 
@@ -239,14 +239,14 @@ def print_rework_by_case_id(event_log, case_id):
     print(f"Rework counts for case ID {case_id}: {rework_counts}")
 
 #32
-def get_case_duration_by_id(event_log, case_id):
+def get_case_duration_by_id(event_log: pd.DataFrame, case_id: int) -> float:
     """
     Calculate the duration time for a specific case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to retrieve the duration time for.
-    :type case_id: int or str
+    :type case_id: int
     :return: The duration time for the specified case ID.
     :rtype: float
     :raises ValueError: If the case ID does not exist in the event log.
@@ -271,14 +271,14 @@ def get_case_duration_by_id(event_log, case_id):
     return duration
 
 #33
-def print_case_duration_by_id(event_log, case_id):
+def print_case_duration_by_id(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the duration time for a specific case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to retrieve and print the duration time for.
-    :type case_id: int or str
+    :type case_id: int
 
     **Example:**
 
@@ -292,14 +292,14 @@ def print_case_duration_by_id(event_log, case_id):
     print(f"Duration for case ID {case_id}: {duration} s")
 
 #34
-def get_start_activity_by_case_id(event_log, case_id):
+def get_start_activity_by_case_id(event_log: pd.DataFrame, case_id: int) -> str:
     """
     Retrieve the first activity for the specified case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to retrieve the start activity for.
-    :type case_id: int or str
+    :type case_id: int
     :return: The first activity in the sequence.
     :rtype: str
 
@@ -315,14 +315,14 @@ def get_start_activity_by_case_id(event_log, case_id):
     return sequence[0]
 
 #35
-def print_start_activity_by_case_id(event_log, case_id):
+def print_start_activity_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the first activity for the specified case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to retrieve and print the start activity for.
-    :type case_id: int or str
+    :type case_id: int
 
     **Example:**
 
@@ -336,14 +336,14 @@ def print_start_activity_by_case_id(event_log, case_id):
     print(f"Start activity for case ID {case_id}: {start_activity}")
 
 #36
-def get_end_activity_by_case_id(event_log, case_id):
+def get_end_activity_by_case_id(event_log: pd.DataFrame, case_id: int) -> str:
     """
     Retrieve the last activity for the specified case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to retrieve the end activity for.
-    :type case_id: int or str
+    :type case_id: int
     :return: The last activity in the sequence.
     :rtype: str
 
@@ -359,14 +359,14 @@ def get_end_activity_by_case_id(event_log, case_id):
     return sequence[-1]
 
 #37
-def print_end_activity_by_case_id(event_log, case_id):
+def print_end_activity_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the last activity for the specified case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to retrieve and print the end activity for.
-    :type case_id: int or str
+    :type case_id: int
 
     **Example:**
 
@@ -380,14 +380,14 @@ def print_end_activity_by_case_id(event_log, case_id):
     print(f"End activity for case ID {case_id}: {end_activity}")
 
 #38
-def get_activities_count_by_case_id(event_log, case_id):
+def get_activities_count_by_case_id(event_log: pd.DataFrame, case_id: int) -> dict[str, int]:
     """
     Count how many times each activity occurred for the specified case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to count activities for.
-    :type case_id: int or str
+    :type case_id: int
     :return: A dictionary with activities as keys and their counts as values.
     :rtype: dict
 
@@ -403,14 +403,14 @@ def get_activities_count_by_case_id(event_log, case_id):
     return dict(Counter(sequence))
 
 #39
-def print_activities_count_by_case_id(event_log, case_id):
+def print_activities_count_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the count of each activity for the specified case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to count and print activities for.
-    :type case_id: int or str
+    :type case_id: int
 
     **Example:**
 
@@ -424,7 +424,7 @@ def print_activities_count_by_case_id(event_log, case_id):
     print(f"Count of each activity for case ID {case_id}: {activities_count}")
 
 #40
-def get_sum_service_time_by_case_id(event_log, case_id):
+def get_sum_service_time_by_case_id(event_log: pd.DataFrame, case_id: int) -> dict[str, float]:
     """
     Calculate the sum service time in seconds for each activity for a specific case ID.
 
@@ -444,7 +444,7 @@ def get_sum_service_time_by_case_id(event_log, case_id):
     {'ChartGenerator': 0.608224, 'DocWriter': 2.0285469999999997, 'Search': 1.7249849999999998, 'WebScraper': 2.4464859999999997, '__start__': 0.603216, 'ag_supervisor': 0.10220199999999999, 'rg_supervisor': 23.0226, 'test_supervisor': 0.747701}
     """
 
-    # Konwersja na string'a - bo get_case_duration przyjmuje tylko stringi
+    # Konwersja na string'a - bo get_service_time przyjmuje tylko stringi
     case_id_str = str(case_id)
 
     # Usuń potencjalne spacje z case_id w logu
@@ -468,7 +468,7 @@ def get_sum_service_time_by_case_id(event_log, case_id):
     return sum_serv_time
 
 #41
-def print_sum_service_time_by_case_id(event_log, case_id):
+def print_sum_service_time_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the sum service time in seconds for each activity for a specific case ID.
 
@@ -489,14 +489,14 @@ def print_sum_service_time_by_case_id(event_log, case_id):
     print(f"Sum service time of each activity for case ID {case_id} (in sec): {sum_time}")
 
 
-def get_self_distance_witnesses_by_case_id(event_log, case_id):
+def get_self_distance_witnesses_by_case_id(event_log: pd.DataFrame, case_id: int) -> dict[str, list[list[str]]]:
     """
     Return the minimum self-distance witnesses for all activities for a specific case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to retrieve the witnesses for.
-    :type case_id: int or str
+    :type case_id: int
     :return: A dictionary of activities with their for the specified case ID.
     :rtype: dict
     :raises ValueError: If the case ID does not exist in the event log.
@@ -559,14 +559,14 @@ def get_self_distance_witnesses_by_case_id(event_log, case_id):
 
     return corrected_witnesses
 
-def print_self_distance_witnesses_by_case_id(event_log, case_id):
+def print_self_distance_witnesses_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the minimum self-distance witnesses for all activities for a specific case ID.
 
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
     :param case_id: The case ID to retrieve and print the witnesses for.
-    :type case_id: int or str
+    :type case_id: int
 
     **Example:**
 
@@ -580,7 +580,7 @@ def print_self_distance_witnesses_by_case_id(event_log, case_id):
     print(f"Minimum self distance witnesses for case ID {case_id}: {witnesses}")
 
 #43
-def print_full_analysis_by_id(event_log, case_id):
+def print_full_analysis_by_id(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Run multiple analyses on single case_id and print the results.
 

@@ -1,6 +1,8 @@
 import os
 import sqlite3
 import json
+from typing import Dict, Any
+
 import msgpack
 
 def _convert(obj):
@@ -31,13 +33,13 @@ def _convert(obj):
         return obj
 
 
-def export_sqlite_to_jsons(db_path="checkpoints.sqlite", output_folder="files/json"):
+def export_sqlite_to_jsons(db_path: str = "checkpoints.sqlite", output_folder: str ="files/json") -> None:
     """
     Fetch data from the SQLite database and export it as JSON files.
 
     :param db_path: Path to the SQLite database file.
     :type db_path: str
-    :param: Path to the folder where output JSON files will be saved.
+    :param output_folder: Path to the folder where output JSON files will be saved.
     :type output_folder: str
 
     **Example:**
@@ -54,56 +56,61 @@ def export_sqlite_to_jsons(db_path="checkpoints.sqlite", output_folder="files/js
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
+    # Połączenie do bazy danych
     conn = sqlite3.connect(db_path, check_same_thread=False)
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM checkpoints")
-    rows = cursor.fetchall()
 
-    # Słownik do przechowywania danych pogrupowanych według thread_ID
-    data_by_thread = {}
+    try:
+        # Pobieramy dane z tabeli "checkpoints"
+        cursor.execute("SELECT * FROM checkpoints")
+        rows = cursor.fetchall()
 
-    for row in rows:
-        thread_id = row[0]
+        # Słownik do przechowywania danych pogrupowanych według thread_ID
+        data_by_thread: Dict[int, list] = {}
 
-        try:
-            # Deserializacja z użyciem msgpack
-            checkpoint = msgpack.loads(row[5])
-            # Konwersja byte'ów do string'ów
-            checkpoint = _convert(checkpoint)
-        except Exception as e:
-            print(f"Error deserializing checkpoint in row with thread_ID {thread_id}: {e}")
-            checkpoint = None
+        for row in rows:
+            thread_id = row[0]
 
-        try:
-            # Deserializacja metadanych z użyciem JSON
-            metadata = json.loads(row[6])
-            # To samo dla metadata (na MacOS z jakiegoś powodu też w postaci byte'ów)
-            metadata = _convert(metadata)
-        except Exception as e:
-            print(f"Error deserializing metadata in row with thread_ID {thread_id}: {e}")
-            metadata = None
+            try:
+                # Deserializacja z użyciem msgpack
+                checkpoint = msgpack.loads(row[5])
+                # Konwersja byte'ów do string'ów
+                checkpoint = _convert(checkpoint)
+            except Exception as e:
+                print(f"Error deserializing checkpoint in row with thread_ID {thread_id}: {e}")
+                checkpoint = None
 
-        # Przygotowanie obiektu JSON
-        json_object = {
-            "thread_ID": thread_id,
-            "checkpoint": checkpoint,
-            "metadata": metadata
-        }
+            try:
+                # Deserializacja metadanych z użyciem JSON
+                metadata = json.loads(row[6])
+                # To samo dla metadata (na MacOS z jakiegoś powodu też w postaci byte'ów)
+                metadata = _convert(metadata)
+            except Exception as e:
+                print(f"Error deserializing metadata in row with thread_ID {thread_id}: {e}")
+                metadata = None
 
-        # Grupowanie danych według thread_ID
-        if thread_id not in data_by_thread:
-            data_by_thread[thread_id] = []
-        data_by_thread[thread_id].append(json_object)
+            # Przygotowanie obiektu JSON
+            json_object: Dict[str, Any] = {
+                "thread_ID": thread_id,
+                "checkpoint": checkpoint,
+                "metadata": metadata
+            }
 
-    # Zapisz dane dla każdego thread_ID w osobnym pliku JSON
-    for thread_id, jsons in data_by_thread.items():
-        output_path = os.path.join(output_folder, f"thread_{thread_id}.json")
-        try:
-            with open(output_path, 'w') as json_file:
-                # Zapisz dane jako JSON
-                json.dump(jsons, json_file, indent=4)
-            print(f"JSON file created: {output_path}")
-        except Exception as e:
-            print(f"Error writing JSON file for thread_ID {thread_id}: {e}")
+            # Grupowanie danych według thread_ID
+            if thread_id not in data_by_thread:
+                data_by_thread[thread_id] = []
+            data_by_thread[thread_id].append(json_object)
 
-    conn.close()
+        # Zapisz dane dla każdego thread_ID w osobnym pliku JSON
+        for thread_id, jsons in data_by_thread.items():
+            output_path = os.path.join(output_folder, f"thread_{thread_id}.json")
+            try:
+                with open(output_path, 'w') as json_file:
+                    # Zapisz dane jako JSON
+                    json.dump(jsons, json_file, indent=4)
+                print(f"JSON file created: {output_path}")
+            except Exception as e:
+                print(f"Error writing JSON file for thread_ID {thread_id}: {e}")
+
+    finally:
+        conn.close()
