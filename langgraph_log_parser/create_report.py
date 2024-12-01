@@ -42,7 +42,8 @@ def write_a_report(event_log: pd.DataFrame, output_file: Optional[str] = None) -
     >>> event_log = pd.read_csv(csv_output)
     >>> write_a_report(event_log)  # Will use default './report.json'
     >>> write_a_report(event_log, "analysis/custom_report.json")  # Custom path
-
+    Report successfully generated at: ./report.json
+    Report successfully generated at: analysis/report.json
     """
     event_log = event_log.copy()
 
@@ -100,6 +101,8 @@ def write_a_report_case_id(event_log: pd.DataFrame, case_id: int, output_file: O
     >>> event_log = pd.read_csv(csv_output)
     >>> write_a_report_case_id(event_log, 12345)  # Will use default './12345_report.json'
     >>> write_a_report_case_id(event_log, 12345, "analysis/case_report.json")  # Custom path
+    Case 12345 report successfully generated at: ./12345_report.json
+    Case 12345 report successfully generated at: analysis/12345_report.json
     """
     event_log = event_log.copy()
 
