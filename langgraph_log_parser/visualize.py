@@ -73,3 +73,43 @@ def generate_performance_dfg(event_log: pd.DataFrame, output_path: Optional[str]
 
     pm4py.save_vis_performance_dfg(dfg,start_activities, end_activities, output_path)
     print("Performance DFG saved as:", output_path)
+
+
+def generate_visualizations(
+        event_log: pd.DataFrame,
+        output_dir: Optional[str] = None
+) -> None:
+    """
+    Generate and save all process mining visualizations.
+
+    :param event_log: Event log data
+    :type event_log: pd.DataFrame
+    :param output_dir: Directory to save the visualizations
+    :type output_dir: Optional[str]
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> generate_visualizations(event_log, "output/visualizations")
+    Generating all process mining visualizations...
+    Prefix Tree saved as: output/visualizations/tree.png
+    Performance DFG saved as: output/visualizations/dfg_performance.png
+    All visualizations generated successfully!
+    """
+
+    # Create output directory if it doesn't exist
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    print("Generating all process mining visualizations...")
+
+    # Generate prefix tree
+    tree_path = os.path.join(output_dir, 'tree.png')
+    generate_prefix_tree(event_log, tree_path)
+
+    # Generate performance DFG
+    dfg_path = os.path.join(output_dir, 'dfg_performance.png')
+    generate_performance_dfg(event_log, dfg_path)
+
+    print("All visualizations generated successfully!")

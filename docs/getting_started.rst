@@ -3,18 +3,58 @@
 .. _getting_started:
 
 Getting Started
-===============
+###############
 
 .. contents:: Table of Contents
 
 
 Preface
--------
+*******
 As an example we are going to use a `Building a Basic Chatbot <https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-1-build-a-basic-chatbot>`_ from LangGraph documentation.
 
-Prerequisites
--------------
+Setup
+*****
+
+Creating experiment
+===================
+First start with creating an experiment folder structure for storing all of Your working data. The data will be stored in :code:`experiments` - a directory automatically created by a package.
+
+To create a experiment, you can use the function :func:`langgraph_log_parser.create_experiment.initialize_experiment`.
+
+This can be done like this:
+
+.. code-block:: python
+
+    from langgraph_log_parser.create_experiment import initialize_experiment
+
+    exp = initialize_experiment("test")
+
+Function should create a folder structure in :code:`experiments` containing folders :code:`csv`, :code:`db`, :code:`img`, :code:`json` and :code:`reports`.
+
+:code:`reports` directory have two sub-directories:
+
+* :code:`all` for report for entire :code:`event_log`
+* :code:`cases` for reports regarding selected single :code:`case_id`:
+
+.. code-block:: text
+
+    experiments/
+    └── test/
+        ├── csv/
+        ├── db/
+        ├── img/
+        ├── json/
+        └── reports/
+            ├── all/
+            └── cases/
+
+For more details, refer to the documentation of the :mod:`langgraph_log_parser.create_experiment` module.
+
+Setting up the database
+=======================
 This package leverages `SqliteSaver <https://langchain-ai.github.io/langgraph/reference/checkpoints/#langgraph.checkpoint.sqlite.SqliteSaver>`_ from LangGraph which allows to save checkpoints in a SQLite database.
+
+Benefit of using :code:`initialize_experiment` is the fact that You don't have to define the paths manually - you can just refer to the properties.
 
 To initiate SQLite correctly be sure to do the following:
 
@@ -23,13 +63,14 @@ To initiate SQLite correctly be sure to do the following:
     # Needed imports
     import sqlite3
     from langgraph.checkpoint.sqlite import SqliteSaver
+    from langgraph_log_parser.create_experiment import initialize_experiment
 
-    # Name for your SQLite database
-    # The "test/db" directory will make sense in a sec. (see "Creating folder structure" below)
-    database = "test/db/test.sqlite"
+    # Init for experiment project structure
+    exp = initialize_experiment("test")
 
     # Initiate connection
-    conn = sqlite3.connect(database, check_same_thread=False)
+    # Using init allows to refer to properties of the experiment
+    conn = sqlite3.connect(exp.database, check_same_thread=False)
     memory = SqliteSaver(conn)
 
     # Rest of the code...
@@ -37,34 +78,9 @@ To initiate SQLite correctly be sure to do the following:
     # Remember to compile your graph with SQLite as checkpointer memory
     graph = graph_builder.compile(checkpointer=memory)
 
-Creating folder structure
--------------------------
-You can create a folder structure for storing your working data.
-
-To create a folder structure, you can use the function :func:`langgraph_log_parser.create_structure.create_folder_structure`.
-
-This can be done like this:
-
-.. code-block:: python
-
-    from langgraph_log_parser.create_structure import create_folder_structure
-
-    create_folder_structure("test")
-
-
-Function should create a folder structure containing folders :code:`db`, :code:`img` and :code:`json`:
-
-.. code-block:: text
-
-    test/
-    ├── db/
-    ├── img/
-    └── json/
-
-For more details, refer to the documentation of the :mod:`langgraph_log_parser.create_structure` module.
 
 Running graph multiple times
-----------------------------
+============================
 Since the aim of this package is to monitor multiple runs of the multi-agents system I've created a :func:`langgraph_log_parser.graph_runner.run_graph_iterations` that allows to run selected graph multiple times.
 
 This function will create a thread for every single run of the graph - starting from selected :code:`starting_thread_id`.
@@ -84,49 +100,57 @@ This function will create a thread for every single run of the graph - starting 
 For more details, refer to the documentation of the :mod:`langgraph_log_parser.graph_runner` module.
 
 Exporting SQLite to JSON's
---------------------------
+==========================
 After running graph multiple times we need to retrieve the data from the SQLite database.
 
 For this I've created a function :func:`langgraph_log_parser.sql_to_jsons.export_sqlite_to_jsons` that retrieves data from the database and deserializes it from :code:`msgpack`.
 
 Post deserialization - function saves every single thread to a separate :code:`json` file.
 
+Once again - the benefits of using :code:`initialize_experiment` - you can just refer to the properties.
+
 **Example:**
 
 .. code-block:: python
 
+    # Needed imports
+    from langgraph_log_parser.create_experiment import initialize_experiment
     from langgraph_log_parser.sql_to_jsons import export_sqlite_to_jsons
 
-    # Database from previous step
-    database = "test/db/test.sqlite"
+    # Init for experiment project structure
+    exp = initialize_experiment("test")
 
-    # Saving json's to previously auto generated directory
-    output = "test/json"
+    # Rest of the code...
 
-    export_sqlite_to_jsons(database, output)
-
+    # Exporting using experiment properties
+    export_sqlite_to_jsons(exp.database, exp.json_dir)
 
 **Folder structure should like this now:**
 
 .. code-block:: text
 
-    test/
-    ├── db/
-    │   └── test.sqlite
-    ├── img/
-    └── json/
-        └── thread_1.json
-        └── thread_2.json
-        └── thread_3.json
-        └── thread_4.json
-        └── thread_5.json
+    experiments/
+    └── test/
+        ├── db/
+        │   └── test.sqlite
+        ├── img/
+        ├── json/
+        │   ├── thread_1.json
+        │   ├── thread_2.json
+        │   ├── thread_3.json
+        │   ├── thread_4.json
+        │   └── thread_5.json
+        ├── csv/
+        └── reports/
+            ├── all/
+            └── cases/
 
 For more details, refer to the documentation of the :mod:`langgraph_log_parser.sql_to_jsons` module.
 
 .. _exporting_jsons_to_csv:
 
 Exporting JSON's to CSV
------------------------
+=======================
 We retrieved the data from the database. Now it's time to create a :code:`.csv` file that can be loaded as an event log.
 
 For this I've created :func:`langgraph_log_parser.jsons_to_csv.export_jsons_to_csv`.
@@ -142,43 +166,53 @@ In case of `Building a Basic Chatbot <https://langchain-ai.github.io/langgraph/t
 
 Because of that we will only have one node in :code:`nodes` list. Once graph config is defined we can execute needed method to export all JSON's to one :code:`.csv` file.
 
+In this case You can also use the benefits of :code:`initialize_experiment`.
+
 .. code-block:: python
 
+    # Needed imports
+    from langgraph_log_parser.create_experiment import initialize_experiment
     from langgraph_log_parser.jsons_to_csv import GraphConfig, export_jsons_to_csv
 
-    # Taking json's to previously auto generated directory
-    output = "test/json"
+    # Init for experiment project structure
+    exp = initialize_experiment("test")
 
-    # The name of the csv file
-    csv_output = "test/csv_output.csv"
+    # Rest of the code...
 
     # Basic graph config
     graph_config = GraphConfig(
     nodes=["chatbot_node"]
     )
 
-    export_jsons_to_csv(output, csv_output, graph_config)
+    # You can provide You own file name in the parenthesis like - exp.get_csv_path("my_csv.csv")
+    # Otherwise it will use the default file name - "csv_output.csv"
+    export_jsons_to_csv(exp.json_dir, exp.get_csv_path(), graph_config)
 
 **Folder structure should like this now:**
 
 .. code-block:: text
 
-    test/
-    ├── db/
-    │   └── test.sqlite
-    ├── img/
-    ├── json/
-    │    └── thread_1.json
-    │    └── thread_2.json
-    │    └── thread_3.json
-    │    └── thread_4.json
-    │    └── thread_5.json
-    └── csv_output.csv
+    experiments/
+    └── test/
+        ├── db/
+        │   └── test.sqlite
+        ├── img/
+        ├── json/
+        │   ├── thread_1.json
+        │   ├── thread_2.json
+        │   ├── thread_3.json
+        │   ├── thread_4.json
+        │   └── thread_5.json
+        ├── csv/
+        │   └── csv_output.csv
+        └── reports/
+            ├── all/
+            └── cases/
 
 For more details, refer to the documentation of the :mod:`langgraph_log_parser.jsons_to_csv` module.
 
 Running analysis
-----------------
+================
 We've successfully parsed JSON's into the :code:`.csv` file. Now we can run analysis on the event log.
 
 **I'm not going to go into details on every single function and what it does - we will focus on one that prints full analysis into the console - since it's the easiest way to see the analysis.**
@@ -191,20 +225,27 @@ You can find every function specification in modules here:
 
 In both examples we will use :func:`langgraph_log_parser.load_events.load_event_log` from module :mod:`langgraph_log_parser.load_events` to load event log we will use in analysis.
 
-**Example for analysis on entire event log:**
+Analysis on entire event log
+----------------------------
 
 In case of printing analysis for entire event log we will use :func:`langgraph_log_parser.analyze.print_full_analysis` from module :mod:`langgraph_log_parser.analyze`.
 
 .. code-block:: python
 
+    # Needed imports
+    from langgraph_log_parser.create_experiment import initialize_experiment
     from langgraph_log_parser.load_events import load_event_log
     from langgraph_log_parser.analyze import print_full_analysis
 
-    # The name of the csv file
-    csv_output = "test/csv_output.csv"
+    # Init for experiment project structure
+    exp = initialize_experiment("test")
+
+    # Rest of the code...
 
     # Using to load events from .csv file
-    event_log = load_event_log(csv_output)
+    # It looks for a default name "csv_output.csv" in csv experiment directory
+    # If you used the custom name -> be sure to put it in parenthesis - like - exp.get_csv_path("my_csv.csv").
+    event_log = load_event_log(exp.get_csv_path())
 
     # This function will print an analysis in console for entire event log
     print_full_analysis(event_log)
@@ -222,20 +263,27 @@ This will return information for every :code:`thread_id` `(case_id)` about the f
 * mean duration of every activity `(in sec)`
 * duration of the case `(in sec)` (on case basis)
 
-**Example for analysis on single case_id:**
+Analysis on single case_id
+--------------------------
 
 In case of printing analysis for single :code:`case_id` we will use :func:`langgraph_log_parser.analyze_case_id.print_full_analysis_by_id` from module :mod:`langgraph_log_parser.analyze_case_id`.
 
 .. code-block:: python
 
+    # Needed imports
+    from langgraph_log_parser.create_experiment import initialize_experiment
     from langgraph_log_parser.load_events import load_event_log
     from langgraph_log_parser.analyze_case_id import print_full_analysis_by_id
 
-    # The name of the csv file
-    csv_output = "test/csv_output.csv"
+    # Init for experiment project structure
+    exp = initialize_experiment("test")
+
+    # Rest of the code...
 
     # Using to load events from .csv file
-    event_log = load_event_log(csv_output)
+    # It looks for a default name "csv_output.csv" in csv experiment directory
+    # If you used the custom name -> be sure to put it in parenthesis - like - exp.get_csv_path("my_csv.csv").
+    event_log = load_event_log(exp.get_csv_path())
 
     case_id = 15
 
@@ -247,10 +295,188 @@ This will return information for single :code:`thread_id` `(case_id)` about the 
 * start activity
 * end activity
 * count of each activity
-* sequence of activities
 * sequence of activities with probability of occurrence for the sequence
 * minimal self-distances for every activity
 * witnesses of minimum self-distances
 * count of activity rework
 * sum service time of every activity (in sec)
 * duration of the case (in sec)
+
+Generation
+**********
+
+Creating visualizations
+=======================
+We are going to use :func:`langgraph_log_parser.visualize.generate_visualizations` to generate and save every visualisation available.
+
+**I'm not going to go into details on every single visualization function and what every singe one do - we will focus on one saves every visualisation available to experiment img directory - since it's the easiest approach.**
+
+You can find every function specification in module :mod:`langgraph_log_parser.visualize`.
+
+Once again utilize the :code:`initialize_experiment` properties.
+
+.. code-block:: python
+
+    # Needed imports
+    from langgraph_log_parser.create_experiment import initialize_experiment
+    from langgraph_log_parser.load_events import load_event_log
+    from langgraph_log_parser.visualize import generate_visualizations
+
+    # Init for experiment project structure
+    exp = initialize_experiment("test")
+
+    # Rest of the code...
+
+    # Using to load events from .csv file
+    # It looks for a default name "csv_output.csv" in csv experiment directory
+    # If you used the custom name -> be sure to put it in parenthesis - like - exp.get_csv_path("my_csv.csv").
+    event_log = load_event_log(exp.get_csv_path())
+
+    # Function saving every visualisation
+    generate_visualizations(event_log, exp.img_dir)
+
+**Folder structure should like this now:**
+
+.. code-block:: text
+
+    experiments/
+    └── test/
+        ├── db/
+        │   └── test.sqlite
+        ├── img/
+        │   ├── tree.png
+        │   └── dfg_performance.png
+        ├── json/
+        │   ├── thread_1.json
+        │   ├── thread_2.json
+        │   ├── thread_3.json
+        │   ├── thread_4.json
+        │   └── thread_5.json
+        ├── csv/
+        │   └── csv_output.csv
+        └── reports/
+            ├── all/
+            └── cases/
+
+**Sample graphs:**
+
+Also can be generated using :func:`langgraph_log_parser.visualize.generate_prefix_tree`.
+
+.. figure:: img/sample_tree.png
+  :width: 800
+
+  Sample prefix tree
+
+Also can be generated using :func:`langgraph_log_parser.visualize.generate_performance_dfg`.
+
+.. figure:: img/sample_dfg_performance.png
+  :width: 800
+
+  Sample performance dfg
+
+Generating reports
+==================
+We can generate reports for entire :code:`event_log` or single :code:`case_id`.
+The reports will be saved in a :code:`.json` format and could be used in comparison report.
+
+In both cases we can use :code:`initialize_experiment` properties - they will differ based on the use case.
+
+Report for entire Event Log
+---------------------------
+In case of entire log we will need to use a :func:`langgraph_log_parser.create_report.write_a_report` with property :code:`reports_all_dir`
+
+.. code-block:: python
+
+    # Needed imports
+    from langgraph_log_parser.create_experiment import initialize_experiment
+    from langgraph_log_parser.load_events import load_event_log
+    from langgraph_log_parser.create_report import write_a_report
+
+    # Init for experiment project structure
+    exp = initialize_experiment("test")
+
+    # Rest of the code...
+
+    # Using to load events from .csv file
+    # It looks for a default name "csv_output.csv" in csv experiment directory
+    # If you used the custom name -> be sure to put it in parenthesis - like - exp.get_csv_path("my_csv.csv").
+    event_log = load_event_log(exp.get_csv_path())
+
+    # Function for saving report for entire event_log
+    write_a_report(event_log, exp.reports_all_dir)
+
+**Folder structure should like this now:**
+
+.. code-block:: text
+
+    experiments/
+    └── test/
+        ├── db/
+        │   └── test.sqlite
+        ├── img/
+        │   ├── tree.png
+        │   └── dfg_performance.png
+        ├── json/
+        │   ├── thread_1.json
+        │   ├── thread_2.json
+        │   ├── thread_3.json
+        │   ├── thread_4.json
+        │   └── thread_5.json
+        ├── csv/
+        │   └── csv_output.csv
+        └── reports/
+            ├── all/
+            │   └── report.json
+            └── cases/
+
+Report for singe Case ID
+------------------------
+In case of single case ID we will need to use a :func:`langgraph_log_parser.create_report.write_a_report_case_id` with property :code:`reports_cases_dir`
+
+.. code-block:: python
+
+    # Needed imports
+    from langgraph_log_parser.create_experiment import initialize_experiment
+    from langgraph_log_parser.load_events import load_event_log
+    from langgraph_log_parser.create_report import write_a_report_case_id
+
+    # Init for experiment project structure
+    exp = initialize_experiment("test")
+
+    # Rest of the code...
+
+    # Using to load events from .csv file
+    # It looks for a default name "csv_output.csv" in csv experiment directory
+    # If you used the custom name -> be sure to put it in parenthesis - like - exp.get_csv_path("my_csv.csv").
+    event_log = load_event_log(exp.get_csv_path())
+
+    # This will generate report for case_id = 1
+    write_a_report_case_id(event_log, 1, exp.reports_all_dir)
+    # This will generate report for case_id = 2
+    write_a_report_case_id(event_log, 2, exp.reports_all_dir)
+
+**Folder structure should like this now:**
+
+.. code-block:: text
+
+    experiments/
+    └── test/
+        ├── db/
+        │   └── test.sqlite
+        ├── img/
+        │   ├── tree.png
+        │   └── dfg_performance.png
+        ├── json/
+        │   ├── thread_1.json
+        │   ├── thread_2.json
+        │   ├── thread_3.json
+        │   ├── thread_4.json
+        │   └── thread_5.json
+        ├── csv/
+        │   └── csv_output.csv
+        └── reports/
+            ├── all/
+            │   └── report.json
+            └── cases/
+                ├── 1_report.json
+                └── 2_report.json
