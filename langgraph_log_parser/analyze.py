@@ -258,7 +258,7 @@ def print_all_sequences_with_probabilities(event_log: pd.DataFrame) -> None:
 
 
 # 16
-def get_all_minimum_self_distances(event_log: pd.DataFrame) -> dict[str, dict[str, int]]:
+def get_all_minimum_self_distances(event_log: pd.DataFrame) -> dict[int, dict[str, int]]:
     """
     Calculate the minimum self-distances for each activity in each case.
 
@@ -273,10 +273,10 @@ def get_all_minimum_self_distances(event_log: pd.DataFrame) -> dict[str, dict[st
     >>> event_log = load_event_log(csv_output)
     >>> print(get_all_minimum_self_distances(event_log))
     Event log loaded and formated from file: files/examples.csv
-    {'18': {}, '19': {'DocWriter': 1, 'Search': 6, 'WebScraper': 4, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}, '20': {'ChartGenerator': 1, 'DocWriter': 3, 'NoteTaker': 3, 'Search': 36, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}}
+    {18: {}, 19: {'DocWriter': 1, 'Search': 6, 'WebScraper': 4, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}, 20: {'ChartGenerator': 1, 'DocWriter': 3, 'NoteTaker': 3, 'Search': 36, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}}
     """
     unique_case_ids = event_log['case:concept:name'].unique()
-    sorted_case_ids = np.sort(unique_case_ids.astype(int)).astype(str)
+    sorted_case_ids = np.sort(unique_case_ids.astype(int))
 
     # Słownik do przechowywania minimalnych odległości własnych dla każdego Case ID
     min_self_distances = {}
@@ -284,7 +284,7 @@ def get_all_minimum_self_distances(event_log: pd.DataFrame) -> dict[str, dict[st
     # Iterujemy po każdym case_id i obliczamy minimalne odległości własne dla jego aktywności
     for case_id in sorted_case_ids:
         # Filtrowanie event logu dla danego case_id
-        filtered_event_log = event_log[event_log['case:concept:name'] == case_id]
+        filtered_event_log = event_log[event_log['case:concept:name'] == str(case_id)]
 
         # Kalkulowanie minimalnych odległości własnych dla danego case_id
         msd = pm4py.get_minimum_self_distances(
@@ -293,7 +293,7 @@ def get_all_minimum_self_distances(event_log: pd.DataFrame) -> dict[str, dict[st
             case_id_key='case:concept:name',
             timestamp_key='time:timestamp'
         )
-        min_self_distances[case_id] = msd
+        min_self_distances[int(case_id)] = msd
 
     return min_self_distances
 
@@ -325,7 +325,7 @@ def print_all_minimum_self_distances(event_log: pd.DataFrame) -> None:
 
 
 #24
-def get_all_rework_counts(event_log: pd.DataFrame) -> dict[str, dict[str, int]]:
+def get_all_rework_counts(event_log: pd.DataFrame) -> dict[int, dict[str, int]]:
     """
     Return the rework counts for each activity in each case.
 
@@ -340,15 +340,15 @@ def get_all_rework_counts(event_log: pd.DataFrame) -> dict[str, dict[str, int]]:
     >>> event_log = load_event_log(csv_output)
     >>> print(get_all_rework_counts(event_log))
     Event log loaded and formated from file: files/examples.csv
-    {'18': {}, '19': {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'DocWriter': 4}, '20': {'__start__': 8, 'test_supervisor': 8, 'rg_supervisor': 7, 'Search': 2, 'ag_supervisor': 12, 'ChartGenerator': 2, 'DocWriter': 4, 'NoteTaker': 3}}
+    {18: {}, 19: {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'DocWriter': 4}, 20: {'__start__': 8, 'test_supervisor': 8, 'rg_supervisor': 7, 'Search': 2, 'ag_supervisor': 12, 'ChartGenerator': 2, 'DocWriter': 4, 'NoteTaker': 3}}
     """
     rework_counts_by_case = {}
     unique_case_ids = event_log['case:concept:name'].unique()
-    sorted_case_ids = np.sort(unique_case_ids.astype(int)).astype(str)
+    sorted_case_ids = np.sort(unique_case_ids.astype(int))
 
     for case_id in sorted_case_ids:
         # Filtrowanie logu dla bieżącego case_id
-        filtered_event_log = event_log[event_log['case:concept:name'] == case_id]
+        filtered_event_log = event_log[event_log['case:concept:name'] == str(case_id)]
 
         # Inicjalizacja licznika powtórzeń
         activity_counts = defaultdict(int)
@@ -362,7 +362,7 @@ def get_all_rework_counts(event_log: pd.DataFrame) -> dict[str, dict[str, int]]:
 
         # Usunięcie aktywności, które wystąpiły tylko raz (bo nie są "rework")
         rework_counts = {activity: count for activity, count in activity_counts.items() if count > 1}
-        rework_counts_by_case[case_id] = rework_counts
+        rework_counts_by_case[int(case_id)] = rework_counts
     return rework_counts_by_case
 
 
