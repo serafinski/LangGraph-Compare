@@ -524,5 +524,10 @@ export_jsons_to_csv(exp.json_dir, exp.get_csv_path(), graph_config)
 print()
 event_log = load_event_log(exp.get_csv_path())
 print_full_analysis(event_log)
+
+write_a_report(event_log, exp.reports_all_dir)
+write_a_report_case_id(event_log, 1, exp.reports_cases_dir)
+write_a_report_case_id(event_log, 2, exp.reports_cases_dir)
+
 generate_prefix_tree(event_log, exp.get_img_path())
 generate_performance_dfg(event_log, exp.get_img_path())

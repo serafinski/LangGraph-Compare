@@ -1,7 +1,7 @@
 __all__ = [
     # Modules
     "load_events", "analyze", "analyze_case_id", "graph_runner", "jsons_to_csv", "sql_to_jsons", "visualize",
-    "create_experiment",
+    "create_experiment", "create_report",
 
     # Functions - load_csv
     "load_event_log",
@@ -47,6 +47,9 @@ __all__ = [
     # Functions - initialize_experiment
     "initialize_experiment",
 
+    # Functions - create_report
+    "write_a_report", "write_a_report_case_id",
+
     #Classes - jsons_to_csv
     "SubgraphConfig", "SupervisorConfig", "GraphConfig"
 ]
@@ -59,6 +62,7 @@ from . import jsons_to_csv
 from . import sql_to_jsons
 from . import visualize
 from . import create_experiment
+from . import create_report
 
 
 from .load_events import *
@@ -69,3 +73,4 @@ from .jsons_to_csv import *
 from .sql_to_jsons import *
 from .visualize import *
 from .create_experiment import *
+from .create_report import *

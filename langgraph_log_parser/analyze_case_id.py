@@ -634,9 +634,6 @@ def print_full_analysis_by_id(event_log: pd.DataFrame, case_id: int) -> None:
     print_activities_count_by_case_id(event_log, case_id)
     print()
 
-    print_sequence_by_case_id(event_log, case_id)
-    print()
-
     print_sequence_with_probability_by_case_id(event_log, case_id)
     print()
 

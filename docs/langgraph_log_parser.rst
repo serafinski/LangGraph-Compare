@@ -1,14 +1,6 @@
 Langgraph Log Parser Package
 ==============================
 
-langgraph\_log\_parser.load\_events
--------------------------------------
-
-.. automodule:: langgraph_log_parser.load_events
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 langgraph\_log\_parser.analyze
 -------------------------------------
 
@@ -33,6 +25,14 @@ langgraph\_log\_parser.create\_experiment
    :undoc-members:
    :show-inheritance:
 
+langgraph\_log\_parser.create\_report
+-----------------------------------------------
+
+.. automodule:: langgraph_log_parser.create_report
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 langgraph\_log\_parser.graph\_runner
 -------------------------------------------
 
@@ -45,6 +45,14 @@ langgraph\_log\_parser.jsons\_to\_csv
 --------------------------------------------
 
 .. automodule:: langgraph_log_parser.jsons_to_csv
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+langgraph\_log\_parser.load\_events
+-------------------------------------
+
+.. automodule:: langgraph_log_parser.load_events
    :members:
    :undoc-members:
    :show-inheritance:

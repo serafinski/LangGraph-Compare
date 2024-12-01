@@ -79,6 +79,54 @@ class ExperimentPaths:
         """
         return os.path.join(self.base_dir, self.name, "img")
 
+    @property
+    def reports_dir(self) -> str:
+        """
+        Returns path to the reports directory.
+
+        :return: Full path to the reports directory.
+        :rtype: str
+
+        **Example:**
+
+        >>> paths = ExperimentPaths("test")
+        >>> paths.reports_dir
+        'experiments/test/reports'
+        """
+        return os.path.join(self.base_dir, self.name, "reports")
+
+    @property
+    def reports_all_dir(self) -> str:
+        """
+        Returns path to the reports/all directory.
+
+        :return: Full path to the reports/all directory.
+        :rtype: str
+
+        **Example:**
+
+        >>> paths = ExperimentPaths("test")
+        >>> paths.reports_all_dir
+        'experiments/test/reports/all'
+        """
+        return os.path.join(self.reports_dir, "all")
+
+    @property
+    def reports_cases_dir(self) -> str:
+        """
+        Returns path to the reports/cases directory.
+
+        :return: Full path to the reports/cases directory.
+        :rtype: str
+
+        **Example:**
+
+        >>> paths = ExperimentPaths("test")
+        >>> paths.reports_cases_dir
+        'experiments/test/reports/cases'
+        """
+        return os.path.join(self.reports_dir, "cases")
+
     def get_csv_path(self, filename: str = "csv_output.csv") -> str:
         """
         Returns full path for a CSV file.
@@ -121,7 +169,7 @@ class ExperimentPaths:
 
 def _create_folder_structure(folder_name: str) -> None:
     """
-    Create a folder structure inside 'experiments' directory with db, img and json subfolders.
+    Create a folder structure inside 'experiments' directory with db, img, json, csv, and reports subfolders.
 
     :param folder_name: Name of the main folder to be created inside experiments directory.
     :type folder_name: str
@@ -129,7 +177,7 @@ def _create_folder_structure(folder_name: str) -> None:
     **Example:**
 
     >>> _create_folder_structure("test_directory")
-    Successfully created 'experiments/test_directory' with subfolders: db, img, json, csv
+    Successfully created 'experiments/test_directory' with subfolders: db, img, json, csv, reports/all, reports/cases
     """
     # Define experiments directory
     experiments_dir = "experiments"
@@ -149,13 +197,19 @@ def _create_folder_structure(folder_name: str) -> None:
         # Create main folder inside experiments
         os.makedirs(full_path)
 
-        # Create subfolders
-        subfolders = ['db', 'img', 'json', 'csv']
-        for subfolder in subfolders:
+        # Create all subfolders
+        basic_subfolders = ['db', 'img', 'json', 'csv', 'reports']
+        for subfolder in basic_subfolders:
             subfolder_path = os.path.join(full_path, subfolder)
             os.makedirs(subfolder_path)
 
-        print(f"Successfully created '{full_path}' with subfolders: {', '.join(subfolders)}")
+            # Create reports subdirectories
+            if subfolder == 'reports':
+                os.makedirs(os.path.join(subfolder_path, 'all'))
+                os.makedirs(os.path.join(subfolder_path, 'cases'))
+
+        print(
+            f"Successfully created '{full_path}' with subfolders: {', '.join(basic_subfolders[:-1])}, reports/all, reports/cases")
 
     except OSError as error:
         print(f"Error creating folder structure: {error}")
@@ -176,12 +230,14 @@ def initialize_experiment(name: str) -> ExperimentPaths:
     >>> paths = initialize_experiment("my_experiment")
     Initializing new experiment...
     Successfully created 'experiments/my_experiment' with subfolders: db, img, json, csv
-
     Experiment 'my_experiment' initialized successfully!
     Database path: experiments/my_experiment/db/my_experiment.sqlite
     JSON directory: experiments/my_experiment/json
     CSV directory: experiments/my_experiment/csv
     Image directory: experiments/my_experiment/img
+    Reports directory: experiments/my_experiment/reports
+    - All reports: experiments/my_experiment/reports/all
+    - Case reports: experiments/my_experiment/reports/cases
     """
     print("\nInitializing new experiment...")
     _create_folder_structure(name)
@@ -192,4 +248,7 @@ def initialize_experiment(name: str) -> ExperimentPaths:
     print(f"JSON directory: {paths.json_dir}")
     print(f"CSV directory: {paths.csv_dir}")
     print(f"Image directory: {paths.img_dir}")
+    print(f"Reports directory: {paths.reports_dir}")
+    print(f"- All reports: {paths.reports_all_dir}")
+    print(f"- Case reports: {paths.reports_cases_dir}")
     return paths
