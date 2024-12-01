@@ -30,16 +30,16 @@ To use `LangGraph Log Parser <https://pypi.org/project/langgraph_log_parser/>`_,
 
 Getting started
 ===============
-For basic usage example refer to: :ref:`getting_started`
+For basic usage example, refer to: :ref:`getting_started`
 
 Advanced Examples
 =================
-For advanced use cases refer to: :ref:`advanced_examples`
+For advanced use cases, refer to: :ref:`advanced_examples`
 
 
 Modules
 *******
-To see exact uses of every method in every module see:
+To see exact uses of every class, method, module etc. see:
 
 .. toctree::
    :maxdepth: 1

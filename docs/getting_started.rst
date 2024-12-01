@@ -10,16 +10,16 @@ Getting Started
 
 Preface
 *******
-As an example we are going to use a `Building a Basic Chatbot <https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-1-build-a-basic-chatbot>`_ from LangGraph documentation.
+As an example, we are going to use a `Building a Basic Chatbot <https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-1-build-a-basic-chatbot>`_ from LangGraph documentation.
 
 Setup
 *****
 
 Creating experiment
 ===================
-First start with creating an experiment folder structure for storing all of Your working data. The data will be stored in :code:`experiments` - a directory automatically created by a package.
+First, start with creating an experiment folder structure for storing all of Your working data. The data will be stored in :code:`experiments` - a directory automatically created by a package.
 
-To create a experiment, you can use the function :func:`langgraph_log_parser.create_experiment.initialize_experiment`.
+To create an experiment, you can use the function :func:`langgraph_log_parser.create_experiment.initialize_experiment`.
 
 This can be done like this:
 
@@ -31,7 +31,7 @@ This can be done like this:
 
 Function should create a folder structure in :code:`experiments` containing folders :code:`csv`, :code:`db`, :code:`img`, :code:`json` and :code:`reports`.
 
-:code:`reports` directory have two sub-directories:
+Additionally, :code:`reports` directory have two sub-directories:
 
 * :code:`all` for report for entire :code:`event_log`
 * :code:`cases` for reports regarding selected single :code:`case_id`:
@@ -52,11 +52,11 @@ For more details, refer to the documentation of the :mod:`langgraph_log_parser.c
 
 Setting up the database
 =======================
-This package leverages `SqliteSaver <https://langchain-ai.github.io/langgraph/reference/checkpoints/#langgraph.checkpoint.sqlite.SqliteSaver>`_ from LangGraph which allows to save checkpoints in a SQLite database.
+This package leverages `SqliteSaver <https://langchain-ai.github.io/langgraph/reference/checkpoints/#langgraph.checkpoint.sqlite.SqliteSaver>`_ from LangGraph which allows saving checkpoints in a SQLite database.
 
-Benefit of using :code:`initialize_experiment` is the fact that You don't have to define the paths manually - you can just refer to the properties.
+The benefit of using previously mentioned :code:`initialize_experiment` is the fact that You don't have to define the paths manually - you can just refer to the properties.
 
-To initiate SQLite correctly be sure to do the following:
+To initiate SQLite correctly, be sure to do the following:
 
 .. code-block:: python
 
@@ -81,7 +81,9 @@ To initiate SQLite correctly be sure to do the following:
 
 Running graph multiple times
 ============================
-Since the aim of this package is to monitor multiple runs of the multi-agents system I've created a :func:`langgraph_log_parser.graph_runner.run_graph_iterations` that allows to run selected graph multiple times.
+Since the aim of this package is to monitor and compare multi-agent architectures - we need to run the graphs multiple times to be able to compare the results.
+
+Because of this, I've created :func:`langgraph_log_parser.graph_runner.run_graph_iterations`.
 
 This function will create a thread for every single run of the graph - starting from selected :code:`starting_thread_id`.
 
@@ -101,9 +103,9 @@ For more details, refer to the documentation of the :mod:`langgraph_log_parser.g
 
 Exporting SQLite to JSON's
 ==========================
-After running graph multiple times we need to retrieve the data from the SQLite database.
+After running graph multiple times, we need to retrieve the data from the SQLite database.
 
-For this I've created a function :func:`langgraph_log_parser.sql_to_jsons.export_sqlite_to_jsons` that retrieves data from the database and deserializes it from :code:`msgpack`.
+For this, I've created a function :func:`langgraph_log_parser.sql_to_jsons.export_sqlite_to_jsons` that retrieves data from the database and deserializes it from :code:`msgpack`.
 
 Post deserialization - function saves every single thread to a separate :code:`json` file.
 
@@ -153,20 +155,20 @@ Exporting JSON's to CSV
 =======================
 We retrieved the data from the database. Now it's time to create a :code:`.csv` file that can be loaded as an event log.
 
-For this I've created :func:`langgraph_log_parser.jsons_to_csv.export_jsons_to_csv`.
-This function takes every singe :code:`.json` file from selected directory and parses it - extracting all the necessary data to create event log.
-This requires :class:`langgraph_log_parser.jsons_to_csv.GraphConfig` a custom class that defines how graph was configured so parser can parse accordingly.
+For this, I've created :func:`langgraph_log_parser.jsons_to_csv.export_jsons_to_csv`.
+This function takes every singe :code:`.json` file from a selected directory and parses it - extracting all the necessary data to create an event log.
+This requires :class:`langgraph_log_parser.jsons_to_csv.GraphConfig` a custom class that defines how a graph was configured, so parser can parse accordingly.
 
-In this example we will focus on a basic usage of :code:`GraphConfig`.
+In this example, we will focus on a basic usage of :code:`GraphConfig`.
 I will dive deeper into :code:`GraphConfig` in :ref:`advanced_examples`.
 
 **Example:**
 
-In case of `Building a Basic Chatbot <https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-1-build-a-basic-chatbot>`_ we have only one node called :code:`chatbot_node`.
+In case of `Building a Basic Chatbot <https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-1-build-a-basic-chatbot>`_, we have only one node called :code:`chatbot_node`.
 
-Because of that we will only have one node in :code:`nodes` list. Once graph config is defined we can execute needed method to export all JSON's to one :code:`.csv` file.
+Because of that, we will only have one node in :code:`nodes` list. Once graph config is defined, we can execute the needed method to export all JSON's to one :code:`.csv` file.
 
-In this case You can also use the benefits of :code:`initialize_experiment`.
+In this case, You can also use the benefits of :code:`initialize_experiment`.
 
 .. code-block:: python
 
@@ -228,7 +230,7 @@ In both examples we will use :func:`langgraph_log_parser.load_events.load_event_
 Analysis on entire event log
 ----------------------------
 
-In case of printing analysis for entire event log we will use :func:`langgraph_log_parser.analyze.print_full_analysis` from module :mod:`langgraph_log_parser.analyze`.
+In case of printing analysis for entire event log, we will use :func:`langgraph_log_parser.analyze.print_full_analysis` from module :mod:`langgraph_log_parser.analyze`.
 
 .. code-block:: python
 
@@ -266,7 +268,7 @@ This will return information for every :code:`thread_id` `(case_id)` about the f
 Analysis on single case_id
 --------------------------
 
-In case of printing analysis for single :code:`case_id` we will use :func:`langgraph_log_parser.analyze_case_id.print_full_analysis_by_id` from module :mod:`langgraph_log_parser.analyze_case_id`.
+In case of printing analysis for single :code:`case_id`, we will use :func:`langgraph_log_parser.analyze_case_id.print_full_analysis_by_id` from module :mod:`langgraph_log_parser.analyze_case_id`.
 
 .. code-block:: python
 
@@ -307,13 +309,13 @@ Generation
 
 Creating visualizations
 =======================
-We are going to use :func:`langgraph_log_parser.visualize.generate_visualizations` to generate and save every visualisation available.
+We are going to use :func:`langgraph_log_parser.visualize.generate_visualizations` to generate and save every visualization available.
 
-**I'm not going to go into details on every single visualization function and what every singe one do - we will focus on one saves every visualisation available to experiment img directory - since it's the easiest approach.**
+**I'm not going to go into details on every single visualization function and what every singe one do - we will focus on one saves every visualization available to experiment img directory - since it's the easiest approach.**
 
 You can find every function specification in module :mod:`langgraph_log_parser.visualize`.
 
-Once again utilize the :code:`initialize_experiment` properties.
+Once again, utilize the :code:`initialize_experiment` properties.
 
 .. code-block:: python
 
@@ -360,14 +362,14 @@ Once again utilize the :code:`initialize_experiment` properties.
 
 **Sample graphs:**
 
-Also can be generated using :func:`langgraph_log_parser.visualize.generate_prefix_tree`.
+This graph can also be generated using :func:`langgraph_log_parser.visualize.generate_prefix_tree`.
 
 .. figure:: img/sample_tree.png
   :width: 800
 
   Sample prefix tree
 
-Also can be generated using :func:`langgraph_log_parser.visualize.generate_performance_dfg`.
+This graph can also be generated using :func:`langgraph_log_parser.visualize.generate_performance_dfg`.
 
 .. figure:: img/sample_dfg_performance.png
   :width: 800
@@ -377,13 +379,13 @@ Also can be generated using :func:`langgraph_log_parser.visualize.generate_perfo
 Generating reports
 ==================
 We can generate reports for entire :code:`event_log` or single :code:`case_id`.
-The reports will be saved in a :code:`.json` format and could be used in comparison report.
+The reports will be saved in a :code:`.json` format and could be used in a comparison report.
 
-In both cases we can use :code:`initialize_experiment` properties - they will differ based on the use case.
+In both cases, we can use :code:`initialize_experiment` properties - we will use different property based on the use case.
 
 Report for entire Event Log
 ---------------------------
-In case of entire log we will need to use a :func:`langgraph_log_parser.create_report.write_a_report` with property :code:`reports_all_dir`
+In case of entire log, we will need to use a :func:`langgraph_log_parser.create_report.write_a_report` with property :code:`reports_all_dir`.
 
 .. code-block:: python
 
@@ -431,7 +433,7 @@ In case of entire log we will need to use a :func:`langgraph_log_parser.create_r
 
 Report for singe Case ID
 ------------------------
-In case of single case ID we will need to use a :func:`langgraph_log_parser.create_report.write_a_report_case_id` with property :code:`reports_cases_dir`
+In case of single case ID, we will need to use a :func:`langgraph_log_parser.create_report.write_a_report_case_id` with property :code:`reports_cases_dir`.
 
 .. code-block:: python
 
