@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Examples &mdash; LangGraph Log Parser 0.1.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=59fadc99"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            LangGraph Log Parser
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Langgraph Log Parser</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LangGraph Log Parser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Advanced Examples</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/advanced_examples.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="advanced-examples">
+<span id="id1"></span><h1><a class="toc-backref" href="#id9" role="doc-backlink">Advanced Examples</a><a class="headerlink" href="#advanced-examples" title="Link to this heading"></a></h1>
+<nav class="contents" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#advanced-examples" id="id9">Advanced Examples</a></p>
+<ul>
+<li><p><a class="reference internal" href="#preface" id="id10">Preface</a></p></li>
+<li><p><a class="reference internal" href="#multi-agent-network" id="id11">Multi-Agent Network</a></p></li>
+<li><p><a class="reference internal" href="#multi-agent-supervisor" id="id12">Multi-Agent Supervisor</a></p></li>
+<li><p><a class="reference internal" href="#hierarchical-agent-teams" id="id13">Hierarchical Agent Teams</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="preface">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Preface</a><a class="headerlink" href="#preface" title="Link to this heading"></a></h2>
+<p>As advanced examples, we are going to use the following tutorials from LangGraph:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://langchain-ai.github.io/langgraph/tutorials/multi_agent/multi-agent-collaboration/">Agent Architectures - Multi-Agent Network</a></p></li>
+<li><p><a class="reference external" href="https://langchain-ai.github.io/langgraph/tutorials/multi_agent/agent_supervisor/">Agent Architectures - Multi-Agent Supervisor</a></p></li>
+<li><p><a class="reference external" href="https://langchain-ai.github.io/langgraph/tutorials/multi_agent/hierarchical_agent_teams/">Agent Architectures - Hierarchical Agent Teams</a></p></li>
+</ul>
+<p>We are also not going to focus on a basic usage - the main focus is going to be on <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.jsons_to_csv.GraphConfig" title="langgraph_log_parser.jsons_to_csv.GraphConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">langgraph_log_parser.jsons_to_csv.GraphConfig</span></code></a>.</p>
+<p>If You want to check basic usage, refer to: <a class="reference internal" href="getting_started.html#getting-started"><span class="std std-ref">Getting Started</span></a>.</p>
+</section>
+<section id="multi-agent-network">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Multi-Agent Network</a><a class="headerlink" href="#multi-agent-network" title="Link to this heading"></a></h2>
+<p>This example is based on <a class="reference external" href="https://langchain-ai.github.io/langgraph/tutorials/multi_agent/multi-agent-collaboration/">Agent Architectures - Multi-Agent Network</a> and expands on <a class="reference internal" href="getting_started.html#exporting-jsons-to-csv"><span class="std std-ref">Exporting JSON’s to CSV</span></a> from <a class="reference internal" href="getting_started.html#getting-started"><span class="std std-ref">Getting Started</span></a>.</p>
+<figure class="align-default" id="id6">
+<a class="reference internal image-reference" href="_images/collaboration.png"><img alt="_images/collaboration.png" src="_images/collaboration.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><a class="reference external" href="https://langchain-ai.github.io/langgraph/tutorials/multi_agent/multi-agent-collaboration/">Multi-Agent Network diagram - LangGraph Documentation</a></span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The premise of this example is to show that <code class="code docutils literal notranslate"><span class="pre">GraphConfig</span></code> can have multiple nodes.</p>
+<p>In case of this example - we will have 3 nodes - <code class="code docutils literal notranslate"><span class="pre">Researcher</span></code>, <code class="code docutils literal notranslate"><span class="pre">chart_generator</span></code> and <code class="code docutils literal notranslate"><span class="pre">call_tool</span></code>.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.jsons_to_csv</span> <span class="kn">import</span> <span class="n">GraphConfig</span><span class="p">,</span> <span class="n">export_jsons_to_csv</span>
+
+<span class="c1"># Init for experiment project structure</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">create_experiment</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+
+<span class="c1"># We can add multiple nodes!</span>
+<span class="n">graph_config</span> <span class="o">=</span> <span class="n">GraphConfig</span><span class="p">(</span>
+    <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Researcher&#39;</span><span class="p">,</span><span class="s1">&#39;chart_generator&#39;</span><span class="p">,</span> <span class="s1">&#39;call_tool&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># You can provide You own file name in the parenthesis like - exp.get_csv_path(&quot;my_csv.csv&quot;)</span>
+<span class="c1"># Otherwise it will use the default file name - &quot;csv_output.csv&quot;</span>
+<span class="n">export_jsons_to_csv</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">json_dir</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">get_csv_path</span><span class="p">(),</span> <span class="n">graph_config</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="multi-agent-supervisor">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Multi-Agent Supervisor</a><a class="headerlink" href="#multi-agent-supervisor" title="Link to this heading"></a></h2>
+<p>This example is based on <a class="reference external" href="https://langchain-ai.github.io/langgraph/tutorials/multi_agent/agent_supervisor/">Agent Architectures - Multi-Agent Supervisor</a>. It introduces the concept of a <code class="code docutils literal notranslate"><span class="pre">Supervisor</span></code> - a node that controls other nodes.</p>
+<figure class="align-default" id="id7">
+<a class="reference internal image-reference" href="_images/supervisor.png"><img alt="_images/supervisor.png" src="_images/supervisor.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><a class="reference external" href="https://langchain-ai.github.io/langgraph/tutorials/multi_agent/agent_supervisor/">Multi-Agent Supervisor diagram - LangGraph Documentation</a></span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>In this example, we will introduce <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.jsons_to_csv.SupervisorConfig" title="langgraph_log_parser.jsons_to_csv.SupervisorConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">langgraph_log_parser.jsons_to_csv.SupervisorConfig</span></code></a>. It will supervise the graph - working more or less work the same as <code class="code docutils literal notranslate"><span class="pre">GraphConfig</span></code>. The concept of supervisors will make more sense in <a class="reference internal" href="#hierarchical-agent-teams"><span class="std std-ref">Hierarchical Agent Teams</span></a>.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.jsons_to_csv</span> <span class="kn">import</span> <span class="n">GraphConfig</span><span class="p">,</span> <span class="n">SupervisorConfig</span><span class="p">,</span> <span class="n">export_jsons_to_csv</span>
+
+<span class="c1"># Init for experiment project structure</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">create_experiment</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+
+<span class="c1"># Supervisor for graph</span>
+<span class="n">supervisor</span> <span class="o">=</span> <span class="n">SupervisorConfig</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;supervisor&quot;</span><span class="p">,</span>
+    <span class="n">supervisor_type</span><span class="o">=</span><span class="s2">&quot;graph&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Config with supervisor and additional nodes</span>
+<span class="n">graph_config</span> <span class="o">=</span> <span class="n">GraphConfig</span><span class="p">(</span>
+    <span class="n">supervisors</span><span class="o">=</span><span class="p">[</span><span class="n">supervisor</span><span class="p">],</span>
+    <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Researcher&quot;</span><span class="p">,</span> <span class="s2">&quot;Coder&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># You can provide You own file name in the parenthesis like - exp.get_csv_path(&quot;my_csv.csv&quot;)</span>
+<span class="c1"># Otherwise it will use the default file name - &quot;csv_output.csv&quot;</span>
+<span class="n">export_jsons_to_csv</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">json_dir</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">get_csv_path</span><span class="p">(),</span> <span class="n">graph_config</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="hierarchical-agent-teams">
+<span id="id4"></span><h2><a class="toc-backref" href="#id13" role="doc-backlink">Hierarchical Agent Teams</a><a class="headerlink" href="#hierarchical-agent-teams" title="Link to this heading"></a></h2>
+<p>This example is based on <a class="reference external" href="https://langchain-ai.github.io/langgraph/tutorials/multi_agent/hierarchical_agent_teams/">Agent Architectures - Hierarchical Agent Teams</a>. It introduces the concept of a <code class="code docutils literal notranslate"><span class="pre">SubgraphConfig</span></code> - a node that controls other nodes.</p>
+<figure class="align-default" id="id8">
+<a class="reference internal image-reference" href="_images/hierarchical.png"><img alt="_images/hierarchical.png" src="_images/hierarchical.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><a class="reference external" href="https://langchain-ai.github.io/langgraph/tutorials/multi_agent/hierarchical_agent_teams/">Hierarchical Agent Teams diagram - LangGraph Documentation</a></span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>In this example, we have a <code class="code docutils literal notranslate"><span class="pre">Graph</span></code> that is build from two <code class="code docutils literal notranslate"><span class="pre">SubGraphs</span></code>. Those graphs are controlled by a <code class="code docutils literal notranslate"><span class="pre">Supervisor</span></code> - that routes traffic to subgraphs.
+Furthermore, every graph has its own supervisor - that controls what is happening inside of it.</p>
+<p>IMPORTANT: Be sure to call supervisors with different names - so you can differentiate between them! Calling supervisors with the same names WILL brake the parser.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.jsons_to_csv</span> <span class="kn">import</span> <span class="n">GraphConfig</span><span class="p">,</span> <span class="n">SubgraphConfig</span><span class="p">,</span> <span class="n">SupervisorConfig</span><span class="p">,</span> <span class="n">export_jsons_to_csv</span>
+
+<span class="c1"># Init for experiment project structure</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">create_experiment</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+
+<span class="c1"># Config for entire graph supervisor</span>
+<span class="n">graph_supervisor</span> <span class="o">=</span> <span class="n">SupervisorConfig</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;graph_supervisor&quot;</span><span class="p">,</span>
+    <span class="n">supervisor_type</span><span class="o">=</span><span class="s2">&quot;graph&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Config for Research Team subgraph supervisor</span>
+<span class="n">research_supervisor</span> <span class="o">=</span> <span class="n">SupervisorConfig</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;research_supervisor&quot;</span><span class="p">,</span>
+    <span class="n">supervisor_type</span><span class="o">=</span><span class="s2">&quot;subgraph&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Config for Paper Writing Team subgraph supervisor</span>
+<span class="n">paper_supervisor</span> <span class="o">=</span> <span class="n">SupervisorConfig</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;paper_supervisor&quot;</span><span class="p">,</span>
+    <span class="n">supervisor_type</span><span class="o">=</span><span class="s2">&quot;subgraph&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Config for Research Team subgraph</span>
+<span class="n">research_team</span> <span class="o">=</span> <span class="n">SubgraphConfig</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ResearchTeam&quot;</span><span class="p">,</span>
+    <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Search&quot;</span><span class="p">,</span> <span class="s2">&quot;WebScraper&quot;</span><span class="p">],</span>
+    <span class="n">supervisor</span><span class="o">=</span><span class="n">research_supervisor</span>
+<span class="p">)</span>
+
+<span class="c1"># Config for Paper Writing Team subgraph</span>
+<span class="n">paper_team</span> <span class="o">=</span> <span class="n">SubgraphConfig</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;PaperWritingTeam&quot;</span><span class="p">,</span>
+    <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;DocWriter&quot;</span><span class="p">,</span> <span class="s2">&quot;NoteTaker&quot;</span><span class="p">,</span><span class="s2">&quot;ChartGenerator&quot;</span><span class="p">],</span>
+    <span class="n">supervisor</span><span class="o">=</span><span class="n">paper_supervisor</span>
+<span class="p">)</span>
+
+<span class="c1"># Config for complete graph</span>
+<span class="n">graph_config</span> <span class="o">=</span> <span class="n">GraphConfig</span><span class="p">(</span>
+    <span class="n">supervisors</span><span class="o">=</span><span class="p">[</span><span class="n">graph_supervisor</span><span class="p">],</span>
+    <span class="n">subgraphs</span><span class="o">=</span><span class="p">[</span><span class="n">research_team</span><span class="p">,</span> <span class="n">paper_supervisor</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># You can provide You own file name in the parenthesis like - exp.get_csv_path(&quot;my_csv.csv&quot;)</span>
+<span class="c1"># Otherwise it will use the default file name - &quot;csv_output.csv&quot;</span>
+<span class="n">export_jsons_to_csv</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">json_dir</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">get_csv_path</span><span class="p">(),</span> <span class="n">graph_config</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Notice how:</p>
+<ul class="simple">
+<li><p>every supervisor has a config (both graph and subgraphs) - but they have a different <code class="code docutils literal notranslate"><span class="pre">supervisor_type</span></code>.</p></li>
+<li><p>every graph has a config (both graph and subgraphs) - but they are using different classes: <code class="code docutils literal notranslate"><span class="pre">GraphConfig</span></code> or <code class="code docutils literal notranslate"><span class="pre">SubgraphConfig</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">GraphConfig</span></code> doesn’t have <code class="code docutils literal notranslate"><span class="pre">nodes</span></code> defined - since they are being taken care of by subgraphs.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Tomasz Serafiński.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

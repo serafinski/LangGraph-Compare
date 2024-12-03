@@ -1,0 +1,563 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting Started &mdash; LangGraph Log Parser 0.1.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=59fadc99"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            LangGraph Log Parser
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Langgraph Log Parser</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LangGraph Log Parser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Getting Started</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/getting_started.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="getting-started">
+<span id="id1"></span><h1><a class="toc-backref" href="#id5" role="doc-backlink">Getting Started</a><a class="headerlink" href="#getting-started" title="Link to this heading"></a></h1>
+<nav class="contents" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#getting-started" id="id5">Getting Started</a></p>
+<ul>
+<li><p><a class="reference internal" href="#preface" id="id6">Preface</a></p></li>
+<li><p><a class="reference internal" href="#setup" id="id7">Setup</a></p>
+<ul>
+<li><p><a class="reference internal" href="#creating-experiment" id="id8">Creating experiment</a></p></li>
+<li><p><a class="reference internal" href="#setting-up-the-database" id="id9">Setting up the database</a></p></li>
+<li><p><a class="reference internal" href="#running-graph-multiple-times" id="id10">Running graph multiple times</a></p></li>
+<li><p><a class="reference internal" href="#exporting-sqlite-to-json-s" id="id11">Exporting SQLite to JSON’s</a></p></li>
+<li><p><a class="reference internal" href="#exporting-json-s-to-csv" id="id12">Exporting JSON’s to CSV</a></p></li>
+<li><p><a class="reference internal" href="#running-analysis" id="id13">Running analysis</a></p>
+<ul>
+<li><p><a class="reference internal" href="#analysis-on-entire-event-log" id="id14">Analysis on entire event log</a></p></li>
+<li><p><a class="reference internal" href="#analysis-on-single-case-id" id="id15">Analysis on single case_id</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#generation" id="id16">Generation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#creating-visualizations" id="id17">Creating visualizations</a></p></li>
+<li><p><a class="reference internal" href="#generating-reports" id="id18">Generating reports</a></p>
+<ul>
+<li><p><a class="reference internal" href="#report-for-entire-event-log" id="id19">Report for entire Event Log</a></p></li>
+<li><p><a class="reference internal" href="#report-for-singe-case-id" id="id20">Report for singe Case ID</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="preface">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Preface</a><a class="headerlink" href="#preface" title="Link to this heading"></a></h2>
+<p>As an example, we are going to use a <a class="reference external" href="https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-1-build-a-basic-chatbot">Building a Basic Chatbot</a> from LangGraph documentation.</p>
+</section>
+<section id="setup">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
+<section id="creating-experiment">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Creating experiment</a><a class="headerlink" href="#creating-experiment" title="Link to this heading"></a></h3>
+<p>First, start with creating an experiment folder structure for storing all of Your working data. The data will be stored in <code class="code docutils literal notranslate"><span class="pre">experiments</span></code> - a directory automatically created by a package.</p>
+<p>To create an experiment, you can use the function <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.experiment.create_experiment" title="langgraph_log_parser.experiment.create_experiment"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.experiment.create_experiment()</span></code></a>.</p>
+<p>This can be done like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
+
+<span class="n">exp</span> <span class="o">=</span> <span class="n">create_experiment</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Function should create a folder structure in <code class="code docutils literal notranslate"><span class="pre">experiments</span></code> containing folders <code class="code docutils literal notranslate"><span class="pre">csv</span></code>, <code class="code docutils literal notranslate"><span class="pre">db</span></code>, <code class="code docutils literal notranslate"><span class="pre">img</span></code>, <code class="code docutils literal notranslate"><span class="pre">json</span></code> and <code class="code docutils literal notranslate"><span class="pre">reports</span></code>.</p>
+<p>Additionally, <code class="code docutils literal notranslate"><span class="pre">reports</span></code> directory have two sub-directories:</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">all</span></code> for report for entire <code class="code docutils literal notranslate"><span class="pre">event_log</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">cases</span></code> for reports regarding selected single <code class="code docutils literal notranslate"><span class="pre">case_id</span></code>:</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>experiments/
+└── test/
+    ├── csv/
+    ├── db/
+    ├── img/
+    ├── json/
+    └── reports/
+        ├── all/
+        └── cases/
+</pre></div>
+</div>
+<p>For more details, refer to the documentation of the <a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.experiment" title="langgraph_log_parser.experiment"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.experiment</span></code></a> module.</p>
+</section>
+<section id="setting-up-the-database">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Setting up the database</a><a class="headerlink" href="#setting-up-the-database" title="Link to this heading"></a></h3>
+<p>This package leverages <a class="reference external" href="https://langchain-ai.github.io/langgraph/reference/checkpoints/#langgraph.checkpoint.sqlite.SqliteSaver">SqliteSaver</a> from LangGraph which allows saving checkpoints in a SQLite database.</p>
+<p>The benefit of using previously mentioned <code class="code docutils literal notranslate"><span class="pre">create_experiment</span></code> is the fact that You don’t have to define the paths manually - you can just refer to the properties.</p>
+<p>To initiate SQLite correctly, be sure to do the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="kn">from</span> <span class="nn">langgraph.checkpoint.sqlite</span> <span class="kn">import</span> <span class="n">SqliteSaver</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
+
+<span class="c1"># Init for experiment project structure</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">create_experiment</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+
+<span class="c1"># Initiate connection</span>
+<span class="c1"># Using init allows to refer to properties of the experiment</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="n">check_same_thread</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">memory</span> <span class="o">=</span> <span class="n">SqliteSaver</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+
+<span class="c1"># Rest of the code...</span>
+
+<span class="c1"># Remember to compile your graph with SQLite as checkpointer memory</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">graph_builder</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">checkpointer</span><span class="o">=</span><span class="n">memory</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="running-graph-multiple-times">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Running graph multiple times</a><a class="headerlink" href="#running-graph-multiple-times" title="Link to this heading"></a></h3>
+<p>Since the aim of this package is to monitor and compare multi-agent architectures - we need to run the graphs multiple times to be able to compare the results.</p>
+<p>Because of this, I’ve created <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.graph_runner.run_multiple_iterations" title="langgraph_log_parser.graph_runner.run_multiple_iterations"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.graph_runner.run_multiple_iterations()</span></code></a>.</p>
+<p>This function will create a thread for every single run of the graph - starting from selected <code class="code docutils literal notranslate"><span class="pre">starting_thread_id</span></code>.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langgraph_log_parser.graph_runner</span> <span class="kn">import</span> <span class="n">run_multiple_iterations</span>
+
+<span class="c1"># Graph with SQLite checkpointer memory</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">graph_builder</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">checkpointer</span><span class="o">=</span><span class="n">memory</span><span class="p">)</span>
+
+<span class="c1"># This takes graph and runs it 5 times - creating 1 thread for every single run, starting from thread_id=1</span>
+<span class="n">run_multiple_iterations</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;Tell me a joke&quot;</span><span class="p">)]})</span>
+</pre></div>
+</div>
+<p>For more details, refer to the documentation of the <a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.graph_runner" title="langgraph_log_parser.graph_runner"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.graph_runner</span></code></a> module.</p>
+</section>
+<section id="exporting-sqlite-to-json-s">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">Exporting SQLite to JSON’s</a><a class="headerlink" href="#exporting-sqlite-to-json-s" title="Link to this heading"></a></h3>
+<p>After running graph multiple times, we need to retrieve the data from the SQLite database.</p>
+<p>For this, I’ve created a function <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.sql_to_jsons.export_sqlite_to_jsons" title="langgraph_log_parser.sql_to_jsons.export_sqlite_to_jsons"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.sql_to_jsons.export_sqlite_to_jsons()</span></code></a> that retrieves data from the database and deserializes it from <code class="code docutils literal notranslate"><span class="pre">msgpack</span></code>.</p>
+<p>Post deserialization - function saves every single thread to a separate <code class="code docutils literal notranslate"><span class="pre">json</span></code> file.</p>
+<p>Once again - the benefits of using <code class="code docutils literal notranslate"><span class="pre">create_experiment</span></code> - you can just refer to the properties.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.sql_to_jsons</span> <span class="kn">import</span> <span class="n">export_sqlite_to_jsons</span>
+
+<span class="c1"># Init for experiment project structure</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">create_experiment</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+
+<span class="c1"># Rest of the code...</span>
+
+<span class="c1"># Exporting using experiment properties</span>
+<span class="n">export_sqlite_to_jsons</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">json_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Folder structure should like this now:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>experiments/
+└── test/
+    ├── db/
+    │   └── test.sqlite
+    ├── img/
+    ├── json/
+    │   ├── thread_1.json
+    │   ├── thread_2.json
+    │   ├── thread_3.json
+    │   ├── thread_4.json
+    │   └── thread_5.json
+    ├── csv/
+    └── reports/
+        ├── all/
+        └── cases/
+</pre></div>
+</div>
+<p>For more details, refer to the documentation of the <a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.sql_to_jsons" title="langgraph_log_parser.sql_to_jsons"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.sql_to_jsons</span></code></a> module.</p>
+</section>
+<section id="exporting-json-s-to-csv">
+<span id="exporting-jsons-to-csv"></span><h3><a class="toc-backref" href="#id12" role="doc-backlink">Exporting JSON’s to CSV</a><a class="headerlink" href="#exporting-json-s-to-csv" title="Link to this heading"></a></h3>
+<p>We retrieved the data from the database. Now it’s time to create a <code class="code docutils literal notranslate"><span class="pre">csv</span></code> file that can be loaded as an event log.</p>
+<p>For this, I’ve created <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.jsons_to_csv.export_jsons_to_csv" title="langgraph_log_parser.jsons_to_csv.export_jsons_to_csv"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.jsons_to_csv.export_jsons_to_csv()</span></code></a>.
+This function takes every singe <code class="code docutils literal notranslate"><span class="pre">json</span></code> file from a selected directory and parses it - extracting all the necessary data to create an event log.
+This requires <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.jsons_to_csv.GraphConfig" title="langgraph_log_parser.jsons_to_csv.GraphConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">langgraph_log_parser.jsons_to_csv.GraphConfig</span></code></a> a custom class that defines how a graph was configured, so parser can parse accordingly.</p>
+<p>In this example, we will focus on a basic usage of <code class="code docutils literal notranslate"><span class="pre">GraphConfig</span></code>.
+I will dive deeper into <code class="code docutils literal notranslate"><span class="pre">GraphConfig</span></code> in <a class="reference internal" href="advanced_examples.html#advanced-examples"><span class="std std-ref">Advanced Examples</span></a>.</p>
+<p><strong>Example:</strong></p>
+<p>In case of <a class="reference external" href="https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-1-build-a-basic-chatbot">Building a Basic Chatbot</a>, we have only one node called <code class="code docutils literal notranslate"><span class="pre">chatbot_node</span></code>.</p>
+<p>Because of that, we will only have one node in <code class="code docutils literal notranslate"><span class="pre">nodes</span></code> list. Once graph config is defined, we can execute the needed method to export all JSON’s to one <code class="code docutils literal notranslate"><span class="pre">csv</span></code> file.</p>
+<p>In this case, You can also use the benefits of <code class="code docutils literal notranslate"><span class="pre">create_experiment</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.jsons_to_csv</span> <span class="kn">import</span> <span class="n">GraphConfig</span><span class="p">,</span> <span class="n">export_jsons_to_csv</span>
+
+<span class="c1"># Init for experiment project structure</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">create_experiment</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+
+<span class="c1"># Rest of the code...</span>
+
+<span class="c1"># Basic graph config</span>
+<span class="n">graph_config</span> <span class="o">=</span> <span class="n">GraphConfig</span><span class="p">(</span>
+<span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;chatbot_node&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># You can provide You own file name in the parenthesis like - exp.get_csv_path(&quot;my_csv.csv&quot;)</span>
+<span class="c1"># Otherwise it will use the default file name - &quot;csv_output.csv&quot;</span>
+<span class="n">export_jsons_to_csv</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">json_dir</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">get_csv_path</span><span class="p">(),</span> <span class="n">graph_config</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Folder structure should like this now:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>experiments/
+└── test/
+    ├── db/
+    │   └── test.sqlite
+    ├── img/
+    ├── json/
+    │   ├── thread_1.json
+    │   ├── thread_2.json
+    │   ├── thread_3.json
+    │   ├── thread_4.json
+    │   └── thread_5.json
+    ├── csv/
+    │   └── csv_output.csv
+    └── reports/
+        ├── all/
+        └── cases/
+</pre></div>
+</div>
+<p>For more details, refer to the documentation of the <a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.jsons_to_csv" title="langgraph_log_parser.jsons_to_csv"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.jsons_to_csv</span></code></a> module.</p>
+</section>
+<section id="running-analysis">
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">Running analysis</a><a class="headerlink" href="#running-analysis" title="Link to this heading"></a></h3>
+<p>We’ve successfully parsed JSON’s into the <code class="code docutils literal notranslate"><span class="pre">csv</span></code> file. Now we can run analysis on the event log.</p>
+<p><strong>I’m not going to go into details on every single function and what it does - we will focus on one that prints full analysis into the console - since it’s the easiest way to see the analysis.</strong></p>
+<p>You can find every function specification in modules here:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.analyze" title="langgraph_log_parser.analyze"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.analyze</span></code></a> - for running analysis on every <code class="code docutils literal notranslate"><span class="pre">thread_id</span></code> <cite>(case_id)</cite></p></li>
+<li><p><a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.analyze_case_id" title="langgraph_log_parser.analyze_case_id"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.analyze_case_id</span></code></a> - for running analysis on single <code class="code docutils literal notranslate"><span class="pre">thread_id</span></code> <cite>(case_id)</cite></p></li>
+</ul>
+<p>In both examples we will use <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.load_events.load_event_log" title="langgraph_log_parser.load_events.load_event_log"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.load_events.load_event_log()</span></code></a> from module <a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.load_events" title="langgraph_log_parser.load_events"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.load_events</span></code></a> to load event log we will use in analysis.</p>
+<section id="analysis-on-entire-event-log">
+<h4><a class="toc-backref" href="#id14" role="doc-backlink">Analysis on entire event log</a><a class="headerlink" href="#analysis-on-entire-event-log" title="Link to this heading"></a></h4>
+<p>In case of printing analysis for entire event log, we will use <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.analyze.print_analysis" title="langgraph_log_parser.analyze.print_analysis"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.analyze.print_analysis()</span></code></a> from module <a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.analyze" title="langgraph_log_parser.analyze"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.analyze</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.load_events</span> <span class="kn">import</span> <span class="n">load_event_log</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.analyze</span> <span class="kn">import</span> <span class="n">print_analysis</span>
+
+<span class="c1"># Init for experiment project structure</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">create_experiment</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+
+<span class="c1"># Rest of the code...</span>
+
+<span class="c1"># Using to load events from .csv file</span>
+<span class="c1"># It looks for a default name &quot;csv_output.csv&quot; in csv experiment directory</span>
+<span class="c1"># If you used the custom name -&gt; be sure to put it in parenthesis - like - exp.get_csv_path(&quot;my_csv.csv&quot;).</span>
+<span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">get_csv_path</span><span class="p">())</span>
+
+<span class="c1"># This function will print an analysis in console for entire event log</span>
+<span class="n">print_analysis</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will return information for every <code class="code docutils literal notranslate"><span class="pre">thread_id</span></code> <cite>(case_id)</cite> about the following:</p>
+<ul class="simple">
+<li><p>start activities</p></li>
+<li><p>end activities</p></li>
+<li><p>count of each activity (summed from every case)</p></li>
+<li><p>every sequence</p></li>
+<li><p>ID of last sequence occurrence with probability of occurrence</p></li>
+<li><p>minimal self-distances for every activity (on case basis)</p></li>
+<li><p>witnesses of minimum self-distances (on case basis)</p></li>
+<li><p>count of activity rework (on case basis)</p></li>
+<li><p>mean duration of every activity <cite>(in sec)</cite></p></li>
+<li><p>duration of the case <cite>(in sec)</cite> (on case basis)</p></li>
+</ul>
+</section>
+<section id="analysis-on-single-case-id">
+<h4><a class="toc-backref" href="#id15" role="doc-backlink">Analysis on single case_id</a><a class="headerlink" href="#analysis-on-single-case-id" title="Link to this heading"></a></h4>
+<p>In case of printing analysis for single <code class="code docutils literal notranslate"><span class="pre">case_id</span></code>, we will use <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.analyze_case_id.print_case_analysis" title="langgraph_log_parser.analyze_case_id.print_case_analysis"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.analyze_case_id.print_case_analysis()</span></code></a> from module <a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.analyze_case_id" title="langgraph_log_parser.analyze_case_id"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.analyze_case_id</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.load_events</span> <span class="kn">import</span> <span class="n">load_event_log</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.analyze_case_id</span> <span class="kn">import</span> <span class="n">print_case_analysis</span>
+
+<span class="c1"># Init for experiment project structure</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">create_experiment</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+
+<span class="c1"># Rest of the code...</span>
+
+<span class="c1"># Using to load events from .csv file</span>
+<span class="c1"># It looks for a default name &quot;csv_output.csv&quot; in csv experiment directory</span>
+<span class="c1"># If you used the custom name -&gt; be sure to put it in parenthesis - like - exp.get_csv_path(&quot;my_csv.csv&quot;).</span>
+<span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">get_csv_path</span><span class="p">())</span>
+
+<span class="n">case_id</span> <span class="o">=</span> <span class="mi">15</span>
+
+<span class="c1"># This function will print an analysis in console for single case_id</span>
+<span class="n">print_case_analysis</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span><span class="n">case_id</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will return information for single <code class="code docutils literal notranslate"><span class="pre">thread_id</span></code> <cite>(case_id)</cite> about the following:</p>
+<ul class="simple">
+<li><p>start activity</p></li>
+<li><p>end activity</p></li>
+<li><p>count of each activity</p></li>
+<li><p>sequence of activities with probability of occurrence for the sequence</p></li>
+<li><p>minimal self-distances for every activity</p></li>
+<li><p>witnesses of minimum self-distances</p></li>
+<li><p>count of activity rework</p></li>
+<li><p>sum service time of every activity (in sec)</p></li>
+<li><p>duration of the case (in sec)</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="generation">
+<h2><a class="toc-backref" href="#id16" role="doc-backlink">Generation</a><a class="headerlink" href="#generation" title="Link to this heading"></a></h2>
+<section id="creating-visualizations">
+<h3><a class="toc-backref" href="#id17" role="doc-backlink">Creating visualizations</a><a class="headerlink" href="#creating-visualizations" title="Link to this heading"></a></h3>
+<p>We are going to use <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.visualize.generate_visualizations" title="langgraph_log_parser.visualize.generate_visualizations"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.visualize.generate_visualizations()</span></code></a> to generate and save every visualization available.</p>
+<p><strong>I’m not going to go into details on every single visualization function and what every singe one do - we will focus on one saves every visualization available to experiment img directory - since it’s the easiest approach.</strong></p>
+<p>You can find every function specification in module <a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.visualize" title="langgraph_log_parser.visualize"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.visualize</span></code></a>.</p>
+<p>Once again, utilize the <code class="code docutils literal notranslate"><span class="pre">create_experiment</span></code> properties.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.load_events</span> <span class="kn">import</span> <span class="n">load_event_log</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.visualize</span> <span class="kn">import</span> <span class="n">generate_visualizations</span>
+
+<span class="c1"># Init for experiment project structure</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">create_experiment</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+
+<span class="c1"># Rest of the code...</span>
+
+<span class="c1"># Using to load events from .csv file</span>
+<span class="c1"># It looks for a default name &quot;csv_output.csv&quot; in csv experiment directory</span>
+<span class="c1"># If you used the custom name -&gt; be sure to put it in parenthesis - like - exp.get_csv_path(&quot;my_csv.csv&quot;).</span>
+<span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">get_csv_path</span><span class="p">())</span>
+
+<span class="c1"># Function saving every visualisation</span>
+<span class="n">generate_visualizations</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">img_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Folder structure should like this now:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>experiments/
+└── test/
+    ├── db/
+    │   └── test.sqlite
+    ├── img/
+    │   ├── tree.png
+    │   └── dfg_performance.png
+    ├── json/
+    │   ├── thread_1.json
+    │   ├── thread_2.json
+    │   ├── thread_3.json
+    │   ├── thread_4.json
+    │   └── thread_5.json
+    ├── csv/
+    │   └── csv_output.csv
+    └── reports/
+        ├── all/
+        └── cases/
+</pre></div>
+</div>
+<p><strong>Sample graphs:</strong></p>
+<p>This graph can also be generated using <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.visualize.generate_prefix_tree" title="langgraph_log_parser.visualize.generate_prefix_tree"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.visualize.generate_prefix_tree()</span></code></a>.</p>
+<figure class="align-default" id="id3">
+<a class="reference internal image-reference" href="_images/sample_tree.png"><img alt="_images/sample_tree.png" src="_images/sample_tree.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Sample prefix tree</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>This graph can also be generated using <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.visualize.generate_performance_dfg" title="langgraph_log_parser.visualize.generate_performance_dfg"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.visualize.generate_performance_dfg()</span></code></a>.</p>
+<figure class="align-default" id="id4">
+<a class="reference internal image-reference" href="_images/sample_dfg_performance.png"><img alt="_images/sample_dfg_performance.png" src="_images/sample_dfg_performance.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Sample performance dfg</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="generating-reports">
+<h3><a class="toc-backref" href="#id18" role="doc-backlink">Generating reports</a><a class="headerlink" href="#generating-reports" title="Link to this heading"></a></h3>
+<p>We can generate reports for entire <code class="code docutils literal notranslate"><span class="pre">event_log</span></code> or single <code class="code docutils literal notranslate"><span class="pre">case_id</span></code>.
+The reports will be saved in a <code class="code docutils literal notranslate"><span class="pre">json</span></code> format and could be used in a comparison report.</p>
+<p>In both cases, we can use <code class="code docutils literal notranslate"><span class="pre">create_experiment</span></code> properties - we will use different property based on the use case.</p>
+<section id="report-for-entire-event-log">
+<h4><a class="toc-backref" href="#id19" role="doc-backlink">Report for entire Event Log</a><a class="headerlink" href="#report-for-entire-event-log" title="Link to this heading"></a></h4>
+<p>In case of entire log, we will need to use a <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.create_report.write_report" title="langgraph_log_parser.create_report.write_report"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.create_report.write_report()</span></code></a> with property <code class="code docutils literal notranslate"><span class="pre">reports_all_dir</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.load_events</span> <span class="kn">import</span> <span class="n">load_event_log</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.create_report</span> <span class="kn">import</span> <span class="n">write_report</span>
+
+<span class="c1"># Init for experiment project structure</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">create_experiment</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+
+<span class="c1"># Rest of the code...</span>
+
+<span class="c1"># Using to load events from .csv file</span>
+<span class="c1"># It looks for a default name &quot;csv_output.csv&quot; in csv experiment directory</span>
+<span class="c1"># If you used the custom name -&gt; be sure to put it in parenthesis - like - exp.get_csv_path(&quot;my_csv.csv&quot;).</span>
+<span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">get_csv_path</span><span class="p">())</span>
+
+<span class="c1"># Function for saving report for entire event_log</span>
+<span class="n">write_report</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">reports_all_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Folder structure should like this now:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>experiments/
+└── test/
+    ├── db/
+    │   └── test.sqlite
+    ├── img/
+    │   ├── tree.png
+    │   └── dfg_performance.png
+    ├── json/
+    │   ├── thread_1.json
+    │   ├── thread_2.json
+    │   ├── thread_3.json
+    │   ├── thread_4.json
+    │   └── thread_5.json
+    ├── csv/
+    │   └── csv_output.csv
+    └── reports/
+        ├── all/
+        │   └── report.json
+        └── cases/
+</pre></div>
+</div>
+</section>
+<section id="report-for-singe-case-id">
+<h4><a class="toc-backref" href="#id20" role="doc-backlink">Report for singe Case ID</a><a class="headerlink" href="#report-for-singe-case-id" title="Link to this heading"></a></h4>
+<p>In case of single case ID, we will need to use a <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.create_report.write_case_report" title="langgraph_log_parser.create_report.write_case_report"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.create_report.write_case_report()</span></code></a> with property <code class="code docutils literal notranslate"><span class="pre">reports_cases_dir</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.load_events</span> <span class="kn">import</span> <span class="n">load_event_log</span>
+<span class="kn">from</span> <span class="nn">langgraph_log_parser.create_report</span> <span class="kn">import</span> <span class="n">write_case_report</span>
+
+<span class="c1"># Init for experiment project structure</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">create_experiment</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+
+<span class="c1"># Rest of the code...</span>
+
+<span class="c1"># Using to load events from .csv file</span>
+<span class="c1"># It looks for a default name &quot;csv_output.csv&quot; in csv experiment directory</span>
+<span class="c1"># If you used the custom name -&gt; be sure to put it in parenthesis - like - exp.get_csv_path(&quot;my_csv.csv&quot;).</span>
+<span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">get_csv_path</span><span class="p">())</span>
+
+<span class="c1"># This will generate report for case_id = 1</span>
+<span class="n">write_case_report</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">reports_all_dir</span><span class="p">)</span>
+<span class="c1"># This will generate report for case_id = 2</span>
+<span class="n">write_case_report</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">reports_all_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Folder structure should like this now:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>experiments/
+└── test/
+    ├── db/
+    │   └── test.sqlite
+    ├── img/
+    │   ├── tree.png
+    │   └── dfg_performance.png
+    ├── json/
+    │   ├── thread_1.json
+    │   ├── thread_2.json
+    │   ├── thread_3.json
+    │   ├── thread_4.json
+    │   └── thread_5.json
+    ├── csv/
+    │   └── csv_output.csv
+    └── reports/
+        ├── all/
+        │   └── report.json
+        └── cases/
+            ├── 1_report.json
+            └── 2_report.json
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Tomasz Serafiński.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
