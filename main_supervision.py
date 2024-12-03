@@ -21,7 +21,7 @@ from langgraph.prebuilt import create_react_agent
 
 from langgraph_log_parser import *
 
-exp = initialize_experiment("supervision")
+exp = create_experiment("supervision")
 
 # Inicjalizacja .env
 load_dotenv()
@@ -148,13 +148,8 @@ user_input = {
     ]
 }
 
-run_graph_iterations(
-    graph=graph,
-    starting_thread_id=1,
-    num_repetitions=3,
-    user_input_template=user_input,
-    recursion_limit=100
-)
+run_multiple_iterations(graph=graph, starting_thread_id=1, num_repetitions=3, user_input_template=user_input,
+                        recursion_limit=100)
 
 # for s in graph.stream(
 #     {"messages": [HumanMessage(content="Write a brief research report on pikas.")]},
@@ -173,13 +168,8 @@ user_input = {
     ]
 }
 
-run_graph_iterations(
-    graph=graph,
-    starting_thread_id=4,
-    num_repetitions=3,
-    user_input_template=user_input,
-    recursion_limit=100
-)
+run_multiple_iterations(graph=graph, starting_thread_id=4, num_repetitions=3, user_input_template=user_input,
+                        recursion_limit=100)
 
 export_sqlite_to_jsons(exp.database, exp.json_dir)
 
@@ -198,10 +188,10 @@ export_jsons_to_csv(exp.json_dir, exp.get_csv_path(), graph_config)
 # ANALIZA
 print()
 event_log = load_event_log(exp.get_csv_path())
-print_full_analysis(event_log)
+print_analysis(event_log)
 
-write_a_report(event_log, exp.reports_all_dir)
-write_a_report_case_id(event_log, 1, exp.reports_cases_dir)
-write_a_report_case_id(event_log, 2, exp.reports_cases_dir)
+write_report(event_log, exp.reports_all_dir)
+write_case_report(event_log, 1, exp.reports_cases_dir)
+write_case_report(event_log, 2, exp.reports_cases_dir)
 
 generate_visualizations(event_log, exp.img_dir)

@@ -6,7 +6,7 @@ from collections import Counter
 pd.set_option('display.max_columns', None)
 
 # 12
-def get_sequence_by_case_id(event_log: pd.DataFrame, case_id: int) -> list[str]:
+def get_case_sequence(event_log: pd.DataFrame, case_id: int) -> list[str]:
     """
     Return the activity sequence for a specific case ID.
 
@@ -22,7 +22,7 @@ def get_sequence_by_case_id(event_log: pd.DataFrame, case_id: int) -> list[str]:
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_sequence_by_case_id(event_log,19))
+    >>> print(get_case_sequence(event_log,19))
     Event log loaded and formated from file: files/examples.csv
     ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']
     """
@@ -39,7 +39,7 @@ def get_sequence_by_case_id(event_log: pd.DataFrame, case_id: int) -> list[str]:
     return sequence
 
 #13
-def print_sequence_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
+def print_case_sequence(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the activity sequence for a specific case ID.
 
@@ -52,15 +52,15 @@ def print_sequence_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_sequence_by_case_id(event_log,19)
+    >>> print_case_sequence(event_log,19)
     Event log loaded and formated from file: files/examples.csv
     Activity sequence for case ID 19: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']
     """
-    sequence = get_sequence_by_case_id(event_log, case_id)
+    sequence = get_case_sequence(event_log, case_id)
     print(f"Activity sequence for case ID {case_id}: {sequence}")
 
 #14
-def get_sequence_with_probability_by_case_id(event_log: pd.DataFrame, case_id: int) -> tuple[list[str], float]:
+def get_case_sequence_prob(event_log: pd.DataFrame, case_id: int) -> tuple[list[str], float]:
     """
     Return the activity sequence with its probability for a specific case ID.
 
@@ -76,7 +76,7 @@ def get_sequence_with_probability_by_case_id(event_log: pd.DataFrame, case_id: i
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_sequence_with_probability_by_case_id(event_log,19))
+    >>> print(get_case_sequence_prob(event_log,19))
     Event log loaded and formated from file: files/examples.csv
     (['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor'], 0.3333333333333333)
     """
@@ -85,7 +85,7 @@ def get_sequence_with_probability_by_case_id(event_log: pd.DataFrame, case_id: i
         raise ValueError(f"Case ID {case_id} does not exist in the event log.")
 
     # Pobierz sekwencje o specyficznym case_id
-    sequence = get_sequence_by_case_id(event_log, case_id)
+    sequence = get_case_sequence(event_log, case_id)
 
     # Generujemy probabilistyczny język
     language = pm4py.get_stochastic_language(event_log)
@@ -95,7 +95,7 @@ def get_sequence_with_probability_by_case_id(event_log: pd.DataFrame, case_id: i
     return sequence, probability
 
 #15
-def print_sequence_with_probability_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
+def print_case_sequence_prob(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the activity sequence with its probability for a specific case ID.
 
@@ -108,15 +108,15 @@ def print_sequence_with_probability_by_case_id(event_log: pd.DataFrame, case_id:
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_sequence_with_probability_by_case_id(event_log,19)
+    >>> print_case_sequence_prob(event_log,19)
     Event log loaded and formated from file: files/examples.csv
     Activity sequence with probability for case ID 19: Sequence: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']; Probability: 0.3333333333333333
     """
-    sequence, probability = get_sequence_with_probability_by_case_id(event_log, case_id)
+    sequence, probability = get_case_sequence_prob(event_log, case_id)
     print(f"Activity sequence with probability for case ID {case_id}: Sequence: {sequence}; Probability: {probability}")
 
 #18
-def get_minimum_self_distances_by_case_id(event_log: pd.DataFrame, case_id: int) -> dict[str, int]:
+def get_case_min_self_dists(event_log: pd.DataFrame, case_id: int) -> dict[str, int]:
     """
     Return the minimum self-distances for all activities for a specific case ID.
 
@@ -132,7 +132,7 @@ def get_minimum_self_distances_by_case_id(event_log: pd.DataFrame, case_id: int)
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_minimum_self_distances_by_case_id(event_log,19))
+    >>> print(get_case_min_self_dists(event_log,19))
     Event log loaded and formated from file: files/examples.csv
     {'DocWriter': 1, 'Search': 6, 'WebScraper': 4, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
     """
@@ -153,7 +153,7 @@ def get_minimum_self_distances_by_case_id(event_log: pd.DataFrame, case_id: int)
     return msd
 
 #19
-def print_minimum_self_distances_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
+def print_case_min_self_dists(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the minimum self-distances for all activities for a specific case ID.
 
@@ -166,16 +166,16 @@ def print_minimum_self_distances_by_case_id(event_log: pd.DataFrame, case_id: in
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_minimum_self_distances_by_case_id(event_log,19)
+    >>> print_case_min_self_dists(event_log,19)
     Event log loaded and formated from file: files/examples.csv
     Minimum self distances for case ID 19: {'DocWriter': 1, 'Search': 6, 'WebScraper': 4, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
     """
 
-    min_self_distances = get_minimum_self_distances_by_case_id(event_log, case_id)
+    min_self_distances = get_case_min_self_dists(event_log, case_id)
     print(f"Minimum self distances for case ID {case_id}: {min_self_distances}")
 
 #26
-def get_rework_by_case_id(event_log: pd.DataFrame, case_id: int) -> dict[str, int]:
+def get_case_act_reworks(event_log: pd.DataFrame, case_id: int) -> dict[str, int]:
     """
     Return the rework counts for each activity for a specific case ID.
 
@@ -191,7 +191,7 @@ def get_rework_by_case_id(event_log: pd.DataFrame, case_id: int) -> dict[str, in
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_rework_by_case_id(event_log,19))
+    >>> print(get_case_act_reworks(event_log,19))
     Event log loaded and formated from file: files/examples.csv
     {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'DocWriter': 4}
     """
@@ -218,7 +218,7 @@ def get_rework_by_case_id(event_log: pd.DataFrame, case_id: int) -> dict[str, in
     return rework_counts
 
 #27
-def print_rework_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
+def print_case_act_reworks(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the rework counts for each activity for a specific case ID.
 
@@ -231,15 +231,15 @@ def print_rework_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_rework_by_case_id(event_log,19)
+    >>> print_case_act_reworks(event_log,19)
     Event log loaded and formated from file: files/examples.csv
     Rework counts for case ID 19: {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'DocWriter': 4}
     """
-    rework_counts = get_rework_by_case_id(event_log, case_id)
+    rework_counts = get_case_act_reworks(event_log, case_id)
     print(f"Rework counts for case ID {case_id}: {rework_counts}")
 
 #32
-def get_case_duration_by_id(event_log: pd.DataFrame, case_id: int) -> float:
+def get_case_duration(event_log: pd.DataFrame, case_id: int) -> float:
     """
     Calculate the duration time for a specific case ID.
 
@@ -255,7 +255,7 @@ def get_case_duration_by_id(event_log: pd.DataFrame, case_id: int) -> float:
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_case_duration_by_id(event_log,19))
+    >>> print(get_case_duration(event_log,19))
     Event log loaded and formated from file: files/examples.csv
     120.730501
     """
@@ -271,7 +271,7 @@ def get_case_duration_by_id(event_log: pd.DataFrame, case_id: int) -> float:
     return duration
 
 #33
-def print_case_duration_by_id(event_log: pd.DataFrame, case_id: int) -> None:
+def print_case_duration(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the duration time for a specific case ID.
 
@@ -284,15 +284,15 @@ def print_case_duration_by_id(event_log: pd.DataFrame, case_id: int) -> None:
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_case_duration_by_id(event_log,19)
+    >>> print_case_duration(event_log,19)
     Event log loaded and formated from file: files/examples.csv
     Duration for case ID 19: 120.730501 s
     """
-    duration = get_case_duration_by_id(event_log, case_id)
+    duration = get_case_duration(event_log, case_id)
     print(f"Duration for case ID {case_id}: {duration} s")
 
 #34
-def get_start_activity_by_case_id(event_log: pd.DataFrame, case_id: int) -> str:
+def get_case_start(event_log: pd.DataFrame, case_id: int) -> str:
     """
     Retrieve the first activity for the specified case ID.
 
@@ -307,15 +307,15 @@ def get_start_activity_by_case_id(event_log: pd.DataFrame, case_id: int) -> str:
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_start_activity_by_case_id(event_log,19))
+    >>> print(get_case_start(event_log,19))
     Event log loaded and formated from file: files/examples.csv
     __start__
     """
-    sequence = get_sequence_by_case_id(event_log, case_id)
+    sequence = get_case_sequence(event_log, case_id)
     return sequence[0]
 
 #35
-def print_start_activity_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
+def print_case_start(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the first activity for the specified case ID.
 
@@ -328,15 +328,15 @@ def print_start_activity_by_case_id(event_log: pd.DataFrame, case_id: int) -> No
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_start_activity_by_case_id(event_log,19)
+    >>> print_case_start(event_log,19)
     Event log loaded and formated from file: files/examples.csv
     Start activity for case ID 19: __start__
     """
-    start_activity = get_start_activity_by_case_id(event_log, case_id)
+    start_activity = get_case_start(event_log, case_id)
     print(f"Start activity for case ID {case_id}: {start_activity}")
 
 #36
-def get_end_activity_by_case_id(event_log: pd.DataFrame, case_id: int) -> str:
+def get_case_end(event_log: pd.DataFrame, case_id: int) -> str:
     """
     Retrieve the last activity for the specified case ID.
 
@@ -351,15 +351,15 @@ def get_end_activity_by_case_id(event_log: pd.DataFrame, case_id: int) -> str:
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_end_activity_by_case_id(event_log,19))
+    >>> print(get_case_end(event_log,19))
     Event log loaded and formated from file: files/examples.csv
     test_supervisor
     """
-    sequence = get_sequence_by_case_id(event_log, case_id)
+    sequence = get_case_sequence(event_log, case_id)
     return sequence[-1]
 
 #37
-def print_end_activity_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
+def print_case_end(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the last activity for the specified case ID.
 
@@ -372,15 +372,15 @@ def print_end_activity_by_case_id(event_log: pd.DataFrame, case_id: int) -> None
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_end_activity_by_case_id(event_log,19)
+    >>> print_case_end(event_log,19)
     Event log loaded and formated from file: files/examples.csv
     End activity for case ID 19: test_supervisor
     """
-    end_activity = get_end_activity_by_case_id(event_log, case_id)
+    end_activity = get_case_end(event_log, case_id)
     print(f"End activity for case ID {case_id}: {end_activity}")
 
 #38
-def get_activities_count_by_case_id(event_log: pd.DataFrame, case_id: int) -> dict[str, int]:
+def get_case_act_counts(event_log: pd.DataFrame, case_id: int) -> dict[str, int]:
     """
     Count how many times each activity occurred for the specified case ID.
 
@@ -395,15 +395,15 @@ def get_activities_count_by_case_id(event_log: pd.DataFrame, case_id: int) -> di
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_activities_count_by_case_id(event_log,19))
+    >>> print(get_case_act_counts(event_log,19))
     Event log loaded and formated from file: files/examples.csv
     {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'ChartGenerator': 1, 'DocWriter': 4}
     """
-    sequence = get_sequence_by_case_id(event_log, case_id)
+    sequence = get_case_sequence(event_log, case_id)
     return dict(Counter(sequence))
 
 #39
-def print_activities_count_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
+def print_case_act_counts(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the count of each activity for the specified case ID.
 
@@ -416,15 +416,15 @@ def print_activities_count_by_case_id(event_log: pd.DataFrame, case_id: int) -> 
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_activities_count_by_case_id(event_log,19)
+    >>> print_case_act_counts(event_log,19)
     Event log loaded and formated from file: files/examples.csv
     Count of each activity for case ID 19: {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'ChartGenerator': 1, 'DocWriter': 4}
     """
-    activities_count = get_activities_count_by_case_id(event_log, case_id)
+    activities_count = get_case_act_counts(event_log, case_id)
     print(f"Count of each activity for case ID {case_id}: {activities_count}")
 
 #40
-def get_sum_service_time_by_case_id(event_log: pd.DataFrame, case_id: int) -> dict[str, float]:
+def get_case_sum_act_times(event_log: pd.DataFrame, case_id: int) -> dict[str, float]:
     """
     Calculate the sum service time in seconds for each activity for a specific case ID.
 
@@ -439,7 +439,7 @@ def get_sum_service_time_by_case_id(event_log: pd.DataFrame, case_id: int) -> di
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_sum_service_time_by_case_id(event_log,19))
+    >>> print(get_case_sum_act_times(event_log,19))
     Event log loaded and formated from file: files/examples.csv
     {'ChartGenerator': 0.608224, 'DocWriter': 2.0285469999999997, 'Search': 1.7249849999999998, 'WebScraper': 2.4464859999999997, '__start__': 0.603216, 'ag_supervisor': 0.10220199999999999, 'rg_supervisor': 23.0226, 'test_supervisor': 0.747701}
     """
@@ -468,7 +468,7 @@ def get_sum_service_time_by_case_id(event_log: pd.DataFrame, case_id: int) -> di
     return sum_serv_time
 
 #41
-def print_sum_service_time_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
+def print_case_sum_act_times(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the sum service time in seconds for each activity for a specific case ID.
 
@@ -485,11 +485,11 @@ def print_sum_service_time_by_case_id(event_log: pd.DataFrame, case_id: int) -> 
     Event log loaded and formated from file: files/examples.csv
     Sum service time of each activity for case ID 19 (in sec): {'ChartGenerator': 0.608224, 'DocWriter': 2.0285469999999997, 'Search': 1.7249849999999998, 'WebScraper': 2.4464859999999997, '__start__': 0.603216, 'ag_supervisor': 0.10220199999999999, 'rg_supervisor': 23.0226, 'test_supervisor': 0.747701}
     """
-    sum_time = get_sum_service_time_by_case_id(event_log, case_id)
+    sum_time = get_case_sum_act_times(event_log, case_id)
     print(f"Sum service time of each activity for case ID {case_id} (in sec): {sum_time}")
 
 
-def get_self_distance_witnesses_by_case_id(event_log: pd.DataFrame, case_id: int) -> dict[str, list[list[str]]]:
+def get_case_self_dist_witnesses(event_log: pd.DataFrame, case_id: int) -> dict[str, list[list[str]]]:
     """
     Return the minimum self-distance witnesses for all activities for a specific case ID.
 
@@ -505,7 +505,7 @@ def get_self_distance_witnesses_by_case_id(event_log: pd.DataFrame, case_id: int
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_self_distance_witnesses_by_case_id(event_log,19))
+    >>> print(get_case_self_dist_witnesses(event_log,19))
     Event log loaded and formated from file: files/examples.csv
     {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'ag_supervisor'], ['__start__', 'rg_supervisor']], 'rg_supervisor': [['Search'], ['WebScraper']], 'Search': [['rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'WebScraper': [['rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'ag_supervisor': [['DocWriter'], ['ChartGenerator']], 'DocWriter': [['ag_supervisor']]}
     """
@@ -559,7 +559,7 @@ def get_self_distance_witnesses_by_case_id(event_log: pd.DataFrame, case_id: int
 
     return corrected_witnesses
 
-def print_self_distance_witnesses_by_case_id(event_log: pd.DataFrame, case_id: int) -> None:
+def print_case_self_dist_witnesses(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the minimum self-distance witnesses for all activities for a specific case ID.
 
@@ -572,15 +572,15 @@ def print_self_distance_witnesses_by_case_id(event_log: pd.DataFrame, case_id: i
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print_self_distance_witnesses_by_case_id(event_log,19)
+    >>> print_case_self_dist_witnesses(event_log,19)
     Event log loaded and formated from file: files/examples.csv
     Minimum self distance witnesses for case ID 19: {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'ag_supervisor'], ['__start__', 'rg_supervisor']], 'rg_supervisor': [['Search'], ['WebScraper']], 'Search': [['rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'WebScraper': [['rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'ag_supervisor': [['DocWriter'], ['ChartGenerator']], 'DocWriter': [['ag_supervisor']]}
     """
-    witnesses = get_self_distance_witnesses_by_case_id(event_log, case_id)
+    witnesses = get_case_self_dist_witnesses(event_log, case_id)
     print(f"Minimum self distance witnesses for case ID {case_id}: {witnesses}")
 
 #43
-def print_full_analysis_by_id(event_log: pd.DataFrame, case_id: int) -> None:
+def print_case_analysis(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Run multiple analyses on single case_id and print the results.
 
@@ -625,30 +625,30 @@ def print_full_analysis_by_id(event_log: pd.DataFrame, case_id: int) -> None:
 
     print("\n####################START###########################\n")
 
-    print_start_activity_by_case_id(event_log, case_id)
+    print_case_start(event_log, case_id)
     print()
 
-    print_end_activity_by_case_id(event_log, case_id)
+    print_case_end(event_log, case_id)
     print()
 
-    print_activities_count_by_case_id(event_log, case_id)
+    print_case_act_counts(event_log, case_id)
     print()
 
-    print_sequence_with_probability_by_case_id(event_log, case_id)
+    print_case_sequence_prob(event_log, case_id)
     print()
 
-    print_minimum_self_distances_by_case_id(event_log, case_id)
+    print_case_min_self_dists(event_log, case_id)
     print()
 
-    print_self_distance_witnesses_by_case_id(event_log, case_id)
+    print_case_self_dist_witnesses(event_log, case_id)
     print()
 
-    print_rework_by_case_id(event_log,case_id)
+    print_case_act_reworks(event_log, case_id)
     print()
 
-    print_sum_service_time_by_case_id(event_log, case_id)
+    print_case_sum_act_times(event_log, case_id)
     print()
 
-    print_case_duration_by_id(event_log,case_id)
+    print_case_duration(event_log, case_id)
 
     print("\n######################END###########################")

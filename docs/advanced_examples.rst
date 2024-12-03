@@ -38,11 +38,11 @@ In case of this example - we will have 3 nodes - :code:`Researcher`, :code:`char
 .. code-block:: python
 
     # Needed imports
-    from langgraph_log_parser.create_experiment import initialize_experiment
+    from langgraph_log_parser.experiment import create_experiment
     from langgraph_log_parser.jsons_to_csv import GraphConfig, export_jsons_to_csv
 
     # Init for experiment project structure
-    exp = initialize_experiment("test")
+    exp = create_experiment("test")
 
     # We can add multiple nodes!
     graph_config = GraphConfig(
@@ -69,11 +69,11 @@ In this example, we will introduce :class:`langgraph_log_parser.jsons_to_csv.Sup
 .. code-block:: python
 
     # Needed imports
-    from langgraph_log_parser.create_experiment import initialize_experiment
+    from langgraph_log_parser.experiment import create_experiment
     from langgraph_log_parser.jsons_to_csv import GraphConfig, SupervisorConfig, export_jsons_to_csv
 
     # Init for experiment project structure
-    exp = initialize_experiment("test")
+    exp = create_experiment("test")
 
     # Supervisor for graph
     supervisor = SupervisorConfig(
@@ -112,11 +112,11 @@ IMPORTANT: Be sure to call supervisors with different names - so you can differe
 .. code-block:: python
 
     # Needed imports
-    from langgraph_log_parser.create_experiment import initialize_experiment
+    from langgraph_log_parser.experiment import create_experiment
     from langgraph_log_parser.jsons_to_csv import GraphConfig, SubgraphConfig, SupervisorConfig, export_jsons_to_csv
 
     # Init for experiment project structure
-    exp = initialize_experiment("test")
+    exp = create_experiment("test")
 
     # Config for entire graph supervisor
     graph_supervisor = SupervisorConfig(

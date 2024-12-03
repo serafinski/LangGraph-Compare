@@ -13,7 +13,7 @@ from langgraph.prebuilt import ToolNode, tools_condition
 
 from langgraph_log_parser import *
 
-exp = initialize_experiment("tavily")
+exp = create_experiment("tavily")
 
 # Inicjalizacja .env
 load_dotenv()
@@ -65,7 +65,7 @@ graph = graph_builder.compile(checkpointer=memory)
 
 user_input = {"messages": [("user", "Tell me about PJATK in Warsaw")]}
 
-run_graph_iterations(graph, 1, 3, user_input)
+run_multiple_iterations(graph, 1, 3, user_input)
 
 export_sqlite_to_jsons(exp.database, exp.json_dir)
 
@@ -78,10 +78,10 @@ export_jsons_to_csv(exp.json_dir, exp.get_csv_path(), graph_config)
 # ANALIZA
 print()
 event_log = load_event_log(exp.get_csv_path())
-print_full_analysis(event_log)
+print_analysis(event_log)
 
-write_a_report(event_log, exp.reports_all_dir)
-write_a_report_case_id(event_log, 1, exp.reports_cases_dir)
-write_a_report_case_id(event_log, 2, exp.reports_cases_dir)
+write_report(event_log, exp.reports_all_dir)
+write_case_report(event_log, 1, exp.reports_cases_dir)
+write_case_report(event_log, 2, exp.reports_cases_dir)
 
 generate_visualizations(event_log, exp.img_dir)

@@ -19,13 +19,13 @@ def generate_prefix_tree(event_log: pd.DataFrame, output_path: Optional[str] = N
     >>> event_log = load_event_log(csv_output)
     >>> generate_prefix_tree(event_log)  # Will use default 'tree.png'
     Event log loaded and formated from file: files/examples.csv
-    Prefix Tree saved as: tree.png
+    Prefix Tree saved as: prefix_tree.png
     """
 
     # Use the provided path or construct default
     if output_path is None or os.path.isdir(output_path):
         base_path = output_path or '.'
-        output_path = os.path.join(base_path, 'tree.png')
+        output_path = os.path.join(base_path, 'prefix_tree.png')
 
     # Jeżeli użytkownik nie podał ścieżki
     output_dir = os.path.dirname(output_path)
@@ -93,7 +93,7 @@ def generate_visualizations(
     >>> event_log = load_event_log(csv_output)
     >>> generate_visualizations(event_log, "output/visualizations")
     Generating all process mining visualizations...
-    Prefix Tree saved as: output/visualizations/tree.png
+    Prefix Tree saved as: output/visualizations/prefix_tree.png
     Performance DFG saved as: output/visualizations/dfg_performance.png
     All visualizations generated successfully!
     """
@@ -105,7 +105,7 @@ def generate_visualizations(
     print("Generating all process mining visualizations...")
 
     # Generate prefix tree
-    tree_path = os.path.join(output_dir, 'tree.png')
+    tree_path = os.path.join(output_dir, 'prefix_tree.png')
     generate_prefix_tree(event_log, tree_path)
 
     # Generate performance DFG

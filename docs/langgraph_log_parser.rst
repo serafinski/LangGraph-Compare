@@ -17,18 +17,18 @@ langgraph\_log\_parser.analyze\_case\_id
    :undoc-members:
    :show-inheritance:
 
-langgraph\_log\_parser.create\_experiment
------------------------------------------------
-
-.. automodule:: langgraph_log_parser.create_experiment
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 langgraph\_log\_parser.create\_report
 -----------------------------------------------
 
 .. automodule:: langgraph_log_parser.create_report
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+langgraph\_log\_parser.experiment
+-----------------------------------------------
+
+.. automodule:: langgraph_log_parser.experiment
    :members:
    :undoc-members:
    :show-inheritance:

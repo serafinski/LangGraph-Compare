@@ -3232,6 +3232,38 @@ lint = ["flake8 (>=6.0)", "mypy (==1.11.1)", "pyright (==1.1.384)", "pytest (>=6
 test = ["cython (>=3.0)", "defusedxml (>=0.7.1)", "pytest (>=8.0)", "setuptools (>=70.0)", "typing_extensions (>=4.9)"]
 
 [[package]]
+name = "sphinx-copybutton"
+version = "0.5.2"
+description = "Add a copy button to each of your code cells."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "sphinx-copybutton-0.5.2.tar.gz", hash = "sha256:4cf17c82fb9646d1bc9ca92ac280813a3b605d8c421225fd9913154103ee1fbd"},
+    {file = "sphinx_copybutton-0.5.2-py3-none-any.whl", hash = "sha256:fb543fd386d917746c9a2c50360c7905b605726b9355cd26e9974857afeae06e"},
+]
+
+[package.dependencies]
+sphinx = ">=1.8"
+
+[package.extras]
+code-style = ["pre-commit (==2.12.1)"]
+rtd = ["ipython", "myst-nb", "sphinx", "sphinx-book-theme", "sphinx-examples"]
+
+[[package]]
+name = "sphinx-last-updated-by-git"
+version = "0.3.8"
+description = "Get the \"last updated\" time for each Sphinx page from Git"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "sphinx_last_updated_by_git-0.3.8-py3-none-any.whl", hash = "sha256:6382c8285ac1f222483a58569b78c0371af5e55f7fbf9c01e5e8a72d6fdfa499"},
+    {file = "sphinx_last_updated_by_git-0.3.8.tar.gz", hash = "sha256:c145011f4609d841805b69a9300099fc02fed8f5bb9e5bcef77d97aea97b7761"},
+]
+
+[package.dependencies]
+sphinx = ">=1.8"
+
+[[package]]
 name = "sphinx-rtd-theme"
 version = "3.0.2"
 description = "Read the Docs theme for Sphinx"
@@ -3767,4 +3799,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "9719937b8697d4223e96ef58bcf013043aa8d5100f923718d5807e719790a8e0"
+content-hash = "da28d349b4b39bbc585b40b751b3988e0574729895799cf42004a4966cd92bb0"

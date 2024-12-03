@@ -215,7 +215,7 @@ def _create_folder_structure(folder_name: str) -> None:
         print(f"Error creating folder structure: {error}")
 
 
-def initialize_experiment(name: str) -> ExperimentPaths:
+def create_experiment(name: str) -> ExperimentPaths:
     """
     Main function to set up experiment and return paths. This is the main entry point
     for creating a new experiment structure.
@@ -227,10 +227,10 @@ def initialize_experiment(name: str) -> ExperimentPaths:
 
     **Example:**
 
-    >>> paths = initialize_experiment("my_experiment")
-    Initializing new experiment...
+    >>> paths = create_experiment("my_experiment")
+    Creating new experiment...
     Successfully created 'experiments/my_experiment' with subfolders: db, img, json, csv
-    Experiment 'my_experiment' initialized successfully!
+    Experiment 'my_experiment' created successfully!
     Database path: experiments/my_experiment/db/my_experiment.sqlite
     JSON directory: experiments/my_experiment/json
     CSV directory: experiments/my_experiment/csv
@@ -239,11 +239,11 @@ def initialize_experiment(name: str) -> ExperimentPaths:
     - All reports: experiments/my_experiment/reports/all
     - Case reports: experiments/my_experiment/reports/cases
     """
-    print("\nInitializing new experiment...")
+    print("\nCreating new experiment...")
     _create_folder_structure(name)
     paths = ExperimentPaths(name)
 
-    print(f"\nExperiment '{paths.name}' initialized successfully!")
+    print(f"\nExperiment '{paths.name}' created successfully!")
     print(f"Database path: {paths.database}")
     print(f"JSON directory: {paths.json_dir}")
     print(f"CSV directory: {paths.csv_dir}")

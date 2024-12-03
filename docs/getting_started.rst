@@ -19,15 +19,15 @@ Creating experiment
 ===================
 First, start with creating an experiment folder structure for storing all of Your working data. The data will be stored in :code:`experiments` - a directory automatically created by a package.
 
-To create an experiment, you can use the function :func:`langgraph_log_parser.create_experiment.initialize_experiment`.
+To create an experiment, you can use the function :func:`langgraph_log_parser.experiment.create_experiment`.
 
 This can be done like this:
 
 .. code-block:: python
 
-    from langgraph_log_parser.create_experiment import initialize_experiment
+    from langgraph_log_parser.experiment import create_experiment
 
-    exp = initialize_experiment("test")
+    exp = create_experiment("test")
 
 Function should create a folder structure in :code:`experiments` containing folders :code:`csv`, :code:`db`, :code:`img`, :code:`json` and :code:`reports`.
 
@@ -48,13 +48,13 @@ Additionally, :code:`reports` directory have two sub-directories:
             ├── all/
             └── cases/
 
-For more details, refer to the documentation of the :mod:`langgraph_log_parser.create_experiment` module.
+For more details, refer to the documentation of the :mod:`langgraph_log_parser.experiment` module.
 
 Setting up the database
 =======================
 This package leverages `SqliteSaver <https://langchain-ai.github.io/langgraph/reference/checkpoints/#langgraph.checkpoint.sqlite.SqliteSaver>`_ from LangGraph which allows saving checkpoints in a SQLite database.
 
-The benefit of using previously mentioned :code:`initialize_experiment` is the fact that You don't have to define the paths manually - you can just refer to the properties.
+The benefit of using previously mentioned :code:`create_experiment` is the fact that You don't have to define the paths manually - you can just refer to the properties.
 
 To initiate SQLite correctly, be sure to do the following:
 
@@ -63,10 +63,10 @@ To initiate SQLite correctly, be sure to do the following:
     # Needed imports
     import sqlite3
     from langgraph.checkpoint.sqlite import SqliteSaver
-    from langgraph_log_parser.create_experiment import initialize_experiment
+    from langgraph_log_parser.experiment import create_experiment
 
     # Init for experiment project structure
-    exp = initialize_experiment("test")
+    exp = create_experiment("test")
 
     # Initiate connection
     # Using init allows to refer to properties of the experiment
@@ -83,7 +83,7 @@ Running graph multiple times
 ============================
 Since the aim of this package is to monitor and compare multi-agent architectures - we need to run the graphs multiple times to be able to compare the results.
 
-Because of this, I've created :func:`langgraph_log_parser.graph_runner.run_graph_iterations`.
+Because of this, I've created :func:`langgraph_log_parser.graph_runner.run_multiple_iterations`.
 
 This function will create a thread for every single run of the graph - starting from selected :code:`starting_thread_id`.
 
@@ -91,13 +91,13 @@ This function will create a thread for every single run of the graph - starting 
 
 .. code-block:: python
 
-    from langgraph_log_parser.graph_runner import run_graph_iterations
+    from langgraph_log_parser.graph_runner import run_multiple_iterations
 
     # Graph with SQLite checkpointer memory
     graph = graph_builder.compile(checkpointer=memory)
 
     # This takes graph and runs it 5 times - creating 1 thread for every single run, starting from thread_id=1
-    run_graph_iterations(graph, 1,5, {"messages": [("user", "Tell me a joke")]})
+    run_multiple_iterations(graph, 1,5, {"messages": [("user", "Tell me a joke")]})
 
 For more details, refer to the documentation of the :mod:`langgraph_log_parser.graph_runner` module.
 
@@ -109,18 +109,18 @@ For this, I've created a function :func:`langgraph_log_parser.sql_to_jsons.expor
 
 Post deserialization - function saves every single thread to a separate :code:`json` file.
 
-Once again - the benefits of using :code:`initialize_experiment` - you can just refer to the properties.
+Once again - the benefits of using :code:`create_experiment` - you can just refer to the properties.
 
 **Example:**
 
 .. code-block:: python
 
     # Needed imports
-    from langgraph_log_parser.create_experiment import initialize_experiment
+    from langgraph_log_parser.experiment import create_experiment
     from langgraph_log_parser.sql_to_jsons import export_sqlite_to_jsons
 
     # Init for experiment project structure
-    exp = initialize_experiment("test")
+    exp = create_experiment("test")
 
     # Rest of the code...
 
@@ -153,10 +153,10 @@ For more details, refer to the documentation of the :mod:`langgraph_log_parser.s
 
 Exporting JSON's to CSV
 =======================
-We retrieved the data from the database. Now it's time to create a :code:`.csv` file that can be loaded as an event log.
+We retrieved the data from the database. Now it's time to create a :code:`csv` file that can be loaded as an event log.
 
 For this, I've created :func:`langgraph_log_parser.jsons_to_csv.export_jsons_to_csv`.
-This function takes every singe :code:`.json` file from a selected directory and parses it - extracting all the necessary data to create an event log.
+This function takes every singe :code:`json` file from a selected directory and parses it - extracting all the necessary data to create an event log.
 This requires :class:`langgraph_log_parser.jsons_to_csv.GraphConfig` a custom class that defines how a graph was configured, so parser can parse accordingly.
 
 In this example, we will focus on a basic usage of :code:`GraphConfig`.
@@ -166,18 +166,18 @@ I will dive deeper into :code:`GraphConfig` in :ref:`advanced_examples`.
 
 In case of `Building a Basic Chatbot <https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-1-build-a-basic-chatbot>`_, we have only one node called :code:`chatbot_node`.
 
-Because of that, we will only have one node in :code:`nodes` list. Once graph config is defined, we can execute the needed method to export all JSON's to one :code:`.csv` file.
+Because of that, we will only have one node in :code:`nodes` list. Once graph config is defined, we can execute the needed method to export all JSON's to one :code:`csv` file.
 
-In this case, You can also use the benefits of :code:`initialize_experiment`.
+In this case, You can also use the benefits of :code:`create_experiment`.
 
 .. code-block:: python
 
     # Needed imports
-    from langgraph_log_parser.create_experiment import initialize_experiment
+    from langgraph_log_parser.experiment import create_experiment
     from langgraph_log_parser.jsons_to_csv import GraphConfig, export_jsons_to_csv
 
     # Init for experiment project structure
-    exp = initialize_experiment("test")
+    exp = create_experiment("test")
 
     # Rest of the code...
 
@@ -215,7 +215,7 @@ For more details, refer to the documentation of the :mod:`langgraph_log_parser.j
 
 Running analysis
 ================
-We've successfully parsed JSON's into the :code:`.csv` file. Now we can run analysis on the event log.
+We've successfully parsed JSON's into the :code:`csv` file. Now we can run analysis on the event log.
 
 **I'm not going to go into details on every single function and what it does - we will focus on one that prints full analysis into the console - since it's the easiest way to see the analysis.**
 
@@ -230,17 +230,17 @@ In both examples we will use :func:`langgraph_log_parser.load_events.load_event_
 Analysis on entire event log
 ----------------------------
 
-In case of printing analysis for entire event log, we will use :func:`langgraph_log_parser.analyze.print_full_analysis` from module :mod:`langgraph_log_parser.analyze`.
+In case of printing analysis for entire event log, we will use :func:`langgraph_log_parser.analyze.print_analysis` from module :mod:`langgraph_log_parser.analyze`.
 
 .. code-block:: python
 
     # Needed imports
-    from langgraph_log_parser.create_experiment import initialize_experiment
+    from langgraph_log_parser.experiment import create_experiment
     from langgraph_log_parser.load_events import load_event_log
-    from langgraph_log_parser.analyze import print_full_analysis
+    from langgraph_log_parser.analyze import print_analysis
 
     # Init for experiment project structure
-    exp = initialize_experiment("test")
+    exp = create_experiment("test")
 
     # Rest of the code...
 
@@ -250,7 +250,7 @@ In case of printing analysis for entire event log, we will use :func:`langgraph_
     event_log = load_event_log(exp.get_csv_path())
 
     # This function will print an analysis in console for entire event log
-    print_full_analysis(event_log)
+    print_analysis(event_log)
 
 This will return information for every :code:`thread_id` `(case_id)` about the following:
 
@@ -268,17 +268,17 @@ This will return information for every :code:`thread_id` `(case_id)` about the f
 Analysis on single case_id
 --------------------------
 
-In case of printing analysis for single :code:`case_id`, we will use :func:`langgraph_log_parser.analyze_case_id.print_full_analysis_by_id` from module :mod:`langgraph_log_parser.analyze_case_id`.
+In case of printing analysis for single :code:`case_id`, we will use :func:`langgraph_log_parser.analyze_case_id.print_case_analysis` from module :mod:`langgraph_log_parser.analyze_case_id`.
 
 .. code-block:: python
 
     # Needed imports
-    from langgraph_log_parser.create_experiment import initialize_experiment
+    from langgraph_log_parser.experiment import create_experiment
     from langgraph_log_parser.load_events import load_event_log
-    from langgraph_log_parser.analyze_case_id import print_full_analysis_by_id
+    from langgraph_log_parser.analyze_case_id import print_case_analysis
 
     # Init for experiment project structure
-    exp = initialize_experiment("test")
+    exp = create_experiment("test")
 
     # Rest of the code...
 
@@ -290,7 +290,7 @@ In case of printing analysis for single :code:`case_id`, we will use :func:`lang
     case_id = 15
 
     # This function will print an analysis in console for single case_id
-    print_full_analysis_by_id(event_log,case_id)
+    print_case_analysis(event_log,case_id)
 
 This will return information for single :code:`thread_id` `(case_id)` about the following:
 
@@ -315,17 +315,17 @@ We are going to use :func:`langgraph_log_parser.visualize.generate_visualization
 
 You can find every function specification in module :mod:`langgraph_log_parser.visualize`.
 
-Once again, utilize the :code:`initialize_experiment` properties.
+Once again, utilize the :code:`create_experiment` properties.
 
 .. code-block:: python
 
     # Needed imports
-    from langgraph_log_parser.create_experiment import initialize_experiment
+    from langgraph_log_parser.experiment import create_experiment
     from langgraph_log_parser.load_events import load_event_log
     from langgraph_log_parser.visualize import generate_visualizations
 
     # Init for experiment project structure
-    exp = initialize_experiment("test")
+    exp = create_experiment("test")
 
     # Rest of the code...
 
@@ -379,23 +379,23 @@ This graph can also be generated using :func:`langgraph_log_parser.visualize.gen
 Generating reports
 ==================
 We can generate reports for entire :code:`event_log` or single :code:`case_id`.
-The reports will be saved in a :code:`.json` format and could be used in a comparison report.
+The reports will be saved in a :code:`json` format and could be used in a comparison report.
 
-In both cases, we can use :code:`initialize_experiment` properties - we will use different property based on the use case.
+In both cases, we can use :code:`create_experiment` properties - we will use different property based on the use case.
 
 Report for entire Event Log
 ---------------------------
-In case of entire log, we will need to use a :func:`langgraph_log_parser.create_report.write_a_report` with property :code:`reports_all_dir`.
+In case of entire log, we will need to use a :func:`langgraph_log_parser.create_report.write_report` with property :code:`reports_all_dir`.
 
 .. code-block:: python
 
     # Needed imports
-    from langgraph_log_parser.create_experiment import initialize_experiment
+    from langgraph_log_parser.experiment import create_experiment
     from langgraph_log_parser.load_events import load_event_log
-    from langgraph_log_parser.create_report import write_a_report
+    from langgraph_log_parser.create_report import write_report
 
     # Init for experiment project structure
-    exp = initialize_experiment("test")
+    exp = create_experiment("test")
 
     # Rest of the code...
 
@@ -405,7 +405,7 @@ In case of entire log, we will need to use a :func:`langgraph_log_parser.create_
     event_log = load_event_log(exp.get_csv_path())
 
     # Function for saving report for entire event_log
-    write_a_report(event_log, exp.reports_all_dir)
+    write_report(event_log, exp.reports_all_dir)
 
 **Folder structure should like this now:**
 
@@ -433,17 +433,17 @@ In case of entire log, we will need to use a :func:`langgraph_log_parser.create_
 
 Report for singe Case ID
 ------------------------
-In case of single case ID, we will need to use a :func:`langgraph_log_parser.create_report.write_a_report_case_id` with property :code:`reports_cases_dir`.
+In case of single case ID, we will need to use a :func:`langgraph_log_parser.create_report.write_case_report` with property :code:`reports_cases_dir`.
 
 .. code-block:: python
 
     # Needed imports
-    from langgraph_log_parser.create_experiment import initialize_experiment
+    from langgraph_log_parser.experiment import create_experiment
     from langgraph_log_parser.load_events import load_event_log
-    from langgraph_log_parser.create_report import write_a_report_case_id
+    from langgraph_log_parser.create_report import write_case_report
 
     # Init for experiment project structure
-    exp = initialize_experiment("test")
+    exp = create_experiment("test")
 
     # Rest of the code...
 
@@ -453,9 +453,9 @@ In case of single case ID, we will need to use a :func:`langgraph_log_parser.cre
     event_log = load_event_log(exp.get_csv_path())
 
     # This will generate report for case_id = 1
-    write_a_report_case_id(event_log, 1, exp.reports_all_dir)
+    write_case_report(event_log, 1, exp.reports_all_dir)
     # This will generate report for case_id = 2
-    write_a_report_case_id(event_log, 2, exp.reports_all_dir)
+    write_case_report(event_log, 2, exp.reports_all_dir)
 
 **Folder structure should like this now:**
 

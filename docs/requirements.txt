@@ -1,5 +1,7 @@
 sphinx
 sphinx_rtd_theme
+sphinx_copybutton
+sphinx_last_updated_by_git
 ghp-import
 pandas
 pm4py

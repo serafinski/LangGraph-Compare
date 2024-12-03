@@ -2,7 +2,7 @@ from typing import Dict, Any
 from langgraph.graph import StateGraph
 
 
-def run_graph_iterations(
+def run_multiple_iterations(
         graph: StateGraph,
         starting_thread_id: int,
         num_repetitions: int,
@@ -31,7 +31,7 @@ def run_graph_iterations(
         graph = graph_builder.compile(checkpointer=memory)
 
         # Run the graph for 3 iterations, starting from thread ID 1
-        run_graph_iterations(graph, 1, 3, {"messages": [("user", "Tell me a joke")]})
+        run_multiple_iterations(graph, 1, 3, {"messages": [("user", "Tell me a joke")]})
 
         # Output:
         # Iteration: 1, Thread_ID 1
