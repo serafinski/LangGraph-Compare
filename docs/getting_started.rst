@@ -329,13 +329,16 @@ Once again, utilize the :code:`create_experiment` properties.
 
     # Rest of the code...
 
+    # Graph is needed for the mermaid graph
+    graph = graph_builder.compile(checkpointer=memory)
+
     # Using to load events from .csv file
     # It looks for a default name "csv_output.csv" in csv experiment directory
     # If you used the custom name -> be sure to put it in parenthesis - like - exp.get_csv_path("my_csv.csv").
     event_log = load_event_log(exp.get_csv_path())
 
     # Function saving every visualisation
-    generate_visualizations(event_log, exp.img_dir)
+    generate_visualizations(event_log, graph, exp.img_dir)
 
 **Folder structure should like this now:**
 
@@ -346,8 +349,9 @@ Once again, utilize the :code:`create_experiment` properties.
         ├── db/
         │   └── test.sqlite
         ├── img/
-        │   ├── tree.png
-        │   └── dfg_performance.png
+        │   ├── dfg_performance.png
+        │   ├── mermaid.png
+        │   └── prefix_tree.png
         ├── json/
         │   ├── thread_1.json
         │   ├── thread_2.json
@@ -362,19 +366,26 @@ Once again, utilize the :code:`create_experiment` properties.
 
 **Sample graphs:**
 
-This graph can also be generated using :func:`langgraph_log_parser.visualize.generate_prefix_tree`.
-
-.. figure:: img/sample_tree.png
-  :width: 800
-
-  Sample prefix tree
-
 This graph can also be generated using :func:`langgraph_log_parser.visualize.generate_performance_dfg`.
 
 .. figure:: img/sample_dfg_performance.png
   :width: 800
 
   Sample performance dfg
+
+This graph can also be generated using :func:`langgraph_log_parser.visualize.generate_mermaid`.
+
+.. figure:: img/sample_mermaid.png
+  :width: 400
+
+  Sample mermaid graph
+
+This graph can also be generated using :func:`langgraph_log_parser.visualize.generate_prefix_tree`.
+
+.. figure:: img/sample_tree.png
+  :width: 800
+
+  Sample prefix tree
 
 Generating reports
 ==================
@@ -416,8 +427,9 @@ In case of entire log, we will need to use a :func:`langgraph_log_parser.create_
         ├── db/
         │   └── test.sqlite
         ├── img/
-        │   ├── tree.png
-        │   └── dfg_performance.png
+        │   ├── dfg_performance.png
+        │   ├── mermaid.png
+        │   └── prefix_tree.png
         ├── json/
         │   ├── thread_1.json
         │   ├── thread_2.json
@@ -466,8 +478,9 @@ In case of single case ID, we will need to use a :func:`langgraph_log_parser.cre
         ├── db/
         │   └── test.sqlite
         ├── img/
-        │   ├── tree.png
-        │   └── dfg_performance.png
+        │   ├── dfg_performance.png
+        │   ├── mermaid.png
+        │   └── prefix_tree.png
         ├── json/
         │   ├── thread_1.json
         │   ├── thread_2.json

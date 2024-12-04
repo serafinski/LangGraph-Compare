@@ -42,7 +42,7 @@ __all__ = [
     "export_sqlite_to_jsons",
 
     # Functions - visualize
-    "generate_prefix_tree", "generate_performance_dfg", "generate_visualizations",
+    "generate_mermaid", "generate_prefix_tree", "generate_performance_dfg", "generate_visualizations",
 
     # Functions - experiment
     "create_experiment",

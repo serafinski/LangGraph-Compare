@@ -1,9 +1,8 @@
 from typing import Dict, Any
-from langgraph.graph import StateGraph
-
+from langgraph.graph.state import CompiledStateGraph
 
 def run_multiple_iterations(
-        graph: StateGraph,
+        graph: CompiledStateGraph,
         starting_thread_id: int,
         num_repetitions: int,
         user_input_template: Dict[str, Any],
