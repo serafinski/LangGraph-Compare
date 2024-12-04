@@ -5,9 +5,9 @@
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta property="article:modified_time" content="2024-12-03T21:08:54+00:00" />
+    <meta property="article:modified_time" content="2024-12-04T20:57:19+00:00" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Langgraph Log Parser Package &mdash; LangGraph Log Parser 0.1.5 documentation</title>
+  <title>Langgraph Log Parser Package &mdash; LangGraph Log Parser 0.1.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=59fadc99"></script>
+      <script src="_static/documentation_options.js?v=6e0256f3"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -126,6 +126,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-langgraph_log_parser.visualize">langgraph_log_parser.visualize</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.visualize.generate_mermaid"><code class="docutils literal notranslate"><span class="pre">generate_mermaid()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.visualize.generate_performance_dfg"><code class="docutils literal notranslate"><span class="pre">generate_performance_dfg()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.visualize.generate_prefix_tree"><code class="docutils literal notranslate"><span class="pre">generate_prefix_tree()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.visualize.generate_visualizations"><code class="docutils literal notranslate"><span class="pre">generate_visualizations()</span></code></a></li>
@@ -1584,7 +1585,7 @@ for creating a new experiment structure.</p>
 <span id="langgraph-log-parser-graph-runner"></span><h2>langgraph_log_parser.graph_runner<a class="headerlink" href="#module-langgraph_log_parser.graph_runner" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="langgraph_log_parser.graph_runner.run_multiple_iterations">
-<span class="sig-prename descclassname"><span class="pre">langgraph_log_parser.graph_runner.</span></span><span class="sig-name descname"><span class="pre">run_multiple_iterations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">StateGraph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starting_thread_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_repetitions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_input_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursion_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/langgraph_log_parser/graph_runner.html#run_multiple_iterations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langgraph_log_parser.graph_runner.run_multiple_iterations" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">langgraph_log_parser.graph_runner.</span></span><span class="sig-name descname"><span class="pre">run_multiple_iterations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CompiledStateGraph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starting_thread_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_repetitions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_input_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursion_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/langgraph_log_parser/graph_runner.html#run_multiple_iterations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langgraph_log_parser.graph_runner.run_multiple_iterations" title="Link to this definition"></a></dt>
 <dd><p>Run the provided graph <cite>num_repetitions</cite> times, incrementing the thread_id each time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1797,6 +1798,27 @@ for creating a new experiment structure.</p>
 <section id="module-langgraph_log_parser.visualize">
 <span id="langgraph-log-parser-visualize"></span><h2>langgraph_log_parser.visualize<a class="headerlink" href="#module-langgraph_log_parser.visualize" title="Link to this heading"></a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="langgraph_log_parser.visualize.generate_mermaid">
+<span class="sig-prename descclassname"><span class="pre">langgraph_log_parser.visualize.</span></span><span class="sig-name descname"><span class="pre">generate_mermaid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CompiledStateGraph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/langgraph_log_parser/visualize.html#generate_mermaid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langgraph_log_parser.visualize.generate_mermaid" title="Link to this definition"></a></dt>
+<dd><p>Generate and save a mermaid graph visualization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graph</strong> (<em>CompiledStateGraph</em>) – Compiled state graph</p></li>
+<li><p><strong>output_path</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Path to save the mermaid visualization, defaults to ‘mermaid.png’</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">graph_builder</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">checkpointer</span><span class="o">=</span><span class="n">memory</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_mermaid</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>  <span class="c1"># Will use default &#39;mermaid.png&#39;</span>
+<span class="go">Event log loaded and formated from file: files/examples.csv</span>
+<span class="go">Mermaid saved as: mermaid.png</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="langgraph_log_parser.visualize.generate_performance_dfg">
 <span class="sig-prename descclassname"><span class="pre">langgraph_log_parser.visualize.</span></span><span class="sig-name descname"><span class="pre">generate_performance_dfg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/langgraph_log_parser/visualize.html#generate_performance_dfg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langgraph_log_parser.visualize.generate_performance_dfg" title="Link to this definition"></a></dt>
 <dd><p>Generate and save a visualization of directly-follows graph annotated with performance.</p>
@@ -1804,7 +1826,7 @@ for creating a new experiment structure.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>event_log</strong> (<em>pd.DataFrame</em>) – Event log data.</p></li>
-<li><p><strong>output_path</strong> (<em>str</em>) – Path to save the visualization of dfg with performance.</p></li>
+<li><p><strong>output_path</strong> (<em>str</em>) – Path to save the visualization of dfg with performance, defaults to ‘dfg_performance.png’.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1826,7 +1848,7 @@ for creating a new experiment structure.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>event_log</strong> (<em>pd.DataFrame</em>) – Event log data.</p></li>
-<li><p><strong>output_path</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Path to save the prefix tree visualization, defaults to ‘tree.png’</p></li>
+<li><p><strong>output_path</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Path to save the prefix tree visualization, defaults to ‘prefix_tree.png’</p></li>
 </ul>
 </dd>
 </dl>
@@ -1842,12 +1864,13 @@ for creating a new experiment structure.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="langgraph_log_parser.visualize.generate_visualizations">
-<span class="sig-prename descclassname"><span class="pre">langgraph_log_parser.visualize.</span></span><span class="sig-name descname"><span class="pre">generate_visualizations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/langgraph_log_parser/visualize.html#generate_visualizations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langgraph_log_parser.visualize.generate_visualizations" title="Link to this definition"></a></dt>
-<dd><p>Generate and save all process mining visualizations.</p>
+<span class="sig-prename descclassname"><span class="pre">langgraph_log_parser.visualize.</span></span><span class="sig-name descname"><span class="pre">generate_visualizations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CompiledStateGraph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/langgraph_log_parser/visualize.html#generate_visualizations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langgraph_log_parser.visualize.generate_visualizations" title="Link to this definition"></a></dt>
+<dd><p>Generate and save all process visualizations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>event_log</strong> (<em>pd.DataFrame</em>) – Event log data</p></li>
+<li><p><strong>graph</strong> (<em>CompiledStateGraph</em>) – Compiled state graph</p></li>
 <li><p><strong>output_dir</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Directory to save the visualizations</p></li>
 </ul>
 </dd>
@@ -1857,6 +1880,7 @@ for creating a new experiment structure.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">csv_output</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">generate_visualizations</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="s2">&quot;output/visualizations&quot;</span><span class="p">)</span>
 <span class="go">Generating all process mining visualizations...</span>
+<span class="go">Mermaid saved as: output/visualizations/mermaid.png</span>
 <span class="go">Prefix Tree saved as: output/visualizations/prefix_tree.png</span>
 <span class="go">Performance DFG saved as: output/visualizations/dfg_performance.png</span>
 <span class="go">All visualizations generated successfully!</span>
@@ -1878,7 +1902,7 @@ for creating a new experiment structure.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2024, Tomasz Serafiński.
-      <span class="lastupdated">Last updated on Dec 03, 2024.
+      <span class="lastupdated">Last updated on Dec 04, 2024.
       </span></p>
   </div>
 
