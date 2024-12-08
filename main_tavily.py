@@ -81,7 +81,5 @@ event_log = load_event_log(exp.get_csv_path())
 print_analysis(event_log)
 
 write_report(event_log, exp.reports_all_dir)
-write_case_report(event_log, 1, exp.reports_cases_dir)
-write_case_report(event_log, 2, exp.reports_cases_dir)
 
 generate_visualizations(event_log, graph, exp.img_dir)
