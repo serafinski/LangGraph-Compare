@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>langgraph_log_parser.create_report &mdash; LangGraph Log Parser 0.1.6 documentation</title>
+  <title>langgraph_log_parser.create_report &mdash; LangGraph Log Parser 0.1.7 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=6e0256f3"></script>
+      <script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -123,16 +123,10 @@
     <span class="n">event_log</span> <span class="o">=</span> <span class="n">event_log</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
     <span class="n">structured_data</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;start_activities&quot;</span><span class="p">:</span> <span class="n">get_starts</span><span class="p">(</span><span class="n">event_log</span><span class="p">),</span>
-        <span class="s2">&quot;end_activities&quot;</span><span class="p">:</span> <span class="n">get_ends</span><span class="p">(</span><span class="n">event_log</span><span class="p">),</span>
         <span class="s2">&quot;activities_count&quot;</span><span class="p">:</span> <span class="n">get_act_counts</span><span class="p">(</span><span class="n">event_log</span><span class="p">),</span>
-        <span class="s2">&quot;sequences&quot;</span><span class="p">:</span> <span class="n">get_sequences</span><span class="p">(</span><span class="n">event_log</span><span class="p">),</span>
-        <span class="s2">&quot;sequences_with_probabilities&quot;</span><span class="p">:</span> <span class="n">get_sequence_probs</span><span class="p">(</span><span class="n">event_log</span><span class="p">),</span>
-        <span class="s2">&quot;minimum_self_distances&quot;</span><span class="p">:</span> <span class="n">get_min_self_dists</span><span class="p">(</span><span class="n">event_log</span><span class="p">),</span>
-        <span class="s2">&quot;self_distance_witnesses&quot;</span><span class="p">:</span> <span class="n">get_self_dist_witnesses</span><span class="p">(</span><span class="n">event_log</span><span class="p">),</span>
-        <span class="s2">&quot;rework_counts&quot;</span><span class="p">:</span> <span class="n">get_act_reworks</span><span class="p">(</span><span class="n">event_log</span><span class="p">),</span>
+        <span class="s2">&quot;rework_counts&quot;</span><span class="p">:</span> <span class="n">get_global_act_reworks</span><span class="p">(</span><span class="n">event_log</span><span class="p">),</span>
         <span class="s2">&quot;activities_mean_service_time&quot;</span><span class="p">:</span> <span class="n">get_mean_act_times</span><span class="p">(</span><span class="n">event_log</span><span class="p">),</span>
-        <span class="s2">&quot;cases_durations&quot;</span><span class="p">:</span> <span class="n">get_durations</span><span class="p">(</span><span class="n">event_log</span><span class="p">),</span>
+        <span class="s2">&quot;avg_case_duration&quot;</span><span class="p">:</span> <span class="n">get_avg_duration</span><span class="p">(</span><span class="n">event_log</span><span class="p">),</span>
     <span class="p">}</span>
 
     <span class="k">if</span> <span class="n">output_file</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">output_file</span><span class="p">):</span>

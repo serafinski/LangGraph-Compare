@@ -5,9 +5,9 @@
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta property="article:modified_time" content="2024-12-04T20:57:19+00:00" />
+    <meta property="article:modified_time" content="2024-12-08T19:26:05+00:00" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Langgraph Log Parser Package &mdash; LangGraph Log Parser 0.1.6 documentation</title>
+  <title>Langgraph Log Parser Package &mdash; LangGraph Log Parser 0.1.7 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=6e0256f3"></script>
+      <script src="_static/documentation_options.js?v=ca7ad2ea"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -51,8 +51,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-langgraph_log_parser.analyze">langgraph_log_parser.analyze</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.get_act_counts"><code class="docutils literal notranslate"><span class="pre">get_act_counts()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.get_act_reworks"><code class="docutils literal notranslate"><span class="pre">get_act_reworks()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.get_avg_duration"><code class="docutils literal notranslate"><span class="pre">get_avg_duration()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.get_durations"><code class="docutils literal notranslate"><span class="pre">get_durations()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.get_ends"><code class="docutils literal notranslate"><span class="pre">get_ends()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.get_global_act_reworks"><code class="docutils literal notranslate"><span class="pre">get_global_act_reworks()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.get_mean_act_times"><code class="docutils literal notranslate"><span class="pre">get_mean_act_times()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.get_min_self_dists"><code class="docutils literal notranslate"><span class="pre">get_min_self_dists()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.get_self_dist_witnesses"><code class="docutils literal notranslate"><span class="pre">get_self_dist_witnesses()</span></code></a></li>
@@ -62,8 +64,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.print_act_counts"><code class="docutils literal notranslate"><span class="pre">print_act_counts()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.print_act_reworks"><code class="docutils literal notranslate"><span class="pre">print_act_reworks()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.print_analysis"><code class="docutils literal notranslate"><span class="pre">print_analysis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.print_avg_duration"><code class="docutils literal notranslate"><span class="pre">print_avg_duration()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.print_durations"><code class="docutils literal notranslate"><span class="pre">print_durations()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.print_ends"><code class="docutils literal notranslate"><span class="pre">print_ends()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.print_global_act_reworks"><code class="docutils literal notranslate"><span class="pre">print_global_act_reworks()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.print_mean_act_times"><code class="docutils literal notranslate"><span class="pre">print_mean_act_times()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.print_min_self_dists"><code class="docutils literal notranslate"><span class="pre">print_min_self_dists()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze.print_self_dist_witnesses"><code class="docutils literal notranslate"><span class="pre">print_self_dist_witnesses()</span></code></a></li>
@@ -94,6 +98,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze_case_id.print_case_sequence_prob"><code class="docutils literal notranslate"><span class="pre">print_case_sequence_prob()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze_case_id.print_case_start"><code class="docutils literal notranslate"><span class="pre">print_case_start()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.analyze_case_id.print_case_sum_act_times"><code class="docutils literal notranslate"><span class="pre">print_case_sum_act_times()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-langgraph_log_parser.create_html">langgraph_log_parser.create_html</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#langgraph_log_parser.create_html.compare"><code class="docutils literal notranslate"><span class="pre">compare()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-langgraph_log_parser.create_report">langgraph_log_parser.create_report</a><ul>
@@ -210,11 +218,28 @@
 <p><strong>Example:</strong></p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">csv_output</span> <span class="o">=</span> <span class="s2">&quot;files/examples.csv&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">csv_output</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">get_act_reworks</span><span class="p">(</span><span class="n">event_log</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">get_global_act_reworks</span><span class="p">(</span><span class="n">event_log</span><span class="p">))</span>
 <span class="go">Event log loaded and formated from file: files/examples.csv</span>
 <span class="go">{18: {}, 19: {&#39;__start__&#39;: 18, &#39;test_supervisor&#39;: 18, &#39;rg_supervisor&#39;: 15, &#39;Search&#39;: 3, &#39;WebScraper&#39;: 4, &#39;ag_supervisor&#39;: 14, &#39;DocWriter&#39;: 4}, 20: {&#39;__start__&#39;: 8, &#39;test_supervisor&#39;: 8, &#39;rg_supervisor&#39;: 7, &#39;Search&#39;: 2, &#39;ag_supervisor&#39;: 12, &#39;ChartGenerator&#39;: 2, &#39;DocWriter&#39;: 4, &#39;NoteTaker&#39;: 3}}</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="langgraph_log_parser.analyze.get_avg_duration">
+<span class="sig-prename descclassname"><span class="pre">langgraph_log_parser.analyze.</span></span><span class="sig-name descname"><span class="pre">get_avg_duration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/langgraph_log_parser/analyze.html#get_avg_duration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langgraph_log_parser.analyze.get_avg_duration" title="Link to this definition"></a></dt>
+<dd><p>Calculate average duration of the case in seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event_log</strong> (<em>pd.DataFrame</em>) – Event log data.</p>
+</dd>
+</dl>
+<p>** Example:**
+&gt;&gt;&gt; csv_output = “files/examples.csv”
+&gt;&gt;&gt; event_log = load_event_log(csv_output)
+&gt;&gt;&gt; print(get_avg_duration(event_log))
+Event log loaded and formated from file: files/examples.csv
+91.56</p>
 </dd></dl>
 
 <dl class="py function">
@@ -263,6 +288,34 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">get_ends</span><span class="p">(</span><span class="n">event_log</span><span class="p">))</span>
 <span class="go">Event log loaded and formated from file: files/examples.csv</span>
 <span class="go">{&#39;test_supervisor&#39;: 3}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="langgraph_log_parser.analyze.get_global_act_reworks">
+<span class="sig-prename descclassname"><span class="pre">langgraph_log_parser.analyze.</span></span><span class="sig-name descname"><span class="pre">get_global_act_reworks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/langgraph_log_parser/analyze.html#get_global_act_reworks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langgraph_log_parser.analyze.get_global_act_reworks" title="Link to this definition"></a></dt>
+<dd><p>Return the global rework counts for each activity by summing reworks from each case.
+A rework is counted when an activity appears more than once within the same case.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event_log</strong> (<em>pd.DataFrame</em>) – Event log data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Global rework counts for each activity.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">csv_output</span> <span class="o">=</span> <span class="s2">&quot;files/examples.csv&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">csv_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">get_global_act_reworks</span><span class="p">(</span><span class="n">event_log</span><span class="p">))</span>
+<span class="go">Event log loaded and formated from file: files/examples.csv</span>
+<span class="go">{&#39;__start__&#39;: 24, &#39;test_supervisor&#39;: 24, &#39;rg_supervisor&#39;: 20, &#39;Search&#39;: 3, </span>
+<span class="go"> &#39;WebScraper&#39;: 2, &#39;ag_supervisor&#39;: 24, &#39;DocWriter&#39;: 6, &#39;ChartGenerator&#39;: 1, </span>
+<span class="go"> &#39;NoteTaker&#39;: 2}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -521,6 +574,25 @@ If sequence already occurred it only lists the ID of the latest occurrence.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="langgraph_log_parser.analyze.print_avg_duration">
+<span class="sig-prename descclassname"><span class="pre">langgraph_log_parser.analyze.</span></span><span class="sig-name descname"><span class="pre">print_avg_duration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/langgraph_log_parser/analyze.html#print_avg_duration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langgraph_log_parser.analyze.print_avg_duration" title="Link to this definition"></a></dt>
+<dd><p>Print the average duration of the case in seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event_log</strong> (<em>pd.DataFrame</em>) – Event log data.</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">csv_output</span> <span class="o">=</span> <span class="s2">&quot;files/examples.csv&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">csv_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_avg_duration</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+<span class="go">Event log loaded and formated from file: files/examples.csv</span>
+<span class="go">Average case duration: 91.56 s</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="langgraph_log_parser.analyze.print_durations">
 <span class="sig-prename descclassname"><span class="pre">langgraph_log_parser.analyze.</span></span><span class="sig-name descname"><span class="pre">print_durations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/langgraph_log_parser/analyze.html#print_durations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langgraph_log_parser.analyze.print_durations" title="Link to this definition"></a></dt>
 <dd><p>Print the duration of each case in seconds.</p>
@@ -559,6 +631,22 @@ If sequence already occurred it only lists the ID of the latest occurrence.</p>
 <span class="go">End activities: {&#39;test_supervisor&#39;: 3}</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="langgraph_log_parser.analyze.print_global_act_reworks">
+<span class="sig-prename descclassname"><span class="pre">langgraph_log_parser.analyze.</span></span><span class="sig-name descname"><span class="pre">print_global_act_reworks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/langgraph_log_parser/analyze.html#print_global_act_reworks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langgraph_log_parser.analyze.print_global_act_reworks" title="Link to this definition"></a></dt>
+<dd><p>Return the global rework counts for each activity across all cases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event_log</strong> (<em>pd.DataFrame</em>) – Event log data.</p>
+</dd>
+</dl>
+<p><strong>Example:</strong>
+&gt;&gt;&gt; csv_output = “files/examples.csv”
+&gt;&gt;&gt; event_log = load_event_log(csv_output)
+&gt;&gt;&gt; print_global_act_reworks(event_log)
+Event log loaded and formated from file: files/examples.csv</p>
 </dd></dl>
 
 <dl class="py function">
@@ -1255,6 +1343,31 @@ If sequence already occurred it only prints the ID of the latest occurrence.</p>
 </dd></dl>
 
 </section>
+<section id="module-langgraph_log_parser.create_html">
+<span id="langgraph-log-parser-create-html"></span><h2>langgraph_log_parser.create_html<a class="headerlink" href="#module-langgraph_log_parser.create_html" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="langgraph_log_parser.create_html.compare">
+<span class="sig-prename descclassname"><span class="pre">langgraph_log_parser.create_html.</span></span><span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">infrastructures</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/langgraph_log_parser/create_html.html#compare"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langgraph_log_parser.create_html.compare" title="Link to this definition"></a></dt>
+<dd><p>Generate and open HTML comparison report comparing multi-agent infrastructures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>infrastructures</strong> (<em>list</em>) – List of infrastructures to compare.</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># List the experiments you would like to compare</span>
+<span class="n">infrastructures</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;test_1&quot;</span><span class="p">,</span> <span class="s2">&quot;test_2&quot;</span><span class="p">]</span>
+
+<span class="c1"># Run the function to generate comparison report</span>
+<span class="n">compare</span><span class="p">(</span><span class="n">infrastructures</span><span class="p">)</span>
+
+<span class="c1"># Output:</span>
+<span class="c1"># Report generated at comparison_reports/test_1_vs_test_2.html</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
 <section id="module-langgraph_log_parser.create_report">
 <span id="langgraph-log-parser-create-report"></span><h2>langgraph_log_parser.create_report<a class="headerlink" href="#module-langgraph_log_parser.create_report" title="Link to this heading"></a></h2>
 <dl class="py function">
@@ -1902,7 +2015,7 @@ for creating a new experiment structure.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2024, Tomasz Serafiński.
-      <span class="lastupdated">Last updated on Dec 04, 2024.
+      <span class="lastupdated">Last updated on Dec 08, 2024.
       </span></p>
   </div>
 

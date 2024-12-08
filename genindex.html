@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; LangGraph Log Parser 0.1.6 documentation</title>
+  <title>Index &mdash; LangGraph Log Parser 0.1.7 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=6e0256f3"></script>
+      <script src="_static/documentation_options.js?v=ca7ad2ea"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -100,10 +100,12 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="langgraph_log_parser.html#langgraph_log_parser.experiment.create_experiment">create_experiment() (in module langgraph_log_parser.experiment)</a>
+      <li><a href="langgraph_log_parser.html#langgraph_log_parser.create_html.compare">compare() (in module langgraph_log_parser.create_html)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="langgraph_log_parser.html#langgraph_log_parser.experiment.create_experiment">create_experiment() (in module langgraph_log_parser.experiment)</a>
+</li>
       <li><a href="langgraph_log_parser.html#langgraph_log_parser.experiment.ExperimentPaths.csv_dir">csv_dir (langgraph_log_parser.experiment.ExperimentPaths property)</a>
 </li>
   </ul></td>
@@ -146,6 +148,8 @@
 </li>
       <li><a href="langgraph_log_parser.html#langgraph_log_parser.analyze.get_act_reworks">get_act_reworks() (in module langgraph_log_parser.analyze)</a>
 </li>
+      <li><a href="langgraph_log_parser.html#langgraph_log_parser.analyze.get_avg_duration">get_avg_duration() (in module langgraph_log_parser.analyze)</a>
+</li>
       <li><a href="langgraph_log_parser.html#langgraph_log_parser.analyze_case_id.get_case_act_counts">get_case_act_counts() (in module langgraph_log_parser.analyze_case_id)</a>
 </li>
       <li><a href="langgraph_log_parser.html#langgraph_log_parser.analyze_case_id.get_case_act_reworks">get_case_act_reworks() (in module langgraph_log_parser.analyze_case_id)</a>
@@ -173,6 +177,8 @@
       <li><a href="langgraph_log_parser.html#langgraph_log_parser.analyze.get_durations">get_durations() (in module langgraph_log_parser.analyze)</a>
 </li>
       <li><a href="langgraph_log_parser.html#langgraph_log_parser.analyze.get_ends">get_ends() (in module langgraph_log_parser.analyze)</a>
+</li>
+      <li><a href="langgraph_log_parser.html#langgraph_log_parser.analyze.get_global_act_reworks">get_global_act_reworks() (in module langgraph_log_parser.analyze)</a>
 </li>
       <li><a href="langgraph_log_parser.html#langgraph_log_parser.experiment.ExperimentPaths.get_img_path">get_img_path() (langgraph_log_parser.experiment.ExperimentPaths method)</a>
 </li>
@@ -227,6 +233,13 @@
 </li>
       </ul></li>
       <li>
+    langgraph_log_parser.create_html
+
+      <ul>
+        <li><a href="langgraph_log_parser.html#module-langgraph_log_parser.create_html">module</a>
+</li>
+      </ul></li>
+      <li>
     langgraph_log_parser.create_report
 
       <ul>
@@ -240,6 +253,8 @@
         <li><a href="langgraph_log_parser.html#module-langgraph_log_parser.experiment">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     langgraph_log_parser.graph_runner
 
@@ -247,8 +262,6 @@
         <li><a href="langgraph_log_parser.html#module-langgraph_log_parser.graph_runner">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     langgraph_log_parser.jsons_to_csv
 
@@ -292,6 +305,8 @@
         <li><a href="langgraph_log_parser.html#module-langgraph_log_parser.analyze">langgraph_log_parser.analyze</a>
 </li>
         <li><a href="langgraph_log_parser.html#module-langgraph_log_parser.analyze_case_id">langgraph_log_parser.analyze_case_id</a>
+</li>
+        <li><a href="langgraph_log_parser.html#module-langgraph_log_parser.create_html">langgraph_log_parser.create_html</a>
 </li>
         <li><a href="langgraph_log_parser.html#module-langgraph_log_parser.create_report">langgraph_log_parser.create_report</a>
 </li>
@@ -342,6 +357,8 @@
 </li>
       <li><a href="langgraph_log_parser.html#langgraph_log_parser.analyze.print_analysis">print_analysis() (in module langgraph_log_parser.analyze)</a>
 </li>
+      <li><a href="langgraph_log_parser.html#langgraph_log_parser.analyze.print_avg_duration">print_avg_duration() (in module langgraph_log_parser.analyze)</a>
+</li>
       <li><a href="langgraph_log_parser.html#langgraph_log_parser.analyze_case_id.print_case_act_counts">print_case_act_counts() (in module langgraph_log_parser.analyze_case_id)</a>
 </li>
       <li><a href="langgraph_log_parser.html#langgraph_log_parser.analyze_case_id.print_case_act_reworks">print_case_act_reworks() (in module langgraph_log_parser.analyze_case_id)</a>
@@ -369,6 +386,8 @@
       <li><a href="langgraph_log_parser.html#langgraph_log_parser.analyze.print_durations">print_durations() (in module langgraph_log_parser.analyze)</a>
 </li>
       <li><a href="langgraph_log_parser.html#langgraph_log_parser.analyze.print_ends">print_ends() (in module langgraph_log_parser.analyze)</a>
+</li>
+      <li><a href="langgraph_log_parser.html#langgraph_log_parser.analyze.print_global_act_reworks">print_global_act_reworks() (in module langgraph_log_parser.analyze)</a>
 </li>
       <li><a href="langgraph_log_parser.html#langgraph_log_parser.analyze.print_mean_act_times">print_mean_act_times() (in module langgraph_log_parser.analyze)</a>
 </li>

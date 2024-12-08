@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>langgraph_log_parser.analyze &mdash; LangGraph Log Parser 0.1.6 documentation</title>
+  <title>langgraph_log_parser.analyze &mdash; LangGraph Log Parser 0.1.7 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=6e0256f3"></script>
+      <script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -449,7 +449,7 @@
 
 <span class="sd">    &gt;&gt;&gt; csv_output = &quot;files/examples.csv&quot;</span>
 <span class="sd">    &gt;&gt;&gt; event_log = load_event_log(csv_output)</span>
-<span class="sd">    &gt;&gt;&gt; print(get_act_reworks(event_log))</span>
+<span class="sd">    &gt;&gt;&gt; print(get_global_act_reworks(event_log))</span>
 <span class="sd">    Event log loaded and formated from file: files/examples.csv</span>
 <span class="sd">    {18: {}, 19: {&#39;__start__&#39;: 18, &#39;test_supervisor&#39;: 18, &#39;rg_supervisor&#39;: 15, &#39;Search&#39;: 3, &#39;WebScraper&#39;: 4, &#39;ag_supervisor&#39;: 14, &#39;DocWriter&#39;: 4}, 20: {&#39;__start__&#39;: 8, &#39;test_supervisor&#39;: 8, &#39;rg_supervisor&#39;: 7, &#39;Search&#39;: 2, &#39;ag_supervisor&#39;: 12, &#39;ChartGenerator&#39;: 2, &#39;DocWriter&#39;: 4, &#39;NoteTaker&#39;: 3}}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -499,12 +499,85 @@
 <span class="sd">    Case ID 19: {&#39;__start__&#39;: 18, &#39;test_supervisor&#39;: 18, &#39;rg_supervisor&#39;: 15, &#39;Search&#39;: 3, &#39;WebScraper&#39;: 4, &#39;ag_supervisor&#39;: 14, &#39;DocWriter&#39;: 4}</span>
 <span class="sd">    Case ID 20: {&#39;__start__&#39;: 8, &#39;test_supervisor&#39;: 8, &#39;rg_supervisor&#39;: 7, &#39;Search&#39;: 2, &#39;ag_supervisor&#39;: 12, &#39;ChartGenerator&#39;: 2, &#39;DocWriter&#39;: 4, &#39;NoteTaker&#39;: 3}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">rework_counts_by_case</span> <span class="o">=</span> <span class="n">get_act_reworks</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+    <span class="n">rework_counts_by_case</span> <span class="o">=</span> <span class="n">get_global_act_reworks</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Count of activity rework:&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">case_id</span><span class="p">,</span> <span class="n">rework_counts</span> <span class="ow">in</span> <span class="n">rework_counts_by_case</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">rework_counts</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
+
+
+<div class="viewcode-block" id="get_global_act_reworks">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analyze.get_global_act_reworks">[docs]</a>
+<span class="k">def</span> <span class="nf">get_global_act_reworks</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the global rework counts for each activity by summing reworks from each case.</span>
+<span class="sd">    A rework is counted when an activity appears more than once within the same case.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+<span class="sd">    :return: Global rework counts for each activity.</span>
+<span class="sd">    :rtype: dict</span>
+
+<span class="sd">    **Example:**</span>
+
+<span class="sd">    &gt;&gt;&gt; csv_output = &quot;files/examples.csv&quot;</span>
+<span class="sd">    &gt;&gt;&gt; event_log = load_event_log(csv_output)</span>
+<span class="sd">    &gt;&gt;&gt; print(get_global_act_reworks(event_log))</span>
+<span class="sd">    Event log loaded and formated from file: files/examples.csv</span>
+<span class="sd">    {&#39;__start__&#39;: 24, &#39;test_supervisor&#39;: 24, &#39;rg_supervisor&#39;: 20, &#39;Search&#39;: 3, </span>
+<span class="sd">     &#39;WebScraper&#39;: 2, &#39;ag_supervisor&#39;: 24, &#39;DocWriter&#39;: 6, &#39;ChartGenerator&#39;: 1, </span>
+<span class="sd">     &#39;NoteTaker&#39;: 2}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Initialize global rework counter</span>
+    <span class="n">global_rework_counts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="c1"># Get unique case IDs</span>
+    <span class="n">unique_case_ids</span> <span class="o">=</span> <span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case:concept:name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">case_id</span> <span class="ow">in</span> <span class="n">unique_case_ids</span><span class="p">:</span>
+        <span class="c1"># Filter log for current case_id</span>
+        <span class="n">case_events</span> <span class="o">=</span> <span class="n">event_log</span><span class="p">[</span><span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case:concept:name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">case_id</span><span class="p">]</span>
+
+        <span class="c1"># Count activities within this case</span>
+        <span class="n">case_activity_counts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+        <span class="c1"># Count occurrences for each activity in this case</span>
+        <span class="k">for</span> <span class="n">activity</span> <span class="ow">in</span> <span class="n">case_events</span><span class="p">[</span><span class="s1">&#39;concept:name&#39;</span><span class="p">]:</span>
+            <span class="n">case_activity_counts</span><span class="p">[</span><span class="n">activity</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># For each activity that appears more than once in this case,</span>
+        <span class="c1"># add the number of extra occurrences (reworks) to the global count</span>
+        <span class="k">for</span> <span class="n">activity</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">case_activity_counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># Only count the extra occurrences (subtract 1 from total count)</span>
+                <span class="n">global_rework_counts</span><span class="p">[</span><span class="n">activity</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Convert defaultdict to regular dict for return</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">global_rework_counts</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="print_global_act_reworks">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analyze.print_global_act_reworks">[docs]</a>
+<span class="k">def</span> <span class="nf">print_global_act_reworks</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the global rework counts for each activity across all cases.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+
+<span class="sd">    **Example:**</span>
+<span class="sd">    &gt;&gt;&gt; csv_output = &quot;files/examples.csv&quot;</span>
+<span class="sd">    &gt;&gt;&gt; event_log = load_event_log(csv_output)</span>
+<span class="sd">    &gt;&gt;&gt; print_global_act_reworks(event_log)</span>
+<span class="sd">    Event log loaded and formated from file: files/examples.csv</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rework_counts_by_case</span> <span class="o">=</span> <span class="n">get_global_act_reworks</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">case_id</span><span class="p">,</span> <span class="n">rework_counts</span> <span class="ow">in</span> <span class="n">rework_counts_by_case</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">rework_counts</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <span class="c1">#28</span>
@@ -616,6 +689,51 @@
 
     <span class="k">for</span> <span class="n">case_id</span><span class="p">,</span> <span class="n">duration</span> <span class="ow">in</span> <span class="n">case_durations</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">duration</span><span class="si">}</span><span class="s2"> s&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_avg_duration">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analyze.get_avg_duration">[docs]</a>
+<span class="k">def</span> <span class="nf">get_avg_duration</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate average duration of the case in seconds.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+
+<span class="sd">    ** Example:**</span>
+<span class="sd">    &gt;&gt;&gt; csv_output = &quot;files/examples.csv&quot;</span>
+<span class="sd">    &gt;&gt;&gt; event_log = load_event_log(csv_output)</span>
+<span class="sd">    &gt;&gt;&gt; print(get_avg_duration(event_log))</span>
+<span class="sd">    Event log loaded and formated from file: files/examples.csv</span>
+<span class="sd">    91.56</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="n">pm4py</span><span class="o">.</span><span class="n">get_all_case_durations</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+    <span class="n">avg</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">duration</span><span class="p">))</span>
+    <span class="n">rounded_avg</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">avg</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rounded_avg</span></div>
+
+
+
+<div class="viewcode-block" id="print_avg_duration">
+<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analyze.print_avg_duration">[docs]</a>
+<span class="k">def</span> <span class="nf">print_avg_duration</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the average duration of the case in seconds.</span>
+
+<span class="sd">    :param event_log: Event log data.</span>
+<span class="sd">    :type event_log: pd.DataFrame</span>
+
+<span class="sd">    **Example:**</span>
+
+<span class="sd">    &gt;&gt;&gt; csv_output = &quot;files/examples.csv&quot;</span>
+<span class="sd">    &gt;&gt;&gt; event_log = load_event_log(csv_output)</span>
+<span class="sd">    &gt;&gt;&gt; print_avg_duration(event_log)</span>
+<span class="sd">    Event log loaded and formated from file: files/examples.csv</span>
+<span class="sd">    Average case duration: 91.56 s</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="n">get_avg_duration</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Average case duration: </span><span class="si">{</span><span class="n">duration</span><span class="si">}</span><span class="s2"> s.&quot;</span><span class="p">)</span></div>
 
 
 

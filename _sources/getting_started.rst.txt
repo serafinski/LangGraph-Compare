@@ -387,8 +387,8 @@ This graph can also be generated using :func:`langgraph_log_parser.visualize.gen
 
   Sample prefix tree
 
-Generating reports
-==================
+Generating JSON reports
+=======================
 We can generate reports for entire :code:`event_log` or single :code:`case_id`.
 The reports will be saved in a :code:`json` format and could be used in a comparison report.
 
@@ -495,3 +495,23 @@ In case of single case ID, we will need to use a :func:`langgraph_log_parser.cre
             └── cases/
                 ├── 1_report.json
                 └── 2_report.json
+
+Generating architecture comparison
+==================================
+You can generate architecture comparison report by executing :func:`langgraph_log_parser.create_html.compare` and
+supplying the metod with the list of architectures You would like to compare. Function will look for experiments
+by default in the :code:`experiments` folder. After generating the function should automatically save the report in:
+:code:`comparison_reports` directory and open the report in Your default browser.
+
+.. code-block:: python
+
+    # Needed imports
+    from langgraph_log_parser.create_html import compare
+
+    # List the experiments you would like to compare
+    infrastructures = ["test_1", "test_2"]
+
+    # Run the function to generate comparison report
+    compare(infrastructures)
+
+This should generate the HTML report called :code:`test_1_vs_test_2.html` in :code:`comparison_reports` directory.
