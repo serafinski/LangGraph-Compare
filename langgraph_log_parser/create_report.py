@@ -48,16 +48,10 @@ def write_report(event_log: pd.DataFrame, output_file: Optional[str] = None) -> 
     event_log = event_log.copy()
 
     structured_data = {
-        "start_activities": get_starts(event_log),
-        "end_activities": get_ends(event_log),
         "activities_count": get_act_counts(event_log),
-        "sequences": get_sequences(event_log),
-        "sequences_with_probabilities": get_sequence_probs(event_log),
-        "minimum_self_distances": get_min_self_dists(event_log),
-        "self_distance_witnesses": get_self_dist_witnesses(event_log),
-        "rework_counts": get_act_reworks(event_log),
+        "rework_counts": get_global_act_reworks(event_log),
         "activities_mean_service_time": get_mean_act_times(event_log),
-        "cases_durations": get_durations(event_log),
+        "avg_case_duration": get_avg_duration(event_log),
     }
 
     if output_file is None or os.path.isdir(output_file):

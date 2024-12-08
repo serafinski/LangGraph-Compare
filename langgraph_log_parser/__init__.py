@@ -1,7 +1,7 @@
 __all__ = [
     # Modules
     "load_events", "analyze", "analyze_case_id", "graph_runner", "jsons_to_csv", "sql_to_jsons", "visualize",
-    "experiment", "create_report",
+    "experiment", "create_report", "create_html",
 
     # Functions - load_csv
     "load_event_log",
@@ -14,10 +14,11 @@ __all__ = [
     "get_sequence_probs", "print_sequence_probs",
     "get_min_self_dists", "print_min_self_dists",
     "get_self_dist_witnesses", "print_self_dist_witnesses",
-    "get_act_reworks", "print_act_reworks",
+    "get_global_act_reworks", "print_act_reworks",
     "get_mean_act_times", "print_mean_act_times",
     "get_durations", "print_durations",
-    "print_analysis",
+    "print_analysis", "get_avg_duration", "print_avg_duration",
+    "get_global_act_reworks", "print_global_act_reworks",
 
     # Functions - analyze_case_id
     "get_case_sequence", "print_case_sequence",
@@ -50,6 +51,9 @@ __all__ = [
     # Functions - create_report
     "write_report", "write_case_report",
 
+    # Functions - create_html
+    "compare",
+
     #Classes - jsons_to_csv
     "SubgraphConfig", "SupervisorConfig", "GraphConfig"
 ]
@@ -63,6 +67,7 @@ from . import sql_to_jsons
 from . import visualize
 from . import experiment
 from . import create_report
+from . import create_html
 
 
 from .load_events import *
@@ -74,3 +79,4 @@ from .sql_to_jsons import *
 from .visualize import *
 from .experiment import *
 from .create_report import *
+from .create_html import *

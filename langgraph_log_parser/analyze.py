@@ -338,7 +338,7 @@ def get_act_reworks(event_log: pd.DataFrame) -> dict[int, dict[str, int]]:
 
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
-    >>> print(get_act_reworks(event_log))
+    >>> print(get_global_act_reworks(event_log))
     Event log loaded and formated from file: files/examples.csv
     {18: {}, 19: {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'DocWriter': 4}, 20: {'__start__': 8, 'test_supervisor': 8, 'rg_supervisor': 7, 'Search': 2, 'ag_supervisor': 12, 'ChartGenerator': 2, 'DocWriter': 4, 'NoteTaker': 3}}
     """
@@ -385,12 +385,79 @@ def print_act_reworks(event_log: pd.DataFrame) -> None:
     Case ID 19: {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'DocWriter': 4}
     Case ID 20: {'__start__': 8, 'test_supervisor': 8, 'rg_supervisor': 7, 'Search': 2, 'ag_supervisor': 12, 'ChartGenerator': 2, 'DocWriter': 4, 'NoteTaker': 3}
     """
-    rework_counts_by_case = get_act_reworks(event_log)
+    rework_counts_by_case = get_global_act_reworks(event_log)
 
     print("Count of activity rework:")
     for case_id, rework_counts in rework_counts_by_case.items():
         print(f"Case ID {case_id}: {rework_counts}")
 
+
+def get_global_act_reworks(event_log: pd.DataFrame) -> dict[str, int]:
+    """
+    Return the global rework counts for each activity by summing reworks from each case.
+    A rework is counted when an activity appears more than once within the same case.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+    :return: Global rework counts for each activity.
+    :rtype: dict
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print(get_global_act_reworks(event_log))
+    Event log loaded and formated from file: files/examples.csv
+    {'__start__': 24, 'test_supervisor': 24, 'rg_supervisor': 20, 'Search': 3, 
+     'WebScraper': 2, 'ag_supervisor': 24, 'DocWriter': 6, 'ChartGenerator': 1, 
+     'NoteTaker': 2}
+    """
+    # Initialize global rework counter
+    global_rework_counts = defaultdict(int)
+
+    # Get unique case IDs
+    unique_case_ids = event_log['case:concept:name'].unique()
+
+    for case_id in unique_case_ids:
+        # Filter log for current case_id
+        case_events = event_log[event_log['case:concept:name'] == case_id]
+
+        # Count activities within this case
+        case_activity_counts = defaultdict(int)
+
+        # Count occurrences for each activity in this case
+        for activity in case_events['concept:name']:
+            case_activity_counts[activity] += 1
+
+        # For each activity that appears more than once in this case,
+        # add the number of extra occurrences (reworks) to the global count
+        for activity, count in case_activity_counts.items():
+            if count > 1:
+                # Only count the extra occurrences (subtract 1 from total count)
+                global_rework_counts[activity] += (count - 1)
+
+    # Convert defaultdict to regular dict for return
+    return dict(global_rework_counts)
+
+
+def print_global_act_reworks(event_log: pd.DataFrame) -> None:
+    """
+    Return the global rework counts for each activity across all cases.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+
+    **Example:**
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print_global_act_reworks(event_log)
+    Event log loaded and formated from file: files/examples.csv
+
+    """
+    rework_counts_by_case = get_global_act_reworks(event_log)
+
+    for case_id, rework_counts in rework_counts_by_case.items():
+        print(f"Case ID {case_id}: {rework_counts}")
 
 #28
 def get_mean_act_times(event_log: pd.DataFrame) -> dict[str, float]:
@@ -490,6 +557,45 @@ def print_durations(event_log: pd.DataFrame) -> None:
 
     for case_id, duration in case_durations.items():
         print(f"Case ID {case_id}: {duration} s")
+
+
+def get_avg_duration(event_log: pd.DataFrame) -> float:
+    """
+    Calculate average duration of the case in seconds.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+
+    ** Example:**
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print(get_avg_duration(event_log))
+    Event log loaded and formated from file: files/examples.csv
+    91.56
+    """
+    duration = pm4py.get_all_case_durations(event_log)
+    avg = (sum(duration) / len(duration))
+    rounded_avg = round(avg, 2)
+    return rounded_avg
+
+
+def print_avg_duration(event_log: pd.DataFrame) -> None:
+    """
+    Print the average duration of the case in seconds.
+
+    :param event_log: Event log data.
+    :type event_log: pd.DataFrame
+
+    **Example:**
+
+    >>> csv_output = "files/examples.csv"
+    >>> event_log = load_event_log(csv_output)
+    >>> print_avg_duration(event_log)
+    Event log loaded and formated from file: files/examples.csv
+    Average case duration: 91.56 s
+    """
+    duration = get_avg_duration(event_log)
+    print(f"Average case duration: {duration} s.")
 
 
 def get_self_dist_witnesses(event_log: pd.DataFrame) -> dict[int, dict[str, list[list[str]]]]:
