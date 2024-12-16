@@ -22,10 +22,14 @@ Usage
 Installation
 ============
 
-To use `LangGraph Log Parser <https://pypi.org/project/langgraph_log_parser/>`_, first install it using pip:
+This `package <https://pypi.org/project/langgraph_log_parser/>`_ requires Python 3.10 or higher.
+
+To create virtual environment (using conda), use the following commands:
 
 .. code-block:: console
 
+   conda create -n langgraph_log_parser python=3.10
+   conda activate langgraph_log_parser
    pip install langgraph_log_parser
 
 Getting started
@@ -36,6 +40,69 @@ Advanced Examples
 =================
 For advanced use cases, refer to: :ref:`advanced_examples`
 
+
+Basic example
+*************
+This example is based on the `Building a Basic Chatbot <https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-1-build-a-basic-chatbot>`_ from LangGraph documentation.
+
+For detailed explanation of the code, see: :ref:`getting_started` and :ref:`advanced_examples`.
+
+.. code-block:: python
+
+   import sqlite3
+
+   from dotenv import load_dotenv
+   from typing import Annotated
+
+   from langgraph.checkpoint.sqlite import SqliteSaver
+   from typing_extensions import TypedDict
+   from langchain_openai import ChatOpenAI
+   from langgraph.graph import StateGraph, START, END
+   from langgraph.graph.message import add_messages
+
+   from langgraph_log_parser import *
+
+   exp = create_experiment("main")
+
+   load_dotenv()
+
+   conn = sqlite3.connect(exp.database, check_same_thread=False)
+   memory = SqliteSaver(conn)
+
+   class State(TypedDict):
+       messages: Annotated[list, add_messages]
+
+   graph_builder = StateGraph(State)
+
+   llm = ChatOpenAI(model="gpt-4o-mini")
+
+   def chatbot(state: State):
+       return {"messages": [llm.invoke(state["messages"])]}
+
+   graph_builder.add_node("chatbot_node", chatbot)
+
+   graph_builder.add_edge(START, "chatbot_node")
+   graph_builder.add_edge("chatbot_node", END)
+
+   graph = graph_builder.compile(checkpointer=memory)
+
+   run_multiple_iterations(graph, 1, 5, {"messages": [("user", "Tell me a joke")]})
+
+   export_sqlite_to_jsons(exp.database, exp.json_dir)
+
+   graph_config = GraphConfig(
+       nodes=["chatbot_node"]
+   )
+
+   export_jsons_to_csv(exp.json_dir, exp.get_csv_path(), graph_config)
+
+   print()
+   event_log = load_event_log(exp.get_csv_path())
+   print_analysis(event_log)
+
+   write_report(event_log, exp.reports_all_dir)
+
+   generate_visualizations(event_log, graph, exp.img_dir)
 
 Modules
 *******
