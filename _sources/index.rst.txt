@@ -22,6 +22,38 @@ Usage
 Installation
 ============
 
+Prerequisites
+-------------
+This package requires Graphviz to be installed on your system.
+
+**Windows:**
+
+Download the latest installer from `Graphviz <https://graphviz.org/download/>`_ and install it.
+
+**macOS:**
+
+Install Graphviz using Homebrew:
+
+.. code-block:: console
+
+   brew install graphviz
+
+**Linux:**
+
+For Debian, Ubuntu, use the following command:
+
+.. code-block:: console
+
+   sudo apt install graphviz
+
+For Fedora, Rocky Linux, RHEL or CentOS use the following command:
+
+.. code-block:: console
+
+   sudo dnf install graphviz
+
+Environment setup
+-----------------
 This `package <https://pypi.org/project/langgraph_log_parser/>`_ requires Python 3.10 or higher.
 
 To create virtual environment (using conda), use the following commands:
