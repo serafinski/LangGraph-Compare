@@ -7,13 +7,13 @@
 
 [tool.poetry]
 name = "langgraph_log_parser"
-version = "0.1.7"
+version = "0.1.8"
 description = "Parser for logs from LangGraph"
 authors = ["Tomasz Serafiński <tomasz@serafinski.net>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 python-dotenv = "^1.0.1"
 langgraph = "^0.2.45"
 langsmith = "^0.1.142"

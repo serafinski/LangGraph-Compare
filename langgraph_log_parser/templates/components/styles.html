@@ -10,32 +10,47 @@
         z-index: 1000;
     }
 
-    .modal.show { display: block; }
+    .modal.show {
+        display: block;
+    }
 
     .modal-content {
         position: relative;
         width: 100%;
         height: 100%;
         display: flex;
-        justify-content: center;
-        align-items: center;
+        justify-content: flex-start;  /* Changed back to allow full left scrolling */
+        align-items: flex-start;      /* Changed for consistent positioning */
         overflow: auto;
-        padding: 20px;
+        padding: 20px;               /* Reduced padding */
+        box-sizing: border-box;
     }
 
     .image-wrapper {
         min-width: min-content;
         display: inline-block;
+        position: relative;
+        padding: 20px;              /* Consistent padding */
+        box-sizing: border-box;
+        margin: auto;               /* Keep auto margin for centering */
     }
 
     .modal-image {
-        max-height: 90vh;
+        max-height: none;
+        max-width: none;
         cursor: zoom-in;
         transition: transform 0.3s ease;
-        transform-origin: left top;
+        transform-origin: 0 0;      /* Keep top-left origin for consistent scrolling */
+        display: block;
     }
 
-    .modal-image.zoomed { cursor: zoom-out; }
+    .modal-image.zoomed {
+        cursor: grab;
+    }
+
+    .modal-image.zoomed:active {
+        cursor: grabbing;
+    }
 
     .close-button {
         position: fixed;
@@ -48,11 +63,7 @@
         z-index: 1001;
     }
 
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-
     .zoom-hint {
-        display: none;
         position: fixed;
         bottom: 20px;
         left: 50%;
@@ -62,10 +73,23 @@
         border-radius: 20px;
         color: black;
         z-index: 1001;
+        pointer-events: none;
     }
 
-    .modal.show .zoom-hint { display: block; }
+    .modal:not(.show) .zoom-hint {
+        display: none;
+    }
 
+    /* Tab content styles */
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    /* Table styles */
     .metrics-table th {
         position: sticky;
         top: 0;
@@ -73,7 +97,9 @@
         z-index: 10;
     }
 
-    .metrics-row:nth-child(even) { background-color: #f8fafc; }
+    .metrics-row:nth-child(even) {
+        background-color: #f8fafc;
+    }
 
     .metrics-cell {
         max-width: 300px;

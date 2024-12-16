@@ -1,5 +1,6 @@
 from typing import Dict, Any
 from langgraph.graph.state import CompiledStateGraph
+import copy
 
 def run_multiple_iterations(
         graph: CompiledStateGraph,
@@ -12,7 +13,7 @@ def run_multiple_iterations(
     Run the provided graph `num_repetitions` times, incrementing the thread_id each time.
 
     :param graph: The compiled StateGraph to run.
-    :type graph: StateGraph
+    :type graph: CompiledStateGraph
     :param starting_thread_id: The starting thread_id for the graph.
     :type starting_thread_id: int
     :param num_repetitions: Number of times to run the graph.
@@ -57,8 +58,9 @@ def run_multiple_iterations(
             "recursion_limit": recursion_limit
         }
 
-        # Użyj całego user_input_template jako user input
-        user_input = user_input_template.copy()
+        # Create a deep copy of the template for each iteration
+        # This ensures complete isolation of state between runs
+        user_input = copy.deepcopy(user_input_template)
 
         print(f"Iteration: {i + 1}, Thread_ID {current_thread_id}")
         for event in graph.stream(user_input, config):
