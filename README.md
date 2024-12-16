@@ -14,6 +14,31 @@ This pipeline provides a streamlined approach for extracting, transforming, and 
 # Installation
 This package requires Python 3.10 or higher.
 
+## Prerequisites
+This package requires Graphviz to be installed on your system.
+
+### Windows
+Download the Graphviz installer from the [Graphviz website](https://graphviz.org/download/).
+
+### macOS
+Install Graphviz using Homebrew:
+```dotenv
+brew install graphviz
+```
+
+### Linux
+For Debian, Ubuntu, use the following command:
+```dotenv
+sudo apt-get install graphviz
+```
+<br>
+
+For Fedora, Rocky Linux, RHEL or CentOS use the following command:
+```dotenv
+sudo dnf install graphviz
+```
+
+## Environment setup
 To create virtual environment (using conda), use the following commands:
 ```dotenv
 conda create -n langgraph_log_parser python=3.10
