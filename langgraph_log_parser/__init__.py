@@ -14,7 +14,7 @@ __all__ = [
     "get_sequence_probs", "print_sequence_probs",
     "get_min_self_dists", "print_min_self_dists",
     "get_self_dist_witnesses", "print_self_dist_witnesses",
-    "get_global_act_reworks", "print_act_reworks",
+    "get_act_reworks", "print_act_reworks",
     "get_mean_act_times", "print_mean_act_times",
     "get_durations", "print_durations",
     "print_analysis", "get_avg_duration", "print_avg_duration",

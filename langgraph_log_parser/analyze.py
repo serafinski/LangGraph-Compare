@@ -254,7 +254,8 @@ def print_sequence_probs(event_log: pd.DataFrame) -> None:
 
     print("ID of last sequence occurrence with probability of occurrence:")
     for case_id, sequence, probability in sequences_with_probabilities:
-        print(f"Case ID {case_id}: {sequence}, {probability}")
+        print(f"Case ID {case_id}: {sequence}")
+        print(f"Probability: {probability}\n")
 
 
 # 16
@@ -385,7 +386,7 @@ def print_act_reworks(event_log: pd.DataFrame) -> None:
     Case ID 19: {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'DocWriter': 4}
     Case ID 20: {'__start__': 8, 'test_supervisor': 8, 'rg_supervisor': 7, 'Search': 2, 'ag_supervisor': 12, 'ChartGenerator': 2, 'DocWriter': 4, 'NoteTaker': 3}
     """
-    rework_counts_by_case = get_global_act_reworks(event_log)
+    rework_counts_by_case = get_act_reworks(event_log)
 
     print("Count of activity rework:")
     for case_id, rework_counts in rework_counts_by_case.items():
@@ -775,7 +776,6 @@ def print_analysis(event_log: pd.DataFrame) -> None:
     print()
 
     print_sequence_probs(event_log)
-    print()
 
     print_min_self_dists(event_log)
     print()
