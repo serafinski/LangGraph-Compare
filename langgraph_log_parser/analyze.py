@@ -246,9 +246,12 @@ def print_sequence_probs(event_log: pd.DataFrame) -> None:
     >>> print_sequence_probs(event_log)
     Event log loaded and formated from file: files/examples.csv
     ID of last sequence occurrence with probability of occurrence:
-    Case ID 18: ('__start__', 'ag_supervisor', 'test_supervisor'), 0.3333333333333333
-    Case ID 19: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor'), 0.3333333333333333
-    Case ID 20: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor'), 0.3333333333333333
+    Case ID 18: ('__start__', 'ag_supervisor', 'test_supervisor')
+    Probability: 0.3333333333333333
+    Case ID 19: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor')
+    Probability: 0.3333333333333333
+    Case ID 20: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor')
+    Probability: 0.3333333333333333
     """
     sequences_with_probabilities = get_sequence_probs(event_log)
 
@@ -449,16 +452,25 @@ def print_global_act_reworks(event_log: pd.DataFrame) -> None:
     :type event_log: pd.DataFrame
 
     **Example:**
+
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
     >>> print_global_act_reworks(event_log)
     Event log loaded and formated from file: files/examples.csv
-
+    Global rework counts for each activity:
+    Activity '__start__': 11
+    Activity 'test_supervisor': 11
+    Activity 'rg_supervisor': 9
+    Activity 'ag_supervisor': 21
+    Activity 'NoteTaker': 3
+    Activity 'ChartGenerator': 3
+    Activity 'DocWriter': 4
     """
     rework_counts_by_case = get_global_act_reworks(event_log)
 
+    print("Global rework counts for each activity:")
     for activity, rework_counts in rework_counts_by_case.items():
-        print(f"Activity {activity}: {rework_counts}")
+        print(f"Activity '{activity}': {rework_counts}")
 
 #28
 def get_mean_act_times(event_log: pd.DataFrame) -> dict[str, float]:
@@ -498,10 +510,21 @@ def print_mean_act_times(event_log: pd.DataFrame) -> None:
     >>> event_log = load_event_log(csv_output)
     >>> print_mean_act_times(event_log)
     Event log loaded and formated from file: files/examples.csv
-    Mean duration of every activity (in sec): {'ChartGenerator': 0.587241, 'DocWriter': 1.0209089999999998, 'NoteTaker': 0.5753873333333334, 'Search': 0.580575, 'WebScraper': 0.6020846, '__start__': 0.0411957037037037, 'ag_supervisor': 0.007210296296296296, 'rg_supervisor': 1.8212668636363636, 'test_supervisor': 0.04827048148148148}
+    Mean duration of every activity:
+    Activity 'ChartGenerator': 0.587241 s
+    Activity 'DocWriter': 1.0209089999999998 s
+    Activity 'NoteTaker': 0.5753873333333334 s
+    Activity 'Search': 0.580575 s
+    Activity 'WebScraper': 0.6020846 s
+    Activity '__start__': 0.0411957037037037 s
+    Activity 'ag_supervisor': 0.007210296296296296 s
+    Activity 'rg_supervisor': 1.8212668636363636 s
+    Activity 'test_supervisor': 0.04827048148148148 s
     """
     mean_serv_time = get_mean_act_times(event_log)
-    print("Mean duration of every activity (in sec):", mean_serv_time)
+    print("Mean duration of every activity:")
+    for activity, rework_counts in mean_serv_time.items():
+        print(f"Activity '{activity}': {rework_counts} s")
 
 
 #30
@@ -567,7 +590,8 @@ def get_avg_duration(event_log: pd.DataFrame) -> float:
     :param event_log: Event log data.
     :type event_log: pd.DataFrame
 
-    ** Example:**
+    **Example:**
+
     >>> csv_output = "files/examples.csv"
     >>> event_log = load_event_log(csv_output)
     >>> print(get_avg_duration(event_log))
@@ -724,39 +748,53 @@ def print_analysis(event_log: pd.DataFrame) -> None:
         #
         # End activities: {'test_supervisor': 3}
         #
-        # Count of each activity: {'__start__': 27, 'ag_supervisor': 27, 'test_supervisor': 27, 'rg_supervisor': 22, 'DocWriter': 8, 'Search': 5, 'WebScraper': 5, 'ChartGenerator': 3, 'NoteTaker': 3}
+        # Count of each activity: {'ag_supervisor': 24, '__start__': 14, 'test_supervisor': 14, 'rg_supervisor': 12, 'DocWriter': 7, 'NoteTaker': 6, 'ChartGenerator': 6, 'Search': 3, 'WebScraper': 3}
         #
         # All sequences:
-        # Case ID 18: ['__start__', 'ag_supervisor', 'test_supervisor']
-        # Case ID 19: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']
-        # Case ID 20: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']
+        # Case ID 1: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']
+        # Case ID 2: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor']
+        # Case ID 3: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor']
         #
         # ID of last sequence occurrence with probability of occurrence:
-        # Case ID 18: ('__start__', 'ag_supervisor', 'test_supervisor'), 0.3333333333333333
-        # Case ID 19: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor'), 0.3333333333333333
-        # Case ID 20: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor'), 0.3333333333333333
+        # Case ID 1: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor')
+        # Probability: 0.3333333333333333
+        #
+        # Case ID 2: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor')
+        # Probability: 0.3333333333333333
+        #
+        # Case ID 3: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor')
+        # Probability: 0.3333333333333333
         #
         # Minimal self-distances for every activity:
-        # Case ID 18: {}
-        # Case ID 19: {'DocWriter': 1, 'Search': 6, 'WebScraper': 4, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
-        # Case ID 20: {'ChartGenerator': 1, 'DocWriter': 3, 'NoteTaker': 3, 'Search': 36, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
+        # Case ID 1: {'__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
+        # Case ID 2: {'ChartGenerator': 5, 'DocWriter': 1, 'NoteTaker': 1, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
+        # Case ID 3: {'ChartGenerator': 1, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
         #
         # Witnesses of minimum self-distances:
-        # Case ID 18: {}
-        # Case ID 19: {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'ag_supervisor'], ['__start__', 'rg_supervisor']], 'rg_supervisor': [['Search'], ['WebScraper']], 'Search': [['rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'WebScraper': [['rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'ag_supervisor': [['DocWriter'], ['ChartGenerator']], 'DocWriter': [['ag_supervisor']]}
-        # Case ID 20: {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'rg_supervisor']], 'rg_supervisor': [['Search'], ['WebScraper']], 'Search': [['rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'ag_supervisor': [['DocWriter'], ['NoteTaker'], ['ChartGenerator']], 'ChartGenerator': [['ag_supervisor']], 'DocWriter': [['ag_supervisor', 'NoteTaker', 'ag_supervisor']], 'NoteTaker': [['ag_supervisor', 'DocWriter', 'ag_supervisor']]}
+        # Case ID 1: {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'rg_supervisor']], 'rg_supervisor': [['WebScraper'], ['Search']], 'ag_supervisor': [['DocWriter'], ['NoteTaker'], ['ChartGenerator']]}
+        # Case ID 2: {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'rg_supervisor'], ['__start__', 'ag_supervisor']], 'rg_supervisor': [['WebScraper'], ['Search']], 'ag_supervisor': [['DocWriter'], ['NoteTaker'], ['ChartGenerator']], 'NoteTaker': [['ag_supervisor']], 'ChartGenerator': [['ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor']], 'DocWriter': [['ag_supervisor']]}
+        # Case ID 3: {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'rg_supervisor']], 'rg_supervisor': [['WebScraper'], ['Search']], 'ag_supervisor': [['DocWriter'], ['NoteTaker'], ['ChartGenerator']], 'ChartGenerator': [['ag_supervisor']]}
         #
         # Count of activity rework:
-        # Case ID 18: {}
-        # Case ID 19: {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'DocWriter': 4}
-        # Case ID 20: {'__start__': 8, 'test_supervisor': 8, 'rg_supervisor': 7, 'Search': 2, 'ag_supervisor': 12, 'ChartGenerator': 2, 'DocWriter': 4, 'NoteTaker': 3}
+        # Case ID 1: {'__start__': 4, 'test_supervisor': 4, 'rg_supervisor': 4, 'ag_supervisor': 4}
+        # Case ID 2: {'__start__': 6, 'test_supervisor': 6, 'rg_supervisor': 4, 'ag_supervisor': 15, 'NoteTaker': 4, 'ChartGenerator': 3, 'DocWriter': 5}
+        # Case ID 3: {'__start__': 4, 'test_supervisor': 4, 'rg_supervisor': 4, 'ag_supervisor': 5, 'ChartGenerator': 2}
         #
-        # Mean duration of every activity (in sec): {'ChartGenerator': 0.587241, 'DocWriter': 1.0209089999999998, 'NoteTaker': 0.5753873333333334, 'Search': 0.580575, 'WebScraper': 0.6020846, '__start__': 0.0411957037037037, 'ag_supervisor': 0.007210296296296296, 'rg_supervisor': 1.8212668636363636, 'test_supervisor': 0.04827048148148148}
+        # Mean duration of every activity:
+        # Activity 'ChartGenerator': 0.5413366666666667 s
+        # Activity 'DocWriter': 0.5227941428571429 s
+        # Activity 'NoteTaker': 0.606278 s
+        # Activity 'Search': 1.5871443333333335 s
+        # Activity 'WebScraper': 0.5251283333333333 s
+        # Activity '__start__': 0.2882565714285715 s
+        # Activity 'ag_supervisor': 0.004749291666666666 s
+        # Activity 'rg_supervisor': 0.7590284166666666 s
+        # Activity 'test_supervisor': 0.0034047857142857144 s
         #
         # Duration of the case:
-        # Case ID 18: 4.580137 s
-        # Case ID 19: 120.730501 s
-        # Case ID 20: 74.653202 s
+        # Case ID 1: 43.880035 s
+        # Case ID 2: 62.252656 s
+        # Case ID 3: 29.688077 s
         #
         # #########################END#########################
     """
