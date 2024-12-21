@@ -598,7 +598,7 @@ def print_case_analysis(event_log: pd.DataFrame, case_id: int) -> None:
         print_full_analysis_by_id(event_log,19)
         # Event log loaded and formated from file: files/examples.csv
         #
-        # ####################START###########################
+        # #########################START#########################
         #
         # Start activity for case ID 19: __start__
         #
@@ -620,10 +620,10 @@ def print_case_analysis(event_log: pd.DataFrame, case_id: int) -> None:
         #
         # Duration for case ID 19: 120.730501 s
         #
-        # ######################END###########################
+        # #########################END#########################
     """
 
-    print("\n####################START###########################\n")
+    print("\n"+"#"*25+"START"+"#"*25+"\n")
 
     print_case_start(event_log, case_id)
     print()
@@ -651,4 +651,4 @@ def print_case_analysis(event_log: pd.DataFrame, case_id: int) -> None:
 
     print_case_duration(event_log, case_id)
 
-    print("\n######################END###########################")
+    print("\n"+"#"*25+"END"+"#"*25)

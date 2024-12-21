@@ -717,7 +717,7 @@ def print_analysis(event_log: pd.DataFrame) -> None:
         print_all_self_distance_witnesses(event_log)
         # Event log loaded and formated from file: files/examples.csv
         #
-        # ###################START###########################
+        # #########################START#########################
         #
         # Start activities: {'__start__': 3}
         #
@@ -757,10 +757,10 @@ def print_analysis(event_log: pd.DataFrame) -> None:
         # Case ID 19: 120.730501 s
         # Case ID 20: 74.653202 s
         #
-        # ######################END###########################
+        # #########################END#########################
     """
 
-    print("\n####################START###########################\n")
+    print("\n"+"#"*25+"START"+"#"*25+"\n")
 
     print_starts(event_log)
     print()
@@ -791,4 +791,4 @@ def print_analysis(event_log: pd.DataFrame) -> None:
 
     print_durations(event_log)
 
-    print("\n######################END###########################")
+    print("\n"+"#"*25+"END"+"#"*25)
