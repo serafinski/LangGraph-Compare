@@ -456,8 +456,8 @@ def print_global_act_reworks(event_log: pd.DataFrame) -> None:
     """
     rework_counts_by_case = get_global_act_reworks(event_log)
 
-    for case_id, rework_counts in rework_counts_by_case.items():
-        print(f"Case ID {case_id}: {rework_counts}")
+    for activity, rework_counts in rework_counts_by_case.items():
+        print(f"Activity {activity}: {rework_counts}")
 
 #28
 def get_mean_act_times(event_log: pd.DataFrame) -> dict[str, float]:
