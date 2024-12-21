@@ -247,18 +247,18 @@ def print_sequence_probs(event_log: pd.DataFrame) -> None:
     Event log loaded and formated from file: files/examples.csv
     ID of last sequence occurrence with probability of occurrence:
     Case ID 18: ('__start__', 'ag_supervisor', 'test_supervisor')
-    Probability: 0.3333333333333333
+    Probability: 0.333
     Case ID 19: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor')
-    Probability: 0.3333333333333333
+    Probability: 0.333
     Case ID 20: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor')
-    Probability: 0.3333333333333333
+    Probability: 0.333
     """
     sequences_with_probabilities = get_sequence_probs(event_log)
 
     print("ID of last sequence occurrence with probability of occurrence:")
     for case_id, sequence, probability in sequences_with_probabilities:
         print(f"Case ID {case_id}: {sequence}")
-        print(f"Probability: {probability}\n")
+        print(f"Probability: {round(probability,3)}\n")
 
 
 # 16
@@ -511,20 +511,20 @@ def print_mean_act_times(event_log: pd.DataFrame) -> None:
     >>> print_mean_act_times(event_log)
     Event log loaded and formated from file: files/examples.csv
     Mean duration of every activity:
-    Activity 'ChartGenerator': 0.587241 s
-    Activity 'DocWriter': 1.0209089999999998 s
-    Activity 'NoteTaker': 0.5753873333333334 s
-    Activity 'Search': 0.580575 s
-    Activity 'WebScraper': 0.6020846 s
-    Activity '__start__': 0.0411957037037037 s
-    Activity 'ag_supervisor': 0.007210296296296296 s
-    Activity 'rg_supervisor': 1.8212668636363636 s
-    Activity 'test_supervisor': 0.04827048148148148 s
+    Activity 'ChartGenerator': 0.587 s
+    Activity 'DocWriter': 1.021 s
+    Activity 'NoteTaker': 0.575 s
+    Activity 'Search': 0.581 s
+    Activity 'WebScraper': 0.602 s
+    Activity '__start__': 0.0412 s
+    Activity 'ag_supervisor': 0.007 s
+    Activity 'rg_supervisor': 1.821 s
+    Activity 'test_supervisor': 0.048 s
     """
     mean_serv_time = get_mean_act_times(event_log)
     print("Mean duration of every activity:")
-    for activity, rework_counts in mean_serv_time.items():
-        print(f"Activity '{activity}': {rework_counts} s")
+    for activity, time in mean_serv_time.items():
+        print(f"Activity '{activity}': {round(time,3)} s")
 
 
 #30
@@ -572,15 +572,15 @@ def print_durations(event_log: pd.DataFrame) -> None:
     >>> print_durations(event_log)
     Event log loaded and formated from file: files/examples.csv
     Duration of the case:
-    Case ID 18: 4.580137 s
-    Case ID 19: 120.730501 s
-    Case ID 20: 74.653202 s
+    Case ID 18: 4.580 s
+    Case ID 19: 120.731 s
+    Case ID 20: 74.653 s
     """
     case_durations = get_durations(event_log)
     print("Duration of the case:")
 
     for case_id, duration in case_durations.items():
-        print(f"Case ID {case_id}: {duration} s")
+        print(f"Case ID {case_id}: {round(duration,3)} s")
 
 
 def get_avg_duration(event_log: pd.DataFrame) -> float:
@@ -757,13 +757,13 @@ def print_analysis(event_log: pd.DataFrame) -> None:
         #
         # ID of last sequence occurrence with probability of occurrence:
         # Case ID 1: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor')
-        # Probability: 0.3333333333333333
+        # Probability: 0.333
         #
         # Case ID 2: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor')
-        # Probability: 0.3333333333333333
+        # Probability: 0.333
         #
         # Case ID 3: ('__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor')
-        # Probability: 0.3333333333333333
+        # Probability: 0.333
         #
         # Minimal self-distances for every activity:
         # Case ID 1: {'__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
@@ -781,20 +781,20 @@ def print_analysis(event_log: pd.DataFrame) -> None:
         # Case ID 3: {'__start__': 4, 'test_supervisor': 4, 'rg_supervisor': 4, 'ag_supervisor': 5, 'ChartGenerator': 2}
         #
         # Mean duration of every activity:
-        # Activity 'ChartGenerator': 0.5413366666666667 s
-        # Activity 'DocWriter': 0.5227941428571429 s
-        # Activity 'NoteTaker': 0.606278 s
-        # Activity 'Search': 1.5871443333333335 s
-        # Activity 'WebScraper': 0.5251283333333333 s
-        # Activity '__start__': 0.2882565714285715 s
-        # Activity 'ag_supervisor': 0.004749291666666666 s
-        # Activity 'rg_supervisor': 0.7590284166666666 s
-        # Activity 'test_supervisor': 0.0034047857142857144 s
+        # Activity 'ChartGenerator': 0.541 s
+        # Activity 'DocWriter': 0.523 s
+        # Activity 'NoteTaker': 0.606 s
+        # Activity 'Search': 1.587 s
+        # Activity 'WebScraper': 0.525 s
+        # Activity '__start__': 0.288 s
+        # Activity 'ag_supervisor': 0.005 s
+        # Activity 'rg_supervisor': 0.759 s
+        # Activity 'test_supervisor': 0.003 s
         #
         # Duration of the case:
-        # Case ID 1: 43.880035 s
-        # Case ID 2: 62.252656 s
-        # Case ID 3: 29.688077 s
+        # Case ID 1: 43.88 s
+        # Case ID 2: 62.252 s
+        # Case ID 3: 29.688 s
         #
         # #########################END#########################
     """
