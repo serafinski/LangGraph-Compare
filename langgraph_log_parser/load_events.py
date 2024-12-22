@@ -22,6 +22,7 @@ def load_event_log(file_path: str) -> pd.DataFrame:
 
     # Formatowanie DataFrame dla PM4Py
     df['timestamp'] = pd.to_datetime(df['timestamp'])
+    df['end_timestamp'] = pd.to_datetime(df['end_timestamp'])
 
     print(f"Event log loaded and formated from file: {file_path}")
     return pm4py.format_dataframe(df, case_id='case_id', activity_key='activity', timestamp_key='timestamp')
