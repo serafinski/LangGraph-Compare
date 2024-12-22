@@ -45,8 +45,6 @@ Additionally, :code:`reports` directory have two sub-directories:
         ├── img/
         ├── json/
         └── reports/
-            ├── all/
-            └── cases/
 
 For more details, refer to the documentation of the :mod:`langgraph_log_parser.experiment` module.
 
@@ -144,8 +142,6 @@ Once again - the benefits of using :code:`create_experiment` - you can just refe
         │   └── thread_5.json
         ├── csv/
         └── reports/
-            ├── all/
-            └── cases/
 
 For more details, refer to the documentation of the :mod:`langgraph_log_parser.sql_to_jsons` module.
 
@@ -208,8 +204,6 @@ In this case, You can also use the benefits of :code:`create_experiment`.
         ├── csv/
         │   └── csv_output.csv
         └── reports/
-            ├── all/
-            └── cases/
 
 For more details, refer to the documentation of the :mod:`langgraph_log_parser.jsons_to_csv` module.
 
@@ -361,8 +355,6 @@ Once again, utilize the :code:`create_experiment` properties.
         ├── csv/
         │   └── csv_output.csv
         └── reports/
-            ├── all/
-            └── cases/
 
 **Sample graphs:**
 
@@ -387,16 +379,14 @@ This graph can also be generated using :func:`langgraph_log_parser.visualize.gen
 
   Sample prefix tree
 
-Generating JSON reports
-=======================
-We can generate reports for entire :code:`event_log` or single :code:`case_id`.
-The reports will be saved in a :code:`json` format and could be used in a comparison report.
+Generating JSON report for entire Event Log
+===========================================
+We can generate report for entire :code:`event_log`.
+The report will be saved in a :code:`json` format and will be used in a HTML comparison report.
 
-In both cases, we can use :code:`create_experiment` properties - we will use different property based on the use case.
+As in previous cases, we can use :code:`create_experiment` properties.
 
-Report for entire Event Log
----------------------------
-In case of entire log, we will need to use a :func:`langgraph_log_parser.create_report.write_report` with property :code:`reports_all_dir`.
+In case of entire log, we will need to use a :func:`langgraph_log_parser.create_report.write_report` with property :code:`reports_dir`.
 
 .. code-block:: python
 
@@ -416,7 +406,7 @@ In case of entire log, we will need to use a :func:`langgraph_log_parser.create_
     event_log = load_event_log(exp.get_csv_path())
 
     # Function for saving report for entire event_log
-    write_report(event_log, exp.reports_all_dir)
+    write_report(event_log, exp.reports_dir)
 
 **Folder structure should like this now:**
 
@@ -439,62 +429,7 @@ In case of entire log, we will need to use a :func:`langgraph_log_parser.create_
         ├── csv/
         │   └── csv_output.csv
         └── reports/
-            ├── all/
-            │   └── report.json
-            └── cases/
-
-Report for singe Case ID
-------------------------
-In case of single case ID, we will need to use a :func:`langgraph_log_parser.create_report.write_case_report` with property :code:`reports_cases_dir`.
-
-.. code-block:: python
-
-    # Needed imports
-    from langgraph_log_parser.experiment import create_experiment
-    from langgraph_log_parser.load_events import load_event_log
-    from langgraph_log_parser.create_report import write_case_report
-
-    # Init for experiment project structure
-    exp = create_experiment("test")
-
-    # Rest of the code...
-
-    # Using to load events from .csv file
-    # It looks for a default name "csv_output.csv" in csv experiment directory
-    # If you used the custom name -> be sure to put it in parenthesis - like - exp.get_csv_path("my_csv.csv").
-    event_log = load_event_log(exp.get_csv_path())
-
-    # This will generate report for case_id = 1
-    write_case_report(event_log, 1, exp.reports_all_dir)
-    # This will generate report for case_id = 2
-    write_case_report(event_log, 2, exp.reports_all_dir)
-
-**Folder structure should like this now:**
-
-.. code-block:: text
-
-    experiments/
-    └── test/
-        ├── db/
-        │   └── test.sqlite
-        ├── img/
-        │   ├── dfg_performance.png
-        │   ├── mermaid.png
-        │   └── prefix_tree.png
-        ├── json/
-        │   ├── thread_1.json
-        │   ├── thread_2.json
-        │   ├── thread_3.json
-        │   ├── thread_4.json
-        │   └── thread_5.json
-        ├── csv/
-        │   └── csv_output.csv
-        └── reports/
-            ├── all/
-            │   └── report.json
-            └── cases/
-                ├── 1_report.json
-                └── 2_report.json
+            └── report.json
 
 Generating architecture comparison
 ==================================
