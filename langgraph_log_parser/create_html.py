@@ -9,6 +9,14 @@ import webbrowser
 class _MetricsFormatter:
     HTML_ARROW = " &rarr; "
 
+    # List of metrics that should be formatted as time
+    TIME_METRICS = {
+        "avg_case_duration",
+        "avg_graph_duration",
+        "total_time",
+        "processing_time"
+    }
+
     @staticmethod
     def format_time(seconds: float) -> str:
         """Format time in seconds to a readable string."""
@@ -87,6 +95,10 @@ class _MetricsFormatter:
     @staticmethod
     def format_metric(key: str, value: Any) -> Any:
         """Format a metric based on its key and value type."""
+        # First check if it's a time metric
+        if key in _MetricsFormatter.TIME_METRICS and isinstance(value, (int, float)):
+            return _MetricsFormatter.format_time(value)
+
         if isinstance(value, dict):
             formatters = {
                 "sequences": _MetricsFormatter.format_sequences,
@@ -96,14 +108,12 @@ class _MetricsFormatter:
                                               for case, duration in v.items()},
                 "activities_mean_service_time": lambda v: {activity: _MetricsFormatter.format_time(duration)
                                                            for activity, duration in v.items()},
-                "rework_counts": _MetricsFormatter.format_rework_counts,
-                "avg_case_duration": lambda v: _MetricsFormatter.format_time(v) if isinstance(v, (int, float)) else v
+                "rework_counts": _MetricsFormatter.format_rework_counts
             }
             return formatters.get(key, lambda x: x)(value)
         elif isinstance(value, list) and key == "sequences_with_probabilities":
             return _MetricsFormatter.format_sequences_with_probabilities(value)
-        elif key == "avg_case_duration" and isinstance(value, (int, float)):
-            return _MetricsFormatter.format_time(value)
+
         return value
 
     # Class variable to store the context
