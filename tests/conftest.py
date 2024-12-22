@@ -1,5 +1,9 @@
+import os
 import glob
 import pytest
+import shutil
+from pathlib import Path
+from typing import Generator
 from unittest.mock import MagicMock
 from langgraph.graph.state import CompiledStateGraph
 
@@ -54,3 +58,29 @@ def mock_state_graph():
     graph.stream = MagicMock(return_value=[{"event_1": "output_1"}, {"event_2": "output_2"}, {"event_3": "__end__"}])
 
     return graph
+
+
+@pytest.fixture
+def setup_cleanup(tmp_path: Path) -> Generator[Path, None, None]:
+    """
+    Fixture to set up and clean up the test environment.
+    """
+    # Store original working directory
+    original_dir = os.getcwd()
+
+    # Change to temporary directory
+    os.chdir(tmp_path)
+
+    # Create experiments directory
+    experiments_dir = tmp_path / "experiments"
+    if not experiments_dir.exists():
+        experiments_dir.mkdir()
+
+    yield tmp_path
+
+    # Clean up: change back to original directory
+    os.chdir(original_dir)
+
+    # Clean up: remove test directory
+    if experiments_dir.exists():
+        shutil.rmtree(experiments_dir)

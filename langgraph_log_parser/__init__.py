@@ -55,7 +55,10 @@ __all__ = [
     "compare",
 
     #Classes - jsons_to_csv
-    "SubgraphConfig", "SupervisorConfig", "GraphConfig"
+    "SubgraphConfig", "SupervisorConfig", "GraphConfig",
+
+    #Classes - experiment
+    "ExperimentPaths"
 ]
 
 from . import load_events
