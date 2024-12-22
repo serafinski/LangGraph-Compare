@@ -625,9 +625,10 @@ def print_avg_duration(event_log: pd.DataFrame) -> None:
 
 def get_self_dist_witnesses(event_log: pd.DataFrame) -> dict[int, dict[str, list[list[str]]]]:
     """
-    Compute the minimum self-distance witnesses for each activity in each case of the event log.
+    Compute the minimum self-distance witnesses for each activity in each case of the event log,
+    considering both activity name and resource.
 
-    :param event_log: Event log data containing events with case IDs and activity names.
+    :param event_log: Event log data containing events with case IDs, activity names, and resources
     :type event_log: pd.DataFrame
     :return: A dictionary where each key is a case ID, and each value is another dictionary mapping
              activities to lists of witness sequences.
@@ -651,6 +652,7 @@ def get_self_dist_witnesses(event_log: pd.DataFrame) -> dict[int, dict[str, list
     all_msd_witnesses = {}
 
     for case_id in sorted_case_ids:
+        case_id = int(case_id)
         # Filtrowanie event log'u dla aktualnego case_id
         filtered_event_log = event_log[event_log['case_id'] == case_id].copy()
 
@@ -660,31 +662,52 @@ def get_self_dist_witnesses(event_log: pd.DataFrame) -> dict[int, dict[str, list
         # Reset index'u by zapewnić, że index'y zaczynają się od 0
         filtered_event_log.reset_index(drop=True, inplace=True)
 
-        # Grupowanie event'ów po aktywności i kalkulacja indeksów
-        activity_indices = {}
-        for activity in filtered_event_log['concept:name'].unique():
-            activity_indices[activity] = filtered_event_log[
-                filtered_event_log['concept:name'] == activity].index.tolist()
+        # Znajdź unikalne kombinacje aktywność-zasób
+        unique_pairs = []
+        for _, row in filtered_event_log.iterrows():
+            pair = (row['concept:name'], row['org:resource'])
+            if pair not in unique_pairs:
+                unique_pairs.append(pair)
 
-        # Wylicz minimalne odległości własne i świadków
-        min_self_distances = {}
         corrected_witnesses = {}
-        for activity, indices in activity_indices.items():
-            # Nie ma odległości własnej jak nie występuje przynajmniej 2 razy
+
+        # Dla każdej unikalnej pary aktywność-zasób
+        for activity, resource in unique_pairs:
+            # Znajdź indeksy dla tej konkretnej kombinacji aktywność-zasób
+            activity_mask = (filtered_event_log['concept:name'] == activity) & (
+                        filtered_event_log['org:resource'] == resource)
+            indices = filtered_event_log[activity_mask].index.tolist()
+
+            # Pomiń jeśli nie ma przynajmniej dwóch wystąpień
             if len(indices) < 2:
                 continue
 
-            # Wylicz przerwy i znajdź minimalne odległości własne
-            gaps = [indices[i + 1] - indices[i] - 1 for i in range(len(indices) - 1)]
+            # Wylicz przerwy między kolejnymi wystąpieniami
+            gaps = []
+            consecutive_indices = []
+
+            for i in range(len(indices) - 1):
+                gap = indices[i + 1] - indices[i] - 1
+
+                # Sprawdź czy między wystąpieniami nie ma tej samej aktywności z innym zasobem
+                events_between = filtered_event_log.iloc[indices[i] + 1:indices[i + 1]]
+                if not any((events_between['concept:name'] == activity) & (events_between['org:resource'] != resource)):
+                    gaps.append(gap)
+                    consecutive_indices.append((indices[i], indices[i + 1]))
+
+            # Jeśli nie ma żadnych właściwych przerw, pomiń tę aktywność
+            if not gaps:
+                continue
+
             min_distance = min(gaps)
-            min_self_distances[activity] = min_distance
 
             # Zidentyfikuj świadków dla minimalnych odległości własnych
             witness_sequences = []
-            for i in range(len(indices) - 1):
-                gap_size = indices[i + 1] - indices[i] - 1
+            for start_idx, end_idx in consecutive_indices:
+                gap_size = end_idx - start_idx - 1
                 if gap_size == min_distance:
-                    gap_events = filtered_event_log.iloc[indices[i] + 1:indices[i + 1]]['concept:name'].tolist()
+                    # Wydobycie eventów pomiędzy
+                    gap_events = filtered_event_log.iloc[start_idx + 1:end_idx]['concept:name'].tolist()
                     # Wyłącz aktywność z listy
                     gap_events = [event for event in gap_events if event != activity]
                     # Dodaj tylko nie pustę przerwy
@@ -693,7 +716,8 @@ def get_self_dist_witnesses(event_log: pd.DataFrame) -> dict[int, dict[str, list
 
             # De duplikacja sekwencji z zachowaniem ich kolejności
             unique_sequences = list(map(list, {tuple(seq) for seq in witness_sequences}))
-            corrected_witnesses[activity] = unique_sequences
+            if unique_sequences:  # Dodaj tylko jeśli są świadkowie
+                corrected_witnesses[activity] = unique_sequences
 
         all_msd_witnesses[case_id] = corrected_witnesses
 
