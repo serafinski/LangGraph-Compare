@@ -22,14 +22,10 @@ def write_report(event_log: pd.DataFrame, output_file: Optional[str] = None) -> 
     Generate and save a comprehensive analysis report of the entire event log in JSON format.
 
     The generated JSON report includes:
-        - Start and end activities
-        - Activity frequencies
-        - Activity sequences and their probabilities
-        - Minimum self-distances between activities
-        - Self-distance witnesses
-        - Rework counts
+        - Count of activities and it distribution
+        - Rework counts per activity
         - Mean service times per activity
-        - Case durations
+        - Average graph duration
 
     :param event_log: Event log data containing process execution information
     :type event_log: pd.DataFrame
@@ -51,7 +47,7 @@ def write_report(event_log: pd.DataFrame, output_file: Optional[str] = None) -> 
         "activities_count": get_act_counts(event_log),
         "rework_counts": get_global_act_reworks(event_log),
         "activities_mean_service_time": get_mean_act_times(event_log),
-        "avg_case_duration": get_avg_duration(event_log),
+        "avg_graph_duration": get_avg_duration(event_log),
     }
 
     if output_file is None or os.path.isdir(output_file):
