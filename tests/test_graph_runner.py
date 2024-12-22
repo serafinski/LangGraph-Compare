@@ -1,4 +1,4 @@
-from langgraph_log_parser.graph_runner import *
+from langgraph_log_parser.graph_runner import run_multiple_iterations
 
 def test_run_graph_iterations(mock_state_graph, capsys):
     """
@@ -23,13 +23,9 @@ def test_run_graph_iterations(mock_state_graph, capsys):
     recursion_limit = 50
 
     # Run the function with mock graph and parameters
-    run_graph_iterations(
-        graph=mock_state_graph,
-        starting_thread_id=starting_thread_id,
-        num_repetitions=num_repetitions,
-        user_input_template=user_input_template,
-        recursion_limit=recursion_limit
-    )
+    run_multiple_iterations(graph=mock_state_graph, starting_thread_id=starting_thread_id,
+                            num_repetitions=num_repetitions, user_input_template=user_input_template,
+                            recursion_limit=recursion_limit)
 
     # Capture printed output
     captured = capsys.readouterr()
@@ -52,4 +48,4 @@ def test_run_graph_iterations(mock_state_graph, capsys):
     }
     mock_state_graph.stream.assert_any_call(user_input_template, expected_config1)
     mock_state_graph.stream.assert_any_call(user_input_template, expected_config2)
-    assert mock_state_graph.stream.call_count == num_repetitions
+    assert mock_state_graph.stream.call_count == num_repetitions, f"Expected {num_repetitions} calls to stream(), but got {mock_state_graph.stream.call_count}"
