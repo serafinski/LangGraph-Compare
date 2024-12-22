@@ -1,4 +1,5 @@
 import os
+import json
 import glob
 import pytest
 import shutil
@@ -8,6 +9,7 @@ from unittest.mock import MagicMock
 from langgraph.graph.state import CompiledStateGraph
 
 from langgraph_log_parser import load_event_log
+
 
 @pytest.fixture
 def sample_event_log():
@@ -19,6 +21,7 @@ def sample_event_log():
     """
     test_file_path = "tests/files/csv/csv_output.csv"
     return load_event_log(test_file_path)
+
 
 @pytest.fixture
 def log_file_paths():
@@ -41,6 +44,7 @@ def sample_db_path():
     :rtype: str
     """
     return "tests/files/db/hierarchical.sqlite"
+
 
 @pytest.fixture
 def mock_state_graph():
@@ -84,3 +88,25 @@ def setup_cleanup(tmp_path: Path) -> Generator[Path, None, None]:
     # Clean up: remove test directory
     if experiments_dir.exists():
         shutil.rmtree(experiments_dir)
+
+
+@pytest.fixture
+def project_root():
+    """Fixture providing the project root path."""
+    return Path(os.path.dirname(os.path.dirname(__file__)))
+
+
+@pytest.fixture
+def reference_metrics():
+    """Fixture providing the reference metrics report data."""
+    project_root = Path(os.path.dirname(os.path.dirname(__file__)))
+    with open(project_root / "tests/files/reports/metrics_report.json", 'r') as f:
+        return json.load(f)
+
+
+@pytest.fixture
+def reference_sequences():
+    """Fixture providing the reference sequences report data."""
+    project_root = Path(os.path.dirname(os.path.dirname(__file__)))
+    with open(project_root / "tests/files/reports/sequences_report.json", 'r') as f:
+        return json.load(f)
