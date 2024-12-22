@@ -156,7 +156,7 @@ class _ArchitectureComparisonReport:
             self.images_data[infra_name] = {}
 
             # Load report data
-            report_path = base_path / "reports" / "all" / "report.json"
+            report_path = base_path / "reports" / "report.json"
             with open(report_path) as f:
                 report_data = json.load(f)
                 # Set the context before formatting
