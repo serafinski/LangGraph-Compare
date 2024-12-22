@@ -27,6 +27,17 @@ def log_file_paths():
     json_pattern = "tests/files/jsons/thread_*.json"
     return sorted(glob.glob(json_pattern))
 
+
+@pytest.fixture
+def sample_db_path():
+    """
+    Fixture providing path to the test SQLite database.
+
+    :return: Path to the test database file
+    :rtype: str
+    """
+    return "tests/files/db/hierarchical.sqlite"
+
 @pytest.fixture
 def mock_state_graph():
     """
