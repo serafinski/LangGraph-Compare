@@ -12,10 +12,12 @@
         <!-- Tab Buttons -->
         <div class="mb-4">
             <button onclick="showTab('metrics')" class="px-4 py-2 bg-blue-500 text-white rounded mr-2">Metrics</button>
-            <button onclick="showTab('visualizations')" class="px-4 py-2 bg-gray-200 rounded">Visualizations</button>
+            <button onclick="showTab('sequences')" class="px-4 py-2 bg-blue-500 text-white rounded mr-2">Sequences</button>
+            <button onclick="showTab('visualizations')" class="px-4 py-2 bg-blue-500 text-white rounded mr-2">Visualizations</button>
         </div>
 
         {% include 'components/metrics.html' %}
+        {% include 'components/sequences.html' %}
         {% include 'components/visualizations.html' %}
     </div>
 

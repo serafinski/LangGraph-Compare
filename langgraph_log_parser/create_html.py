@@ -155,16 +155,32 @@ class _ArchitectureComparisonReport:
             self.infrastructures_data[infra_name] = {}
             self.images_data[infra_name] = {}
 
-            # Load report data
-            report_path = base_path / "reports" / "report.json"
-            with open(report_path) as f:
+            # Load metrics report data
+            metrics_report_path = base_path / "reports" / "metrics_report.json"
+            with open(metrics_report_path) as f:
                 report_data = json.load(f)
-                # Set the context before formatting
                 _MetricsFormatter.set_context(report_data)
                 self.infrastructures_data[infra_name]['main_report'] = {
                     key: self.formatter.format_metric(key, value)
                     for key, value in report_data.items()
                 }
+
+            # Load sequences report data
+            sequences_report_path = base_path / "reports" / "sequences_report.json"
+            if sequences_report_path.exists():
+                with open(sequences_report_path) as f:
+                    sequences_data = json.load(f)
+                    # Format the data as needed
+                    # Get and sort sequence probabilities
+                    sequence_probabilities = sequences_data.get('sequence_probabilities', [])
+                    sorted_sequences = sorted(sequence_probabilities, key=lambda x: x[2], reverse=True)
+
+                    formatted_sequences = {
+                        'start_activities': sequences_data.get('start_activities', {}),
+                        'end_activities': sequences_data.get('end_activities', {}),
+                        'sequence_probabilities': sorted_sequences
+                    }
+                    self.infrastructures_data[infra_name]['sequences_report'] = formatted_sequences
 
             # Load images
             img_path = base_path / "img"
@@ -175,6 +191,7 @@ class _ArchitectureComparisonReport:
     def generate_report(self, open_browser: bool = True):
         self.report_dir.mkdir(exist_ok=True)
 
+        # Prepare metrics comparison data
         first_infra = next(iter(self.infrastructures_data))
         metrics_comparison = {
             metric: [self.infrastructures_data[infra]['main_report'].get(metric)
@@ -182,11 +199,18 @@ class _ArchitectureComparisonReport:
             for metric in self.infrastructures_data[first_infra]['main_report']
         }
 
+        # Prepare sequences data
+        sequences_data = {
+            infra: data.get('sequences_report', {})
+            for infra, data in self.infrastructures_data.items()
+        }
+
         template = self.get_template()
         html_content = template.render(
             infrastructures_data=self.infrastructures_data,
             images_data=self.images_data,
-            metrics_comparison=metrics_comparison
+            metrics_comparison=metrics_comparison,
+            sequences_data=sequences_data
         )
 
         report_filename = self.generate_report_filename()

@@ -386,14 +386,14 @@ The report will be saved in a :code:`json` format and will be used in a HTML com
 
 As in previous cases, we can use :code:`create_experiment` properties.
 
-In case of entire log, we will need to use a :func:`langgraph_log_parser.create_report.write_report` with property :code:`reports_dir`.
+In case of entire log, we will need to use a :func:`langgraph_log_parser.create_report.generate_reports` with property :code:`reports_dir`.
 
 .. code-block:: python
 
     # Needed imports
     from langgraph_log_parser.experiment import create_experiment
     from langgraph_log_parser.load_events import load_event_log
-    from langgraph_log_parser.create_report import write_report
+    from langgraph_log_parser.create_report import generate_reports
 
     # Init for experiment project structure
     exp = create_experiment("test")
@@ -406,7 +406,7 @@ In case of entire log, we will need to use a :func:`langgraph_log_parser.create_
     event_log = load_event_log(exp.get_csv_path())
 
     # Function for saving report for entire event_log
-    write_report(event_log, exp.reports_dir)
+    generate_reports(event_log, exp.reports_dir)
 
 **Folder structure should like this now:**
 

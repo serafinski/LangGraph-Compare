@@ -1,0 +1,75 @@
+<div id="sequences" class="tab-content">
+    <div class="bg-white rounded-lg shadow">
+        {% for infra, data in sequences_data.items() %}
+        <div class="mb-8">
+            <h2 class="text-xl font-bold px-4 py-2 bg-gray-50">{{ infra }}</h2>
+
+            <div class="p-4">
+                {# Start Activities #}
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3">Start Activities</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {% for activity, count in data.start_activities.items() %}
+                        <div class="border rounded-lg p-4 hover:bg-gray-50">
+                            <div class="font-medium">{{ activity }}</div>
+                            <div class="text-sm text-gray-600">Count: {{ count }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {# End Activities #}
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3">End Activities</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {% for activity, count in data.end_activities.items() %}
+                        <div class="border rounded-lg p-4 hover:bg-gray-50">
+                            <div class="font-medium">{{ activity }}</div>
+                            <div class="text-sm text-gray-600">Count: {{ count }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {# Sequence Probabilities #}
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3">Sequences</h3>
+                    <div class="grid grid-cols-1 gap-4">
+                        {% for sequence in data.sequence_probabilities|sort(attribute='2', reverse=True) %}
+                        <div class="border rounded-lg p-4 hover:bg-gray-50">
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                                {# Sequence ID #}
+                                <div>
+                                    <div class="font-medium mb-2">Case ID of last occurrence</div>
+                                    <div class="text-sm text-gray-600">{{ sequence[0] }}</div>
+                                </div>
+
+                                {# Probability #}
+                                <div>
+                                    <div class="font-medium mb-2">Probability</div>
+                                    <div class="text-sm text-gray-600">{{ "%.2f"|format(sequence[2] * 100) }}%</div>
+                                </div>
+
+                                {# Steps Count #}
+                                <div>
+                                    <div class="font-medium mb-2">Steps</div>
+                                    <div class="text-sm text-gray-600">{{ sequence[1]|length }}</div>
+                                </div>
+                            </div>
+
+                            {# Sequence Path #}
+                            <div class="mt-4">
+                                <div class="font-medium mb-2">Path</div>
+                                <div class="text-sm text-gray-600 break-words">
+                                    {{ sequence[1]|join(" → ") }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

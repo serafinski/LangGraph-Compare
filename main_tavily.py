@@ -80,6 +80,6 @@ print()
 event_log = load_event_log(exp.get_csv_path())
 print_analysis(event_log)
 
-write_report(event_log, exp.reports_dir)
+generate_reports(event_log, exp.reports_dir)
 
 generate_visualizations(event_log, graph, exp.img_dir)

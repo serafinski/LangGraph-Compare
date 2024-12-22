@@ -49,7 +49,7 @@ __all__ = [
     "create_experiment",
 
     # Functions - create_report
-    "write_report",
+    "write_metrics_report", "write_sequences_report", "generate_reports",
 
     # Functions - create_html
     "compare",
