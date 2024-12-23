@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 import base64
 import jinja2
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 import webbrowser
 
 
@@ -127,11 +127,16 @@ class _MetricsFormatter:
 
 class _ArchitectureComparisonReport:
     DEFAULT_EXPERIMENTS_DIR = "experiments"
+    DEFAULT_REPORTS_DIR = Path("comparison_reports")
 
-    def __init__(self, infrastructures, base_dir=None):
+    def __init__(self, infrastructures, base_dir=None, output_dir=None):
         self.base_dir = Path(base_dir) if base_dir else None
         self.base_paths = []
         self.infrastructures = infrastructures
+        # Allow custom output directory or use default
+        self.report_dir = Path(output_dir) if output_dir else self.DEFAULT_REPORTS_DIR
+        # Ensure the report directory exists
+        self.report_dir.mkdir(parents=True, exist_ok=True)
 
         for infra in infrastructures:
             infra_path = Path(infra)
@@ -149,7 +154,6 @@ class _ArchitectureComparisonReport:
 
         self.infrastructures_data = {}
         self.images_data = {}
-        self.report_dir = Path("comparison_reports")
         self.formatter = _MetricsFormatter()
 
     def generate_report_filename(self) -> str:
@@ -199,7 +203,9 @@ class _ArchitectureComparisonReport:
                     self.images_data[infra_name][img_file.stem] = base64.b64encode(f.read()).decode('utf-8')
 
     def generate_report(self, open_browser: bool = True):
-        self.report_dir.mkdir(exist_ok=True)
+        # Generate the report path using the configured directory and automatic filename
+        report_filename = self.generate_report_filename()
+        report_path = self.report_dir / report_filename
 
         # Prepare metrics comparison data
         first_infra = next(iter(self.infrastructures_data))
@@ -222,9 +228,6 @@ class _ArchitectureComparisonReport:
             metrics_comparison=metrics_comparison,
             sequences_data=sequences_data
         )
-
-        report_filename = self.generate_report_filename()
-        report_path = self.report_dir / report_filename
 
         with open(report_path, 'w') as f:
             f.write(html_content)
@@ -251,12 +254,15 @@ class _ArchitectureComparisonReport:
         return env.get_template("comparison_report.html")
 
 
-def compare(infrastructures: list) -> None:
+def compare(infrastructures: list, output_dir: Optional[str] = None) -> None:
     """
     Generate and open HTML comparison report comparing multi-agent infrastructures.
+    The report filename is automatically generated based on the compared architectures.
 
-    :param infrastructures: List of infrastructures to compare.
-    :type infrastructures: list
+    Args:
+        infrastructures: List of infrastructures to compare.
+        output_dir: Optional directory where reports should be saved. If not provided,
+                   reports will be saved in the default 'comparison_reports' directory.
 
     **Example:**
 
@@ -265,13 +271,14 @@ def compare(infrastructures: list) -> None:
         # List the experiments you would like to compare
         infrastructures = ["test_1", "test_2"]
 
-        # Run the function to generate comparison report
+        # Basic usage (saves to default location)
         compare(infrastructures)
+        # Output: Report generated at comparison_reports/test_1_vs_test_2.html
 
-        # Output:
-        # Report generated at comparison_reports/test_1_vs_test_2.html
-
+        # Save to specific directory
+        compare(infrastructures, output_dir="my_reports")
+        # Output: Report generated at my_reports/test_1_vs_test_2.html
     """
-    report_generator = _ArchitectureComparisonReport(infrastructures)
+    report_generator = _ArchitectureComparisonReport(infrastructures, output_dir=output_dir)
     report_generator.load_data()
     report_generator.generate_report()
