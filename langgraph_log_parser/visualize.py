@@ -3,6 +3,7 @@ import pandas as pd
 import pm4py
 from typing import Optional
 from langgraph.graph.state import CompiledStateGraph
+from .analyze import get_mean_act_times
 
 def generate_mermaid(graph: CompiledStateGraph, output_path: Optional[str] = None) -> None:
     """
@@ -96,8 +97,7 @@ def generate_performance_dfg(event_log: pd.DataFrame, output_path: Optional[str]
         os.makedirs(output_dir)
 
     dfg, start_activities, end_activities = pm4py.discover_dfg(event_log)
-
-    pm4py.save_vis_performance_dfg(dfg,start_activities, end_activities, output_path)
+    pm4py.save_vis_performance_dfg(dfg,start_activities, end_activities, output_path,serv_time=get_mean_act_times(event_log))
     print("Performance DFG saved as:", output_path)
 
 
