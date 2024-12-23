@@ -259,10 +259,10 @@ def compare(infrastructures: list, output_dir: Optional[str] = None) -> None:
     Generate and open HTML comparison report comparing multi-agent infrastructures.
     The report filename is automatically generated based on the compared architectures.
 
-    Args:
-        infrastructures: List of infrastructures to compare.
-        output_dir: Optional directory where reports should be saved. If not provided,
-                   reports will be saved in the default 'comparison_reports' directory.
+    :param infrastructures: List of infrastructures to compare.
+    :type infrastructures: list
+    :param output_dir: Optional directory where reports should be saved. If not provided, reports will be saved in the default 'comparison_reports' directory.
+    :type output_dir: str, optional
 
     **Example:**
 

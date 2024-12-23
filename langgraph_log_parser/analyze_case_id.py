@@ -110,10 +110,12 @@ def print_case_sequence_prob(event_log: pd.DataFrame, case_id: int) -> None:
     >>> event_log = load_event_log(csv_output)
     >>> print_case_sequence_prob(event_log,19)
     Event log loaded and formated from file: files/examples.csv
-    Activity sequence with probability for case ID 19: Sequence: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']; Probability: 0.3333333333333333
+    Activity sequence for case ID 19: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']
+    Probability: 0.333
     """
     sequence, probability = get_case_sequence_prob(event_log, case_id)
-    print(f"Activity sequence with probability for case ID {case_id}: Sequence: {sequence}; Probability: {probability}")
+    print(f"Activity sequence for case ID {case_id}: {sequence}")
+    print(f"Probability: {round(probability,3)}")
 
 #18
 def get_case_min_self_dists(event_log: pd.DataFrame, case_id: int) -> dict[str, int]:
@@ -286,10 +288,10 @@ def print_case_duration(event_log: pd.DataFrame, case_id: int) -> None:
     >>> event_log = load_event_log(csv_output)
     >>> print_case_duration(event_log,19)
     Event log loaded and formated from file: files/examples.csv
-    Duration for case ID 19: 120.730501 s
+    Duration for case ID 19: 120.731 s
     """
     duration = get_case_duration(event_log, case_id)
-    print(f"Duration for case ID {case_id}: {duration} s")
+    print(f"Duration for case ID {case_id}: {round(duration,3)} s")
 
 #34
 def get_case_start(event_log: pd.DataFrame, case_id: int) -> str:
@@ -418,10 +420,20 @@ def print_case_act_counts(event_log: pd.DataFrame, case_id: int) -> None:
     >>> event_log = load_event_log(csv_output)
     >>> print_case_act_counts(event_log,19)
     Event log loaded and formated from file: files/examples.csv
-    Count of each activity for case ID 19: {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'ChartGenerator': 1, 'DocWriter': 4}
+    Count of each activity for case ID 19:
+    Activity '__start__': 18
+    Activity 'test_supervisor': 18
+    Activity 'rg_supervisor': 15
+    Activity 'Search': 3
+    Activity 'WebScraper': 4
+    Activity 'ag_supervisor': 14
+    Activity 'ChartGenerator': 1
+    Activity 'DocWriter': 4
     """
     activities_count = get_case_act_counts(event_log, case_id)
-    print(f"Count of each activity for case ID {case_id}: {activities_count}")
+    print(f"Count of each activity for case ID {case_id}:")
+    for activity, count in activities_count.items():
+        print(f"Activity '{activity}': {count}")
 
 #40
 def get_case_sum_act_times(event_log: pd.DataFrame, case_id: int) -> dict[str, float]:
@@ -483,10 +495,20 @@ def print_case_sum_act_times(event_log: pd.DataFrame, case_id: int) -> None:
     >>> event_log = load_event_log(csv_output)
     >>> print_sum_service_time_by_case_id(event_log,19)
     Event log loaded and formated from file: files/examples.csv
-    Sum service time of each activity for case ID 19 (in sec): {'ChartGenerator': 0.608224, 'DocWriter': 2.0285469999999997, 'Search': 1.7249849999999998, 'WebScraper': 2.4464859999999997, '__start__': 0.603216, 'ag_supervisor': 0.10220199999999999, 'rg_supervisor': 23.0226, 'test_supervisor': 0.747701}
+    Sum service time of each activity for case ID 19:
+    Activity 'ChartGenerator': 0.608 s
+    Activity 'DocWriter': 2.0285 s
+    Activity 'Search': 1.725 s
+    Activity 'WebScraper': 2.446 s
+    Activity '__start__': 0.603 s
+    Activity 'ag_supervisor': 0.102 s
+    Activity 'rg_supervisor': 23.023 s
+    Activity 'test_supervisor': 0.748 s
     """
     sum_time = get_case_sum_act_times(event_log, case_id)
-    print(f"Sum service time of each activity for case ID {case_id} (in sec): {sum_time}")
+    print(f"Sum service time of each activity for case ID {case_id}:")
+    for activity, time in sum_time.items():
+        print(f"Activity '{activity}': {round(time,3)} s")
 
 
 def get_case_self_dist_witnesses(event_log: pd.DataFrame, case_id: int) -> dict[str, list[list[str]]]:
@@ -600,25 +622,42 @@ def print_case_analysis(event_log: pd.DataFrame, case_id: int) -> None:
         #
         # #########################START#########################
         #
-        # Start activity for case ID 19: __start__
+        # Start activity for case ID 1: __start__
         #
-        # End activity for case ID 19: test_supervisor
+        # End activity for case ID 1: test_supervisor
         #
-        # Count of each activity for case ID 19: {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'ChartGenerator': 1, 'DocWriter': 4}
+        # Count of each activity for case ID 1:
+        # Activity '__start__': 4
+        # Activity 'test_supervisor': 4
+        # Activity 'rg_supervisor': 4
+        # Activity 'Search': 1
+        # Activity 'WebScraper': 1
+        # Activity 'ag_supervisor': 4
+        # Activity 'DocWriter': 1
+        # Activity 'NoteTaker': 1
+        # Activity 'ChartGenerator': 1
         #
-        # Activity sequence for case ID 19: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']
+        # Activity sequence for case ID 1: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'NoteTaker', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']
+        # Probability: 0.333
         #
-        # Activity sequence with probability for case ID 19: Sequence: ['__start__', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'ChartGenerator', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'Search', 'rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'DocWriter', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'ag_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor', 'test_supervisor']; Probability: 0.3333333333333333
+        # Minimum self distances for case ID 1: {'__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
         #
-        # Minimum self distances for case ID 19: {'DocWriter': 1, 'Search': 6, 'WebScraper': 4, '__start__': 1, 'ag_supervisor': 1, 'rg_supervisor': 1, 'test_supervisor': 2}
+        # Minimum self distance witnesses for case ID 1: {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'rg_supervisor']], 'rg_supervisor': [['WebScraper'], ['Search']], 'ag_supervisor': [['NoteTaker'], ['DocWriter'], ['ChartGenerator']]}
         #
-        # Minimum self distance witnesses for case ID 19: {'__start__': [['test_supervisor']], 'test_supervisor': [['__start__', 'rg_supervisor'], ['__start__', 'ag_supervisor']], 'rg_supervisor': [['WebScraper'], ['Search']], 'Search': [['rg_supervisor', 'WebScraper', 'rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'WebScraper': [['rg_supervisor', 'test_supervisor', '__start__', 'rg_supervisor']], 'ag_supervisor': [['DocWriter'], ['ChartGenerator']], 'DocWriter': [['ag_supervisor']]}
+        # Rework counts for case ID 1: {'__start__': 4, 'test_supervisor': 4, 'rg_supervisor': 4, 'ag_supervisor': 4}
         #
-        # Rework counts for case ID 19: {'__start__': 18, 'test_supervisor': 18, 'rg_supervisor': 15, 'Search': 3, 'WebScraper': 4, 'ag_supervisor': 14, 'DocWriter': 4}
+        # Sum service time of each activity for case ID 1:
+        # Activity 'ChartGenerator': 0.567 s
+        # Activity 'DocWriter': 0.712 s
+        # Activity 'NoteTaker': 0.616 s
+        # Activity 'Search': 0.502 s
+        # Activity 'WebScraper': 0.506 s
+        # Activity '__start__': 3.137 s
+        # Activity 'ag_supervisor': 0.018 s
+        # Activity 'rg_supervisor': 3.446 s
+        # Activity 'test_supervisor': 0.013 s
         #
-        # Sum service time of each activity for case ID 19 (in sec): {'ChartGenerator': 0.608224, 'DocWriter': 2.0285469999999997, 'Search': 1.7249849999999998, 'WebScraper': 2.4464859999999997, '__start__': 0.603216, 'ag_supervisor': 0.10220199999999999, 'rg_supervisor': 23.0226, 'test_supervisor': 0.747701}
-        #
-        # Duration for case ID 19: 120.730501 s
+        # Duration for case ID 1: 43.88 s
         #
         # #########################END#########################
     """
