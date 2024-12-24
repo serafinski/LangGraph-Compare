@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 import base64
 import jinja2
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 import webbrowser
 
 
@@ -73,7 +73,7 @@ class _MetricsFormatter:
         }
 
     @staticmethod
-    def format_rework_counts(counts: Dict[str, int]) -> str | dict[str, str]:
+    def format_rework_counts(counts: Dict[str, int]) -> Union[str, Dict[str, str]]:
         """Format rework counts with percentages of total activities."""
         if not counts:
             return "No reworks"
