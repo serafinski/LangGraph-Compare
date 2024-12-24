@@ -2,29 +2,35 @@
 # Unix - which poetry
 # Windows - where poetry
 
-# Before running tests:
-# Be sure to: "poetry install --with test" before running "poetry run pytest"
+# poetry install --with dev,test,docs
+# poetry run pytest
 
 [tool.poetry]
 name = "langgraph_log_parser"
-version = "0.1.9"
+version = "0.1.10"
 description = "Parser for logs from LangGraph"
 authors = ["Tomasz Serafiński <tomasz@serafinski.net>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-python-dotenv = "^1.0.1"
 langgraph = "^0.2.45"
+pandas = "^2.2.3"
+pm4py = "^2.7.12.1"
+msgpack = "^1.1.0"
+jinja2 = "^3.1.2"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+python-dotenv = "^1.0.1"
 langsmith = "^0.2.4"
 langchain-openai = "^0.2.6"
 langchain = "^0.3.7"
 langchain-community = "^0.3.5"
 langgraph-checkpoint-sqlite = "^2.0.1"
-pandas = "^2.2.3"
-pm4py = "^2.7.12.1"
 tavily-python = "^0.5.0"
-msgpack = "^1.1.0"
 langchain-experimental = "^0.3.3"
 matplotlib = "^3.9.2"
 langchain-core = "^0.3.15"
@@ -39,11 +45,11 @@ optional = true
 [tool.poetry.group.test.dependencies]
 pytest = "^8.3.3"
 
-[tool.poetry.group.doc]
+[tool.poetry.group.docs]
 optional = true
 
 # sphinx wciaz wymaga zainstalowania przez pip?
-[tool.poetry.group.doc.dependencies]
+[tool.poetry.group.docs.dependencies]
 # jezeli chcesz zainstalowac zaleznosci do dokumentacji, musisz uzyc min python 3.10
 sphinx = { version = "^8.1.3", markers = "python_version >= '3.10'" }
 sphinx-rtd-theme = "^3.0.2"

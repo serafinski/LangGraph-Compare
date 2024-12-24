@@ -56,8 +56,6 @@ Environment setup
 -----------------
 This `package <https://pypi.org/project/langgraph_log_parser/>`_ requires Python 3.9 or higher.
 
-If you would like to develop this package, use Python 3.10 - since 3.10 is the needed minimum by Sphinx.
-
 To create virtual environment (using conda), use the following commands:
 
 .. code-block:: console
@@ -65,6 +63,14 @@ To create virtual environment (using conda), use the following commands:
    conda create -n langgraph_log_parser python=3.9
    conda activate langgraph_log_parser
    pip install langgraph_log_parser
+
+If you would like to develop this package, use poetry with Python 3.10 - since 3.10 is the needed minimum by Sphinx.
+
+Install needed dependencies with:
+
+.. code-block:: console
+
+   poetry install --with dev,test,docs
 
 Getting started
 ===============
@@ -79,7 +85,15 @@ Basic example
 *************
 This example is based on the `Building a Basic Chatbot <https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-1-build-a-basic-chatbot>`_ from LangGraph documentation.
 
+This code will require You to install the following packages (besides langgraph_log_parser):
+
+.. code-block:: console
+
+   pip install python-dotenv langgraph-checkpoint-sqlite langchain-openai
+
 For detailed explanation of the code, see: :ref:`getting_started` and :ref:`advanced_examples`.
+
+**Example**
 
 .. code-block:: python
 

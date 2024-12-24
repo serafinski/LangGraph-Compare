@@ -12,9 +12,13 @@ Once in `csv` format, the data can be analyzed using methods from the [py4pm](ht
 This pipeline provides a streamlined approach for extracting, transforming, and analyzing logs, offering valuable insights into multi-agent systems.
 
 # Installation
-This package requires Python 3.9 or higher.
+This package requires Python 3.9 or higher. [Check below for more information on creating environment.](#environment-setup)
 
-If you would like to develop this package, use Python 3.10 - since 3.10 is the needed minimum by Sphinx.
+If you would like to develop this package, use poetry with Python 3.10 - since 3.10 is the needed minimum by Sphinx.
+Install needed dependencies with:
+```dotenv
+poetry install --with dev,test,docs
+```
 ## Prerequisites
 This package requires Graphviz to be installed on your system.
 
@@ -48,6 +52,13 @@ pip install langgraph_log_parser
 ```
 # Basic Example
 This example is based on the [Building a Basic Chatbot](https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-1-build-a-basic-chatbot) from LangGraph documentation.
+
+It will require You to install the following packages _(besides `langgraph_log_parser`)_:
+```dotenv
+pip install python-dotenv langgraph-checkpoint-sqlite langchain-openai
+```
+**Example:**
+
 ```python
 import sqlite3
 
