@@ -1,9 +1,8 @@
 import os
 import sqlite3
 import json
-from typing import Dict, Any
-
 import msgpack
+from typing import Dict, Any
 
 def _convert(obj):
     """
