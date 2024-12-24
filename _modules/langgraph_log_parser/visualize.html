@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>langgraph_log_parser.visualize &mdash; LangGraph Log Parser 0.1.8 documentation</title>
+  <title>langgraph_log_parser.visualize &mdash; LangGraph Log Parser 0.1.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=22607128"></script>
+      <script src="../../_static/documentation_options.js?v=8618f531"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -76,6 +76,7 @@
 <span class="kn">import</span> <span class="nn">pm4py</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 <span class="kn">from</span> <span class="nn">langgraph.graph.state</span> <span class="kn">import</span> <span class="n">CompiledStateGraph</span>
+<span class="kn">from</span> <span class="nn">.analyze</span> <span class="kn">import</span> <span class="n">get_mean_act_times</span>
 
 <div class="viewcode-block" id="generate_mermaid">
 <a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.visualize.generate_mermaid">[docs]</a>
@@ -177,8 +178,7 @@
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
 
     <span class="n">dfg</span><span class="p">,</span> <span class="n">start_activities</span><span class="p">,</span> <span class="n">end_activities</span> <span class="o">=</span> <span class="n">pm4py</span><span class="o">.</span><span class="n">discover_dfg</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
-
-    <span class="n">pm4py</span><span class="o">.</span><span class="n">save_vis_performance_dfg</span><span class="p">(</span><span class="n">dfg</span><span class="p">,</span><span class="n">start_activities</span><span class="p">,</span> <span class="n">end_activities</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
+    <span class="n">pm4py</span><span class="o">.</span><span class="n">save_vis_performance_dfg</span><span class="p">(</span><span class="n">dfg</span><span class="p">,</span><span class="n">start_activities</span><span class="p">,</span> <span class="n">end_activities</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span><span class="n">serv_time</span><span class="o">=</span><span class="n">get_mean_act_times</span><span class="p">(</span><span class="n">event_log</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Performance DFG saved as:&quot;</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span></div>
 
 

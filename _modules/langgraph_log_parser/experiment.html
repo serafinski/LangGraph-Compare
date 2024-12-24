@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>langgraph_log_parser.experiment &mdash; LangGraph Log Parser 0.1.8 documentation</title>
+  <title>langgraph_log_parser.experiment &mdash; LangGraph Log Parser 0.1.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=22607128"></script>
+      <script src="../../_static/documentation_options.js?v=8618f531"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -170,38 +170,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;reports&quot;</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">reports_all_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns path to the reports/all directory.</span>
-
-<span class="sd">        :return: Full path to the reports/all directory.</span>
-<span class="sd">        :rtype: str</span>
-
-<span class="sd">        **Example:**</span>
-
-<span class="sd">        &gt;&gt;&gt; paths = ExperimentPaths(&quot;test&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; paths.reports_all_dir</span>
-<span class="sd">        &#39;experiments/test/reports/all&#39;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reports_dir</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">reports_cases_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns path to the reports/cases directory.</span>
-
-<span class="sd">        :return: Full path to the reports/cases directory.</span>
-<span class="sd">        :rtype: str</span>
-
-<span class="sd">        **Example:**</span>
-
-<span class="sd">        &gt;&gt;&gt; paths = ExperimentPaths(&quot;test&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; paths.reports_cases_dir</span>
-<span class="sd">        &#39;experiments/test/reports/cases&#39;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reports_dir</span><span class="p">,</span> <span class="s2">&quot;cases&quot;</span><span class="p">)</span>
-
 <div class="viewcode-block" id="ExperimentPaths.get_csv_path">
 <a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.experiment.ExperimentPaths.get_csv_path">[docs]</a>
     <span class="k">def</span> <span class="nf">get_csv_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;csv_output.csv&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -259,7 +227,7 @@
 <span class="sd">    **Example:**</span>
 
 <span class="sd">    &gt;&gt;&gt; _create_folder_structure(&quot;test_directory&quot;)</span>
-<span class="sd">    Successfully created &#39;experiments/test_directory&#39; with subfolders: db, img, json, csv, reports/all, reports/cases</span>
+<span class="sd">    Successfully created &#39;experiments/test_directory&#39; with subfolders: db, img, json, csv, reports</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Define experiments directory</span>
     <span class="n">experiments_dir</span> <span class="o">=</span> <span class="s2">&quot;experiments&quot;</span>
@@ -285,13 +253,7 @@
             <span class="n">subfolder_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="n">subfolder</span><span class="p">)</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">subfolder_path</span><span class="p">)</span>
 
-            <span class="c1"># Create reports subdirectories</span>
-            <span class="k">if</span> <span class="n">subfolder</span> <span class="o">==</span> <span class="s1">&#39;reports&#39;</span><span class="p">:</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subfolder_path</span><span class="p">,</span> <span class="s1">&#39;all&#39;</span><span class="p">))</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subfolder_path</span><span class="p">,</span> <span class="s1">&#39;cases&#39;</span><span class="p">))</span>
-
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Successfully created &#39;</span><span class="si">{</span><span class="n">full_path</span><span class="si">}</span><span class="s2">&#39; with subfolders: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">basic_subfolders</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s2">, reports/all, reports/cases&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully created &#39;</span><span class="si">{</span><span class="n">full_path</span><span class="si">}</span><span class="s2">&#39; with subfolders: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">basic_subfolders</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error creating folder structure: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -313,15 +275,13 @@
 
 <span class="sd">    &gt;&gt;&gt; paths = create_experiment(&quot;my_experiment&quot;)</span>
 <span class="sd">    Creating new experiment...</span>
-<span class="sd">    Successfully created &#39;experiments/my_experiment&#39; with subfolders: db, img, json, csv</span>
+<span class="sd">    Successfully created &#39;experiments/my_experiment&#39; with subfolders: db, img, json, csv, reports</span>
 <span class="sd">    Experiment &#39;my_experiment&#39; created successfully!</span>
 <span class="sd">    Database path: experiments/my_experiment/db/my_experiment.sqlite</span>
 <span class="sd">    JSON directory: experiments/my_experiment/json</span>
 <span class="sd">    CSV directory: experiments/my_experiment/csv</span>
 <span class="sd">    Image directory: experiments/my_experiment/img</span>
 <span class="sd">    Reports directory: experiments/my_experiment/reports</span>
-<span class="sd">    - All reports: experiments/my_experiment/reports/all</span>
-<span class="sd">    - Case reports: experiments/my_experiment/reports/cases</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Creating new experiment...&quot;</span><span class="p">)</span>
     <span class="n">_create_folder_structure</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -333,8 +293,6 @@
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CSV directory: </span><span class="si">{</span><span class="n">paths</span><span class="o">.</span><span class="n">csv_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Image directory: </span><span class="si">{</span><span class="n">paths</span><span class="o">.</span><span class="n">img_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reports directory: </span><span class="si">{</span><span class="n">paths</span><span class="o">.</span><span class="n">reports_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- All reports: </span><span class="si">{</span><span class="n">paths</span><span class="o">.</span><span class="n">reports_all_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Case reports: </span><span class="si">{</span><span class="n">paths</span><span class="o">.</span><span class="n">reports_cases_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">paths</span></div>
 
 </pre></div>

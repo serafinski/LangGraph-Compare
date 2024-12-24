@@ -54,13 +54,15 @@ For Fedora, Rocky Linux, RHEL or CentOS use the following command:
 
 Environment setup
 -----------------
-This `package <https://pypi.org/project/langgraph_log_parser/>`_ requires Python 3.10 or higher.
+This `package <https://pypi.org/project/langgraph_log_parser/>`_ requires Python 3.9 or higher.
+
+If you would like to develop this package, use Python 3.10 - since 3.10 is the needed minimum by Sphinx.
 
 To create virtual environment (using conda), use the following commands:
 
 .. code-block:: console
 
-   conda create -n langgraph_log_parser python=3.10
+   conda create -n langgraph_log_parser python=3.9
    conda activate langgraph_log_parser
    pip install langgraph_log_parser
 
@@ -132,7 +134,7 @@ For detailed explanation of the code, see: :ref:`getting_started` and :ref:`adva
    event_log = load_event_log(exp.get_csv_path())
    print_analysis(event_log)
 
-   write_report(event_log, exp.reports_all_dir)
+   generate_reports(event_log, exp.reports_dir)
 
    generate_visualizations(event_log, graph, exp.img_dir)
 

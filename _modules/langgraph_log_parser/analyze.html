@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>langgraph_log_parser.analyze &mdash; LangGraph Log Parser 0.1.8 documentation</title>
+  <title>langgraph_log_parser.analyze &mdash; LangGraph Log Parser 0.1.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=22607128"></script>
+      <script src="../../_static/documentation_options.js?v=8618f531"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -348,15 +348,19 @@
 <span class="sd">    &gt;&gt;&gt; print_sequence_probs(event_log)</span>
 <span class="sd">    Event log loaded and formated from file: files/examples.csv</span>
 <span class="sd">    ID of last sequence occurrence with probability of occurrence:</span>
-<span class="sd">    Case ID 18: (&#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;), 0.3333333333333333</span>
-<span class="sd">    Case ID 19: (&#39;__start__&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;), 0.3333333333333333</span>
-<span class="sd">    Case ID 20: (&#39;__start__&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;), 0.3333333333333333</span>
+<span class="sd">    Case ID 18: (&#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;)</span>
+<span class="sd">    Probability: 0.333</span>
+<span class="sd">    Case ID 19: (&#39;__start__&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;)</span>
+<span class="sd">    Probability: 0.333</span>
+<span class="sd">    Case ID 20: (&#39;__start__&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;)</span>
+<span class="sd">    Probability: 0.333</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sequences_with_probabilities</span> <span class="o">=</span> <span class="n">get_sequence_probs</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ID of last sequence occurrence with probability of occurrence:&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">case_id</span><span class="p">,</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">probability</span> <span class="ow">in</span> <span class="n">sequences_with_probabilities</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">sequence</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">probability</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">sequence</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Probability: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">probability</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 
@@ -499,7 +503,7 @@
 <span class="sd">    Case ID 19: {&#39;__start__&#39;: 18, &#39;test_supervisor&#39;: 18, &#39;rg_supervisor&#39;: 15, &#39;Search&#39;: 3, &#39;WebScraper&#39;: 4, &#39;ag_supervisor&#39;: 14, &#39;DocWriter&#39;: 4}</span>
 <span class="sd">    Case ID 20: {&#39;__start__&#39;: 8, &#39;test_supervisor&#39;: 8, &#39;rg_supervisor&#39;: 7, &#39;Search&#39;: 2, &#39;ag_supervisor&#39;: 12, &#39;ChartGenerator&#39;: 2, &#39;DocWriter&#39;: 4, &#39;NoteTaker&#39;: 3}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">rework_counts_by_case</span> <span class="o">=</span> <span class="n">get_global_act_reworks</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
+    <span class="n">rework_counts_by_case</span> <span class="o">=</span> <span class="n">get_act_reworks</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Count of activity rework:&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">case_id</span><span class="p">,</span> <span class="n">rework_counts</span> <span class="ow">in</span> <span class="n">rework_counts_by_case</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -568,16 +572,25 @@
 <span class="sd">    :type event_log: pd.DataFrame</span>
 
 <span class="sd">    **Example:**</span>
+
 <span class="sd">    &gt;&gt;&gt; csv_output = &quot;files/examples.csv&quot;</span>
 <span class="sd">    &gt;&gt;&gt; event_log = load_event_log(csv_output)</span>
 <span class="sd">    &gt;&gt;&gt; print_global_act_reworks(event_log)</span>
 <span class="sd">    Event log loaded and formated from file: files/examples.csv</span>
-
+<span class="sd">    Global rework counts for each activity:</span>
+<span class="sd">    Activity &#39;__start__&#39;: 11</span>
+<span class="sd">    Activity &#39;test_supervisor&#39;: 11</span>
+<span class="sd">    Activity &#39;rg_supervisor&#39;: 9</span>
+<span class="sd">    Activity &#39;ag_supervisor&#39;: 21</span>
+<span class="sd">    Activity &#39;NoteTaker&#39;: 3</span>
+<span class="sd">    Activity &#39;ChartGenerator&#39;: 3</span>
+<span class="sd">    Activity &#39;DocWriter&#39;: 4</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">rework_counts_by_case</span> <span class="o">=</span> <span class="n">get_global_act_reworks</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">case_id</span><span class="p">,</span> <span class="n">rework_counts</span> <span class="ow">in</span> <span class="n">rework_counts_by_case</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">rework_counts</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Global rework counts for each activity:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">activity</span><span class="p">,</span> <span class="n">rework_counts</span> <span class="ow">in</span> <span class="n">rework_counts_by_case</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Activity &#39;</span><span class="si">{</span><span class="n">activity</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">rework_counts</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <span class="c1">#28</span>
@@ -623,10 +636,21 @@
 <span class="sd">    &gt;&gt;&gt; event_log = load_event_log(csv_output)</span>
 <span class="sd">    &gt;&gt;&gt; print_mean_act_times(event_log)</span>
 <span class="sd">    Event log loaded and formated from file: files/examples.csv</span>
-<span class="sd">    Mean duration of every activity (in sec): {&#39;ChartGenerator&#39;: 0.587241, &#39;DocWriter&#39;: 1.0209089999999998, &#39;NoteTaker&#39;: 0.5753873333333334, &#39;Search&#39;: 0.580575, &#39;WebScraper&#39;: 0.6020846, &#39;__start__&#39;: 0.0411957037037037, &#39;ag_supervisor&#39;: 0.007210296296296296, &#39;rg_supervisor&#39;: 1.8212668636363636, &#39;test_supervisor&#39;: 0.04827048148148148}</span>
+<span class="sd">    Mean duration of every activity:</span>
+<span class="sd">    Activity &#39;ChartGenerator&#39;: 0.587 s</span>
+<span class="sd">    Activity &#39;DocWriter&#39;: 1.021 s</span>
+<span class="sd">    Activity &#39;NoteTaker&#39;: 0.575 s</span>
+<span class="sd">    Activity &#39;Search&#39;: 0.581 s</span>
+<span class="sd">    Activity &#39;WebScraper&#39;: 0.602 s</span>
+<span class="sd">    Activity &#39;__start__&#39;: 0.0412 s</span>
+<span class="sd">    Activity &#39;ag_supervisor&#39;: 0.007 s</span>
+<span class="sd">    Activity &#39;rg_supervisor&#39;: 1.821 s</span>
+<span class="sd">    Activity &#39;test_supervisor&#39;: 0.048 s</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mean_serv_time</span> <span class="o">=</span> <span class="n">get_mean_act_times</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean duration of every activity (in sec):&quot;</span><span class="p">,</span> <span class="n">mean_serv_time</span><span class="p">)</span></div>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean duration of every activity:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">activity</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">mean_serv_time</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Activity &#39;</span><span class="si">{</span><span class="n">activity</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2"> s&quot;</span><span class="p">)</span></div>
 
 
 
@@ -680,15 +704,15 @@
 <span class="sd">    &gt;&gt;&gt; print_durations(event_log)</span>
 <span class="sd">    Event log loaded and formated from file: files/examples.csv</span>
 <span class="sd">    Duration of the case:</span>
-<span class="sd">    Case ID 18: 4.580137 s</span>
-<span class="sd">    Case ID 19: 120.730501 s</span>
-<span class="sd">    Case ID 20: 74.653202 s</span>
+<span class="sd">    Case ID 18: 4.580 s</span>
+<span class="sd">    Case ID 19: 120.731 s</span>
+<span class="sd">    Case ID 20: 74.653 s</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">case_durations</span> <span class="o">=</span> <span class="n">get_durations</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Duration of the case:&quot;</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">case_id</span><span class="p">,</span> <span class="n">duration</span> <span class="ow">in</span> <span class="n">case_durations</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">duration</span><span class="si">}</span><span class="s2"> s&quot;</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2"> s&quot;</span><span class="p">)</span></div>
 
 
 
@@ -701,7 +725,8 @@
 <span class="sd">    :param event_log: Event log data.</span>
 <span class="sd">    :type event_log: pd.DataFrame</span>
 
-<span class="sd">    ** Example:**</span>
+<span class="sd">    **Example:**</span>
+
 <span class="sd">    &gt;&gt;&gt; csv_output = &quot;files/examples.csv&quot;</span>
 <span class="sd">    &gt;&gt;&gt; event_log = load_event_log(csv_output)</span>
 <span class="sd">    &gt;&gt;&gt; print(get_avg_duration(event_log))</span>
@@ -741,9 +766,10 @@
 <a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.analyze.get_self_dist_witnesses">[docs]</a>
 <span class="k">def</span> <span class="nf">get_self_dist_witnesses</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute the minimum self-distance witnesses for each activity in each case of the event log.</span>
+<span class="sd">    Compute the minimum self-distance witnesses for each activity in each case of the event log,</span>
+<span class="sd">    considering both activity name and resource.</span>
 
-<span class="sd">    :param event_log: Event log data containing events with case IDs and activity names.</span>
+<span class="sd">    :param event_log: Event log data containing events with case IDs, activity names, and resources</span>
 <span class="sd">    :type event_log: pd.DataFrame</span>
 <span class="sd">    :return: A dictionary where each key is a case ID, and each value is another dictionary mapping</span>
 <span class="sd">             activities to lists of witness sequences.</span>
@@ -767,6 +793,7 @@
     <span class="n">all_msd_witnesses</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">for</span> <span class="n">case_id</span> <span class="ow">in</span> <span class="n">sorted_case_ids</span><span class="p">:</span>
+        <span class="n">case_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">case_id</span><span class="p">)</span>
         <span class="c1"># Filtrowanie event log&#39;u dla aktualnego case_id</span>
         <span class="n">filtered_event_log</span> <span class="o">=</span> <span class="n">event_log</span><span class="p">[</span><span class="n">event_log</span><span class="p">[</span><span class="s1">&#39;case_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">case_id</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
@@ -776,31 +803,52 @@
         <span class="c1"># Reset index&#39;u by zapewnić, że index&#39;y zaczynają się od 0</span>
         <span class="n">filtered_event_log</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="c1"># Grupowanie event&#39;ów po aktywności i kalkulacja indeksów</span>
-        <span class="n">activity_indices</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">activity</span> <span class="ow">in</span> <span class="n">filtered_event_log</span><span class="p">[</span><span class="s1">&#39;concept:name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
-            <span class="n">activity_indices</span><span class="p">[</span><span class="n">activity</span><span class="p">]</span> <span class="o">=</span> <span class="n">filtered_event_log</span><span class="p">[</span>
-                <span class="n">filtered_event_log</span><span class="p">[</span><span class="s1">&#39;concept:name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">activity</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="c1"># Znajdź unikalne kombinacje aktywność-zasób</span>
+        <span class="n">unique_pairs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">filtered_event_log</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">pair</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;concept:name&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;org:resource&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">pair</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">unique_pairs</span><span class="p">:</span>
+                <span class="n">unique_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span>
 
-        <span class="c1"># Wylicz minimalne odległości własne i świadków</span>
-        <span class="n">min_self_distances</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">corrected_witnesses</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">activity</span><span class="p">,</span> <span class="n">indices</span> <span class="ow">in</span> <span class="n">activity_indices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="c1"># Nie ma odległości własnej jak nie występuje przynajmniej 2 razy</span>
+
+        <span class="c1"># Dla każdej unikalnej pary aktywność-zasób</span>
+        <span class="k">for</span> <span class="n">activity</span><span class="p">,</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">unique_pairs</span><span class="p">:</span>
+            <span class="c1"># Znajdź indeksy dla tej konkretnej kombinacji aktywność-zasób</span>
+            <span class="n">activity_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">filtered_event_log</span><span class="p">[</span><span class="s1">&#39;concept:name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">activity</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span>
+                        <span class="n">filtered_event_log</span><span class="p">[</span><span class="s1">&#39;org:resource&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">resource</span><span class="p">)</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">filtered_event_log</span><span class="p">[</span><span class="n">activity_mask</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+            <span class="c1"># Pomiń jeśli nie ma przynajmniej dwóch wystąpień</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="k">continue</span>
 
-            <span class="c1"># Wylicz przerwy i znajdź minimalne odległości własne</span>
-            <span class="n">gaps</span> <span class="o">=</span> <span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+            <span class="c1"># Wylicz przerwy między kolejnymi wystąpieniami</span>
+            <span class="n">gaps</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">consecutive_indices</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">gap</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+
+                <span class="c1"># Sprawdź czy między wystąpieniami nie ma tej samej aktywności z innym zasobem</span>
+                <span class="n">events_between</span> <span class="o">=</span> <span class="n">filtered_event_log</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">((</span><span class="n">events_between</span><span class="p">[</span><span class="s1">&#39;concept:name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">activity</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">events_between</span><span class="p">[</span><span class="s1">&#39;org:resource&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">resource</span><span class="p">)):</span>
+                    <span class="n">gaps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gap</span><span class="p">)</span>
+                    <span class="n">consecutive_indices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]))</span>
+
+            <span class="c1"># Jeśli nie ma żadnych właściwych przerw, pomiń tę aktywność</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">gaps</span><span class="p">:</span>
+                <span class="k">continue</span>
+
             <span class="n">min_distance</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">gaps</span><span class="p">)</span>
-            <span class="n">min_self_distances</span><span class="p">[</span><span class="n">activity</span><span class="p">]</span> <span class="o">=</span> <span class="n">min_distance</span>
 
             <span class="c1"># Zidentyfikuj świadków dla minimalnych odległości własnych</span>
             <span class="n">witness_sequences</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">gap_size</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">start_idx</span><span class="p">,</span> <span class="n">end_idx</span> <span class="ow">in</span> <span class="n">consecutive_indices</span><span class="p">:</span>
+                <span class="n">gap_size</span> <span class="o">=</span> <span class="n">end_idx</span> <span class="o">-</span> <span class="n">start_idx</span> <span class="o">-</span> <span class="mi">1</span>
                 <span class="k">if</span> <span class="n">gap_size</span> <span class="o">==</span> <span class="n">min_distance</span><span class="p">:</span>
-                    <span class="n">gap_events</span> <span class="o">=</span> <span class="n">filtered_event_log</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;concept:name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                    <span class="c1"># Wydobycie eventów pomiędzy</span>
+                    <span class="n">gap_events</span> <span class="o">=</span> <span class="n">filtered_event_log</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">end_idx</span><span class="p">][</span><span class="s1">&#39;concept:name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
                     <span class="c1"># Wyłącz aktywność z listy</span>
                     <span class="n">gap_events</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">gap_events</span> <span class="k">if</span> <span class="n">event</span> <span class="o">!=</span> <span class="n">activity</span><span class="p">]</span>
                     <span class="c1"># Dodaj tylko nie pustę przerwy</span>
@@ -809,7 +857,8 @@
 
             <span class="c1"># De duplikacja sekwencji z zachowaniem ich kolejności</span>
             <span class="n">unique_sequences</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="p">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span> <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">witness_sequences</span><span class="p">}))</span>
-            <span class="n">corrected_witnesses</span><span class="p">[</span><span class="n">activity</span><span class="p">]</span> <span class="o">=</span> <span class="n">unique_sequences</span>
+            <span class="k">if</span> <span class="n">unique_sequences</span><span class="p">:</span>  <span class="c1"># Dodaj tylko jeśli są świadkowie</span>
+                <span class="n">corrected_witnesses</span><span class="p">[</span><span class="n">activity</span><span class="p">]</span> <span class="o">=</span> <span class="n">unique_sequences</span>
 
         <span class="n">all_msd_witnesses</span><span class="p">[</span><span class="n">case_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">corrected_witnesses</span>
 
@@ -864,50 +913,64 @@
 <span class="sd">        print_all_self_distance_witnesses(event_log)</span>
 <span class="sd">        # Event log loaded and formated from file: files/examples.csv</span>
 <span class="sd">        #</span>
-<span class="sd">        # ###################START###########################</span>
+<span class="sd">        # #########################START#########################</span>
 <span class="sd">        #</span>
 <span class="sd">        # Start activities: {&#39;__start__&#39;: 3}</span>
 <span class="sd">        #</span>
 <span class="sd">        # End activities: {&#39;test_supervisor&#39;: 3}</span>
 <span class="sd">        #</span>
-<span class="sd">        # Count of each activity: {&#39;__start__&#39;: 27, &#39;ag_supervisor&#39;: 27, &#39;test_supervisor&#39;: 27, &#39;rg_supervisor&#39;: 22, &#39;DocWriter&#39;: 8, &#39;Search&#39;: 5, &#39;WebScraper&#39;: 5, &#39;ChartGenerator&#39;: 3, &#39;NoteTaker&#39;: 3}</span>
+<span class="sd">        # Count of each activity: {&#39;ag_supervisor&#39;: 24, &#39;__start__&#39;: 14, &#39;test_supervisor&#39;: 14, &#39;rg_supervisor&#39;: 12, &#39;DocWriter&#39;: 7, &#39;NoteTaker&#39;: 6, &#39;ChartGenerator&#39;: 6, &#39;Search&#39;: 3, &#39;WebScraper&#39;: 3}</span>
 <span class="sd">        #</span>
 <span class="sd">        # All sequences:</span>
-<span class="sd">        # Case ID 18: [&#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;]</span>
-<span class="sd">        # Case ID 19: [&#39;__start__&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;]</span>
-<span class="sd">        # Case ID 20: [&#39;__start__&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;]</span>
+<span class="sd">        # Case ID 1: [&#39;__start__&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;]</span>
+<span class="sd">        # Case ID 2: [&#39;__start__&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;]</span>
+<span class="sd">        # Case ID 3: [&#39;__start__&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;]</span>
 <span class="sd">        #</span>
 <span class="sd">        # ID of last sequence occurrence with probability of occurrence:</span>
-<span class="sd">        # Case ID 18: (&#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;), 0.3333333333333333</span>
-<span class="sd">        # Case ID 19: (&#39;__start__&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;), 0.3333333333333333</span>
-<span class="sd">        # Case ID 20: (&#39;__start__&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;), 0.3333333333333333</span>
+<span class="sd">        # Case ID 1: (&#39;__start__&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;)</span>
+<span class="sd">        # Probability: 0.333</span>
+<span class="sd">        #</span>
+<span class="sd">        # Case ID 2: (&#39;__start__&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;)</span>
+<span class="sd">        # Probability: 0.333</span>
+<span class="sd">        #</span>
+<span class="sd">        # Case ID 3: (&#39;__start__&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;Search&#39;, &#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;)</span>
+<span class="sd">        # Probability: 0.333</span>
 <span class="sd">        #</span>
 <span class="sd">        # Minimal self-distances for every activity:</span>
-<span class="sd">        # Case ID 18: {}</span>
-<span class="sd">        # Case ID 19: {&#39;DocWriter&#39;: 1, &#39;Search&#39;: 6, &#39;WebScraper&#39;: 4, &#39;__start__&#39;: 1, &#39;ag_supervisor&#39;: 1, &#39;rg_supervisor&#39;: 1, &#39;test_supervisor&#39;: 2}</span>
-<span class="sd">        # Case ID 20: {&#39;ChartGenerator&#39;: 1, &#39;DocWriter&#39;: 3, &#39;NoteTaker&#39;: 3, &#39;Search&#39;: 36, &#39;__start__&#39;: 1, &#39;ag_supervisor&#39;: 1, &#39;rg_supervisor&#39;: 1, &#39;test_supervisor&#39;: 2}</span>
+<span class="sd">        # Case ID 1: {&#39;__start__&#39;: 1, &#39;ag_supervisor&#39;: 1, &#39;rg_supervisor&#39;: 1, &#39;test_supervisor&#39;: 2}</span>
+<span class="sd">        # Case ID 2: {&#39;ChartGenerator&#39;: 5, &#39;DocWriter&#39;: 1, &#39;NoteTaker&#39;: 1, &#39;__start__&#39;: 1, &#39;ag_supervisor&#39;: 1, &#39;rg_supervisor&#39;: 1, &#39;test_supervisor&#39;: 2}</span>
+<span class="sd">        # Case ID 3: {&#39;ChartGenerator&#39;: 1, &#39;__start__&#39;: 1, &#39;ag_supervisor&#39;: 1, &#39;rg_supervisor&#39;: 1, &#39;test_supervisor&#39;: 2}</span>
 <span class="sd">        #</span>
 <span class="sd">        # Witnesses of minimum self-distances:</span>
-<span class="sd">        # Case ID 18: {}</span>
-<span class="sd">        # Case ID 19: {&#39;__start__&#39;: [[&#39;test_supervisor&#39;]], &#39;test_supervisor&#39;: [[&#39;__start__&#39;, &#39;ag_supervisor&#39;], [&#39;__start__&#39;, &#39;rg_supervisor&#39;]], &#39;rg_supervisor&#39;: [[&#39;Search&#39;], [&#39;WebScraper&#39;]], &#39;Search&#39;: [[&#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;]], &#39;WebScraper&#39;: [[&#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;]], &#39;ag_supervisor&#39;: [[&#39;DocWriter&#39;], [&#39;ChartGenerator&#39;]], &#39;DocWriter&#39;: [[&#39;ag_supervisor&#39;]]}</span>
-<span class="sd">        # Case ID 20: {&#39;__start__&#39;: [[&#39;test_supervisor&#39;]], &#39;test_supervisor&#39;: [[&#39;__start__&#39;, &#39;rg_supervisor&#39;]], &#39;rg_supervisor&#39;: [[&#39;Search&#39;], [&#39;WebScraper&#39;]], &#39;Search&#39;: [[&#39;rg_supervisor&#39;, &#39;WebScraper&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;ChartGenerator&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;, &#39;test_supervisor&#39;, &#39;__start__&#39;, &#39;rg_supervisor&#39;]], &#39;ag_supervisor&#39;: [[&#39;DocWriter&#39;], [&#39;NoteTaker&#39;], [&#39;ChartGenerator&#39;]], &#39;ChartGenerator&#39;: [[&#39;ag_supervisor&#39;]], &#39;DocWriter&#39;: [[&#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;]], &#39;NoteTaker&#39;: [[&#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;]]}</span>
+<span class="sd">        # Case ID 1: {&#39;__start__&#39;: [[&#39;test_supervisor&#39;]], &#39;test_supervisor&#39;: [[&#39;__start__&#39;, &#39;rg_supervisor&#39;]], &#39;rg_supervisor&#39;: [[&#39;WebScraper&#39;], [&#39;Search&#39;]], &#39;ag_supervisor&#39;: [[&#39;DocWriter&#39;], [&#39;NoteTaker&#39;], [&#39;ChartGenerator&#39;]]}</span>
+<span class="sd">        # Case ID 2: {&#39;__start__&#39;: [[&#39;test_supervisor&#39;]], &#39;test_supervisor&#39;: [[&#39;__start__&#39;, &#39;rg_supervisor&#39;], [&#39;__start__&#39;, &#39;ag_supervisor&#39;]], &#39;rg_supervisor&#39;: [[&#39;WebScraper&#39;], [&#39;Search&#39;]], &#39;ag_supervisor&#39;: [[&#39;DocWriter&#39;], [&#39;NoteTaker&#39;], [&#39;ChartGenerator&#39;]], &#39;NoteTaker&#39;: [[&#39;ag_supervisor&#39;]], &#39;ChartGenerator&#39;: [[&#39;ag_supervisor&#39;, &#39;DocWriter&#39;, &#39;ag_supervisor&#39;, &#39;NoteTaker&#39;, &#39;ag_supervisor&#39;]], &#39;DocWriter&#39;: [[&#39;ag_supervisor&#39;]]}</span>
+<span class="sd">        # Case ID 3: {&#39;__start__&#39;: [[&#39;test_supervisor&#39;]], &#39;test_supervisor&#39;: [[&#39;__start__&#39;, &#39;rg_supervisor&#39;]], &#39;rg_supervisor&#39;: [[&#39;WebScraper&#39;], [&#39;Search&#39;]], &#39;ag_supervisor&#39;: [[&#39;DocWriter&#39;], [&#39;NoteTaker&#39;], [&#39;ChartGenerator&#39;]], &#39;ChartGenerator&#39;: [[&#39;ag_supervisor&#39;]]}</span>
 <span class="sd">        #</span>
 <span class="sd">        # Count of activity rework:</span>
-<span class="sd">        # Case ID 18: {}</span>
-<span class="sd">        # Case ID 19: {&#39;__start__&#39;: 18, &#39;test_supervisor&#39;: 18, &#39;rg_supervisor&#39;: 15, &#39;Search&#39;: 3, &#39;WebScraper&#39;: 4, &#39;ag_supervisor&#39;: 14, &#39;DocWriter&#39;: 4}</span>
-<span class="sd">        # Case ID 20: {&#39;__start__&#39;: 8, &#39;test_supervisor&#39;: 8, &#39;rg_supervisor&#39;: 7, &#39;Search&#39;: 2, &#39;ag_supervisor&#39;: 12, &#39;ChartGenerator&#39;: 2, &#39;DocWriter&#39;: 4, &#39;NoteTaker&#39;: 3}</span>
+<span class="sd">        # Case ID 1: {&#39;__start__&#39;: 4, &#39;test_supervisor&#39;: 4, &#39;rg_supervisor&#39;: 4, &#39;ag_supervisor&#39;: 4}</span>
+<span class="sd">        # Case ID 2: {&#39;__start__&#39;: 6, &#39;test_supervisor&#39;: 6, &#39;rg_supervisor&#39;: 4, &#39;ag_supervisor&#39;: 15, &#39;NoteTaker&#39;: 4, &#39;ChartGenerator&#39;: 3, &#39;DocWriter&#39;: 5}</span>
+<span class="sd">        # Case ID 3: {&#39;__start__&#39;: 4, &#39;test_supervisor&#39;: 4, &#39;rg_supervisor&#39;: 4, &#39;ag_supervisor&#39;: 5, &#39;ChartGenerator&#39;: 2}</span>
 <span class="sd">        #</span>
-<span class="sd">        # Mean duration of every activity (in sec): {&#39;ChartGenerator&#39;: 0.587241, &#39;DocWriter&#39;: 1.0209089999999998, &#39;NoteTaker&#39;: 0.5753873333333334, &#39;Search&#39;: 0.580575, &#39;WebScraper&#39;: 0.6020846, &#39;__start__&#39;: 0.0411957037037037, &#39;ag_supervisor&#39;: 0.007210296296296296, &#39;rg_supervisor&#39;: 1.8212668636363636, &#39;test_supervisor&#39;: 0.04827048148148148}</span>
+<span class="sd">        # Mean duration of every activity:</span>
+<span class="sd">        # Activity &#39;ChartGenerator&#39;: 0.541 s</span>
+<span class="sd">        # Activity &#39;DocWriter&#39;: 0.523 s</span>
+<span class="sd">        # Activity &#39;NoteTaker&#39;: 0.606 s</span>
+<span class="sd">        # Activity &#39;Search&#39;: 1.587 s</span>
+<span class="sd">        # Activity &#39;WebScraper&#39;: 0.525 s</span>
+<span class="sd">        # Activity &#39;__start__&#39;: 0.288 s</span>
+<span class="sd">        # Activity &#39;ag_supervisor&#39;: 0.005 s</span>
+<span class="sd">        # Activity &#39;rg_supervisor&#39;: 0.759 s</span>
+<span class="sd">        # Activity &#39;test_supervisor&#39;: 0.003 s</span>
 <span class="sd">        #</span>
 <span class="sd">        # Duration of the case:</span>
-<span class="sd">        # Case ID 18: 4.580137 s</span>
-<span class="sd">        # Case ID 19: 120.730501 s</span>
-<span class="sd">        # Case ID 20: 74.653202 s</span>
+<span class="sd">        # Case ID 1: 43.88 s</span>
+<span class="sd">        # Case ID 2: 62.252 s</span>
+<span class="sd">        # Case ID 3: 29.688 s</span>
 <span class="sd">        #</span>
-<span class="sd">        # ######################END###########################</span>
+<span class="sd">        # #########################END#########################</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">####################START###########################</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">+</span><span class="s2">&quot;#&quot;</span><span class="o">*</span><span class="mi">25</span><span class="o">+</span><span class="s2">&quot;START&quot;</span><span class="o">+</span><span class="s2">&quot;#&quot;</span><span class="o">*</span><span class="mi">25</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="n">print_starts</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">()</span>
@@ -922,7 +985,6 @@
     <span class="nb">print</span><span class="p">()</span>
 
     <span class="n">print_sequence_probs</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">()</span>
 
     <span class="n">print_min_self_dists</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">()</span>
@@ -938,7 +1000,7 @@
 
     <span class="n">print_durations</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">######################END###########################&quot;</span><span class="p">)</span></div>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">+</span><span class="s2">&quot;#&quot;</span><span class="o">*</span><span class="mi">25</span><span class="o">+</span><span class="s2">&quot;END&quot;</span><span class="o">+</span><span class="s2">&quot;#&quot;</span><span class="o">*</span><span class="mi">25</span><span class="p">)</span></div>
 
 </pre></div>
 

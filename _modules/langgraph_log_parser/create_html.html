@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>langgraph_log_parser.create_html &mdash; LangGraph Log Parser 0.1.8 documentation</title>
+  <title>langgraph_log_parser.create_html &mdash; LangGraph Log Parser 0.1.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=22607128"></script>
+      <script src="../../_static/documentation_options.js?v=8618f531"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -75,12 +75,20 @@
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">jinja2</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">import</span> <span class="nn">webbrowser</span>
 
 
 <span class="k">class</span> <span class="nc">_MetricsFormatter</span><span class="p">:</span>
     <span class="n">HTML_ARROW</span> <span class="o">=</span> <span class="s2">&quot; &amp;rarr; &quot;</span>
+
+    <span class="c1"># List of metrics that should be formatted as time</span>
+    <span class="n">TIME_METRICS</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;avg_case_duration&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;avg_graph_duration&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;total_time&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;processing_time&quot;</span>
+    <span class="p">}</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">format_time</span><span class="p">(</span><span class="n">seconds</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -160,6 +168,10 @@
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">format_metric</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Format a metric based on its key and value type.&quot;&quot;&quot;</span>
+        <span class="c1"># First check if it&#39;s a time metric</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_MetricsFormatter</span><span class="o">.</span><span class="n">TIME_METRICS</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">_MetricsFormatter</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">formatters</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s2">&quot;sequences&quot;</span><span class="p">:</span> <span class="n">_MetricsFormatter</span><span class="o">.</span><span class="n">format_sequences</span><span class="p">,</span>
@@ -169,14 +181,12 @@
                                               <span class="k">for</span> <span class="n">case</span><span class="p">,</span> <span class="n">duration</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">items</span><span class="p">()},</span>
                 <span class="s2">&quot;activities_mean_service_time&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="p">{</span><span class="n">activity</span><span class="p">:</span> <span class="n">_MetricsFormatter</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
                                                            <span class="k">for</span> <span class="n">activity</span><span class="p">,</span> <span class="n">duration</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">items</span><span class="p">()},</span>
-                <span class="s2">&quot;rework_counts&quot;</span><span class="p">:</span> <span class="n">_MetricsFormatter</span><span class="o">.</span><span class="n">format_rework_counts</span><span class="p">,</span>
-                <span class="s2">&quot;avg_case_duration&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">_MetricsFormatter</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="k">else</span> <span class="n">v</span>
+                <span class="s2">&quot;rework_counts&quot;</span><span class="p">:</span> <span class="n">_MetricsFormatter</span><span class="o">.</span><span class="n">format_rework_counts</span>
             <span class="p">}</span>
             <span class="k">return</span> <span class="n">formatters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;sequences_with_probabilities&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_MetricsFormatter</span><span class="o">.</span><span class="n">format_sequences_with_probabilities</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;avg_case_duration&quot;</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-            <span class="k">return</span> <span class="n">_MetricsFormatter</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">value</span>
 
     <span class="c1"># Class variable to store the context</span>
@@ -190,11 +200,16 @@
 
 <span class="k">class</span> <span class="nc">_ArchitectureComparisonReport</span><span class="p">:</span>
     <span class="n">DEFAULT_EXPERIMENTS_DIR</span> <span class="o">=</span> <span class="s2">&quot;experiments&quot;</span>
+    <span class="n">DEFAULT_REPORTS_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;comparison_reports&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">infrastructures</span><span class="p">,</span> <span class="n">base_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">infrastructures</span><span class="p">,</span> <span class="n">base_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">base_dir</span><span class="p">)</span> <span class="k">if</span> <span class="n">base_dir</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_paths</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">infrastructures</span> <span class="o">=</span> <span class="n">infrastructures</span>
+        <span class="c1"># Allow custom output directory or use default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span> <span class="k">if</span> <span class="n">output_dir</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_REPORTS_DIR</span>
+        <span class="c1"># Ensure the report directory exists</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">infra</span> <span class="ow">in</span> <span class="n">infrastructures</span><span class="p">:</span>
             <span class="n">infra_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">infra</span><span class="p">)</span>
@@ -212,7 +227,6 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">infrastructures_data</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">images_data</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">report_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;comparison_reports&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span> <span class="o">=</span> <span class="n">_MetricsFormatter</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">generate_report_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -228,16 +242,32 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">infrastructures_data</span><span class="p">[</span><span class="n">infra_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">images_data</span><span class="p">[</span><span class="n">infra_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
-            <span class="c1"># Load report data</span>
-            <span class="n">report_path</span> <span class="o">=</span> <span class="n">base_path</span> <span class="o">/</span> <span class="s2">&quot;reports&quot;</span> <span class="o">/</span> <span class="s2">&quot;all&quot;</span> <span class="o">/</span> <span class="s2">&quot;report.json&quot;</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">report_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="c1"># Load metrics report data</span>
+            <span class="n">metrics_report_path</span> <span class="o">=</span> <span class="n">base_path</span> <span class="o">/</span> <span class="s2">&quot;reports&quot;</span> <span class="o">/</span> <span class="s2">&quot;metrics_report.json&quot;</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">metrics_report_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">report_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-                <span class="c1"># Set the context before formatting</span>
                 <span class="n">_MetricsFormatter</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="n">report_data</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">infrastructures_data</span><span class="p">[</span><span class="n">infra_name</span><span class="p">][</span><span class="s1">&#39;main_report&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
                     <span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span><span class="o">.</span><span class="n">format_metric</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">report_data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
                 <span class="p">}</span>
+
+            <span class="c1"># Load sequences report data</span>
+            <span class="n">sequences_report_path</span> <span class="o">=</span> <span class="n">base_path</span> <span class="o">/</span> <span class="s2">&quot;reports&quot;</span> <span class="o">/</span> <span class="s2">&quot;sequences_report.json&quot;</span>
+            <span class="k">if</span> <span class="n">sequences_report_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">sequences_report_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">sequences_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                    <span class="c1"># Format the data as needed</span>
+                    <span class="c1"># Get and sort sequence probabilities</span>
+                    <span class="n">sequence_probabilities</span> <span class="o">=</span> <span class="n">sequences_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sequence_probabilities&#39;</span><span class="p">,</span> <span class="p">[])</span>
+                    <span class="n">sorted_sequences</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">sequence_probabilities</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+                    <span class="n">formatted_sequences</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s1">&#39;start_activities&#39;</span><span class="p">:</span> <span class="n">sequences_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;start_activities&#39;</span><span class="p">,</span> <span class="p">{}),</span>
+                        <span class="s1">&#39;end_activities&#39;</span><span class="p">:</span> <span class="n">sequences_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;end_activities&#39;</span><span class="p">,</span> <span class="p">{}),</span>
+                        <span class="s1">&#39;sequence_probabilities&#39;</span><span class="p">:</span> <span class="n">sorted_sequences</span>
+                    <span class="p">}</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">infrastructures_data</span><span class="p">[</span><span class="n">infra_name</span><span class="p">][</span><span class="s1">&#39;sequences_report&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">formatted_sequences</span>
 
             <span class="c1"># Load images</span>
             <span class="n">img_path</span> <span class="o">=</span> <span class="n">base_path</span> <span class="o">/</span> <span class="s2">&quot;img&quot;</span>
@@ -246,8 +276,11 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">images_data</span><span class="p">[</span><span class="n">infra_name</span><span class="p">][</span><span class="n">img_file</span><span class="o">.</span><span class="n">stem</span><span class="p">]</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">generate_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">open_browser</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">report_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Generate the report path using the configured directory and automatic filename</span>
+        <span class="n">report_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_report_filename</span><span class="p">()</span>
+        <span class="n">report_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">report_dir</span> <span class="o">/</span> <span class="n">report_filename</span>
 
+        <span class="c1"># Prepare metrics comparison data</span>
         <span class="n">first_infra</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">infrastructures_data</span><span class="p">))</span>
         <span class="n">metrics_comparison</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">metric</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">infrastructures_data</span><span class="p">[</span><span class="n">infra</span><span class="p">][</span><span class="s1">&#39;main_report&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
@@ -255,15 +288,19 @@
             <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">infrastructures_data</span><span class="p">[</span><span class="n">first_infra</span><span class="p">][</span><span class="s1">&#39;main_report&#39;</span><span class="p">]</span>
         <span class="p">}</span>
 
+        <span class="c1"># Prepare sequences data</span>
+        <span class="n">sequences_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">infra</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sequences_report&#39;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="k">for</span> <span class="n">infra</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">infrastructures_data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+
         <span class="n">template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_template</span><span class="p">()</span>
         <span class="n">html_content</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
             <span class="n">infrastructures_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">infrastructures_data</span><span class="p">,</span>
             <span class="n">images_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">images_data</span><span class="p">,</span>
-            <span class="n">metrics_comparison</span><span class="o">=</span><span class="n">metrics_comparison</span>
+            <span class="n">metrics_comparison</span><span class="o">=</span><span class="n">metrics_comparison</span><span class="p">,</span>
+            <span class="n">sequences_data</span><span class="o">=</span><span class="n">sequences_data</span>
         <span class="p">)</span>
-
-        <span class="n">report_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_report_filename</span><span class="p">()</span>
-        <span class="n">report_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">report_dir</span> <span class="o">/</span> <span class="n">report_filename</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">report_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html_content</span><span class="p">)</span>
@@ -292,12 +329,15 @@
 
 <div class="viewcode-block" id="compare">
 <a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.create_html.compare">[docs]</a>
-<span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="n">infrastructures</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="n">infrastructures</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate and open HTML comparison report comparing multi-agent infrastructures.</span>
+<span class="sd">    The report filename is automatically generated based on the compared architectures.</span>
 
 <span class="sd">    :param infrastructures: List of infrastructures to compare.</span>
 <span class="sd">    :type infrastructures: list</span>
+<span class="sd">    :param output_dir: Optional directory where reports should be saved. If not provided, reports will be saved in the default &#39;comparison_reports&#39; directory.</span>
+<span class="sd">    :type output_dir: str, optional</span>
 
 <span class="sd">    **Example:**</span>
 
@@ -306,14 +346,15 @@
 <span class="sd">        # List the experiments you would like to compare</span>
 <span class="sd">        infrastructures = [&quot;test_1&quot;, &quot;test_2&quot;]</span>
 
-<span class="sd">        # Run the function to generate comparison report</span>
+<span class="sd">        # Basic usage (saves to default location)</span>
 <span class="sd">        compare(infrastructures)</span>
+<span class="sd">        # Output: Report generated at comparison_reports/test_1_vs_test_2.html</span>
 
-<span class="sd">        # Output:</span>
-<span class="sd">        # Report generated at comparison_reports/test_1_vs_test_2.html</span>
-
+<span class="sd">        # Save to specific directory</span>
+<span class="sd">        compare(infrastructures, output_dir=&quot;my_reports&quot;)</span>
+<span class="sd">        # Output: Report generated at my_reports/test_1_vs_test_2.html</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">report_generator</span> <span class="o">=</span> <span class="n">_ArchitectureComparisonReport</span><span class="p">(</span><span class="n">infrastructures</span><span class="p">)</span>
+    <span class="n">report_generator</span> <span class="o">=</span> <span class="n">_ArchitectureComparisonReport</span><span class="p">(</span><span class="n">infrastructures</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">)</span>
     <span class="n">report_generator</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
     <span class="n">report_generator</span><span class="o">.</span><span class="n">generate_report</span><span class="p">()</span></div>
 
