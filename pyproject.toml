@@ -16,7 +16,7 @@ readme = "README.md"
 python = "^3.10"
 python-dotenv = "^1.0.1"
 langgraph = "^0.2.45"
-langsmith = "^0.1.142"
+langsmith = "^0.2.4"
 langchain-openai = "^0.2.6"
 langchain = "^0.3.7"
 langchain-community = "^0.3.5"
@@ -33,9 +33,14 @@ prefixspan = "^0.5.2"
 pyvis = "^0.3.2"
 numpy = "<2.0.0"
 
+[tool.poetry.group.test]
+optional = true
+
 [tool.poetry.group.test.dependencies]
 pytest = "^8.3.3"
 
+[tool.poetry.group.doc]
+optional = true
 
 # sphinx wciaz wymaga zainstalowania przez pip?
 [tool.poetry.group.doc.dependencies]
