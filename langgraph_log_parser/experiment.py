@@ -1,6 +1,8 @@
 import os
+import sqlite3
 from dataclasses import dataclass
 from typing import Optional
+from langgraph.checkpoint.sqlite import SqliteSaver
 
 @dataclass
 class ExperimentPaths:
@@ -14,6 +16,8 @@ class ExperimentPaths:
     """
     name: str
     base_dir: str = "experiments"
+    _connection: Optional[sqlite3.Connection] = None
+    _memory: Optional[SqliteSaver] = None
 
     @property
     def database(self) -> str:
@@ -30,6 +34,42 @@ class ExperimentPaths:
         'experiments/test/db/test.sqlite'
         """
         return os.path.join(self.base_dir, self.name, "db", f"{self.name}.sqlite")
+
+    @property
+    def connection(self) -> sqlite3.Connection:
+        """
+        Returns or creates SQLite connection with appropriate settings.
+
+        :return: SQLite connection object
+        :rtype: sqlite3.Connection
+
+        **Example:**
+
+        >>> paths = ExperimentPaths("test")
+        >>> conn = paths.connection  # Creates new connection if none exists
+        >>> conn2 = paths.connection  # Returns existing connection
+        """
+        if self._connection is None:
+            self._connection = sqlite3.connect(self.database, check_same_thread=False)
+        return self._connection
+
+    @property
+    def memory(self) -> SqliteSaver:
+        """
+        Returns or creates SqliteSaver instance for the database.
+
+        :return: SqliteSaver instance
+        :rtype: SqliteSaver
+
+        **Example:**
+
+        >>> paths = ExperimentPaths("test")
+        >>> saver = paths.memory  # Creates new SqliteSaver if none exists
+        >>> saver2 = paths.memory  # Returns existing SqliteSaver
+        """
+        if self._memory is None:
+            self._memory = SqliteSaver(self.connection)
+        return self._memory
 
     @property
     def json_dir(self) -> str:
