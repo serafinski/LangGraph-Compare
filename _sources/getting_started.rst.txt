@@ -17,7 +17,8 @@ Setup
 
 Creating experiment
 ===================
-First, start with creating an experiment folder structure for storing all of Your working data. The data will be stored in :code:`experiments` - a directory automatically created by a package.
+First, start with creating an experiment folder structure for storing all of Your working data. The data by default will be stored in :code:`experiments` - a directory automatically created by a package
+(however you are able to save it in another location by using optional :code:`base_dir` attribute).
 
 To create an experiment, you can use the function :func:`langgraph_log_parser.experiment.create_experiment`.
 
@@ -30,11 +31,6 @@ This can be done like this:
     exp = create_experiment("test")
 
 Function should create a folder structure in :code:`experiments` containing folders :code:`csv`, :code:`db`, :code:`img`, :code:`json` and :code:`reports`.
-
-Additionally, :code:`reports` directory have two sub-directories:
-
-* :code:`all` for report for entire :code:`event_log`
-* :code:`cases` for reports regarding selected single :code:`case_id`:
 
 .. code-block:: text
 
@@ -54,22 +50,17 @@ This package leverages `SqliteSaver <https://langchain-ai.github.io/langgraph/re
 
 The benefit of using previously mentioned :code:`create_experiment` is the fact that You don't have to define the paths manually - you can just refer to the properties.
 
-To initiate SQLite correctly, be sure to do the following:
+To initiate connection to SQLite database correctly, be sure to do the following:
 
 .. code-block:: python
 
-    # Needed imports
-    import sqlite3
-    from langgraph.checkpoint.sqlite import SqliteSaver
     from langgraph_log_parser.experiment import create_experiment
 
     # Init for experiment project structure
     exp = create_experiment("test")
 
     # Initiate connection
-    # Using init allows to refer to properties of the experiment
-    conn = sqlite3.connect(exp.database, check_same_thread=False)
-    memory = SqliteSaver(conn)
+    memory = exp.memory
 
     # Rest of the code...
 
@@ -131,6 +122,7 @@ Once again - the benefits of using :code:`create_experiment` - you can just refe
 
     experiments/
     └── test/
+        ├── csv/
         ├── db/
         │   └── test.sqlite
         ├── img/
@@ -140,7 +132,6 @@ Once again - the benefits of using :code:`create_experiment` - you can just refe
         │   ├── thread_3.json
         │   ├── thread_4.json
         │   └── thread_5.json
-        ├── csv/
         └── reports/
 
 For more details, refer to the documentation of the :mod:`langgraph_log_parser.sql_to_jsons` module.
@@ -156,7 +147,7 @@ This function takes every singe :code:`json` file from a selected directory and 
 This requires :class:`langgraph_log_parser.jsons_to_csv.GraphConfig` a custom class that defines how a graph was configured, so parser can parse accordingly.
 
 In this example, we will focus on a basic usage of :code:`GraphConfig`.
-I will dive deeper into :code:`GraphConfig` in :ref:`advanced_examples`.
+I dive deeper into :code:`GraphConfig` in :ref:`advanced_examples`.
 
 **Example:**
 
@@ -192,6 +183,8 @@ In this case, You can also use the benefits of :code:`create_experiment`.
 
     experiments/
     └── test/
+        ├── csv/
+        │   └── csv_output.csv
         ├── db/
         │   └── test.sqlite
         ├── img/
@@ -201,8 +194,6 @@ In this case, You can also use the benefits of :code:`create_experiment`.
         │   ├── thread_3.json
         │   ├── thread_4.json
         │   └── thread_5.json
-        ├── csv/
-        │   └── csv_output.csv
         └── reports/
 
 For more details, refer to the documentation of the :mod:`langgraph_log_parser.jsons_to_csv` module.
@@ -340,6 +331,8 @@ Once again, utilize the :code:`create_experiment` properties.
 
     experiments/
     └── test/
+        ├── csv/
+        │   └── csv_output.csv
         ├── db/
         │   └── test.sqlite
         ├── img/
@@ -352,8 +345,6 @@ Once again, utilize the :code:`create_experiment` properties.
         │   ├── thread_3.json
         │   ├── thread_4.json
         │   └── thread_5.json
-        ├── csv/
-        │   └── csv_output.csv
         └── reports/
 
 **Sample graphs:**
@@ -414,6 +405,8 @@ In case of entire log, we will need to use a :func:`langgraph_log_parser.create_
 
     experiments/
     └── test/
+        ├── csv/
+        │   └── csv_output.csv
         ├── db/
         │   └── test.sqlite
         ├── img/
@@ -426,10 +419,9 @@ In case of entire log, we will need to use a :func:`langgraph_log_parser.create_
         │   ├── thread_3.json
         │   ├── thread_4.json
         │   └── thread_5.json
-        ├── csv/
-        │   └── csv_output.csv
         └── reports/
-            └── report.json
+            ├── metrics_report.json
+            └── sequences_report.json
 
 Generating architecture comparison
 ==================================

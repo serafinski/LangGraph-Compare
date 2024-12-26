@@ -85,11 +85,11 @@ Basic example
 *************
 This example is based on the `Building a Basic Chatbot <https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-1-build-a-basic-chatbot>`_ from LangGraph documentation.
 
-This code will require You to install the following packages (besides langgraph_log_parser):
+This code will require You to install the following packages `(besides langgraph_log_parser)`:
 
 .. code-block:: console
 
-   pip install python-dotenv langgraph-checkpoint-sqlite langchain-openai
+   pip install python-dotenv langchain-openai
 
 For detailed explanation of the code, see: :ref:`getting_started` and :ref:`advanced_examples`.
 
@@ -97,12 +97,9 @@ For detailed explanation of the code, see: :ref:`getting_started` and :ref:`adva
 
 .. code-block:: python
 
-   import sqlite3
-
    from dotenv import load_dotenv
    from typing import Annotated
 
-   from langgraph.checkpoint.sqlite import SqliteSaver
    from typing_extensions import TypedDict
    from langchain_openai import ChatOpenAI
    from langgraph.graph import StateGraph, START, END
@@ -111,11 +108,9 @@ For detailed explanation of the code, see: :ref:`getting_started` and :ref:`adva
    from langgraph_log_parser import *
 
    exp = create_experiment("main")
+   memory = exp.memory
 
    load_dotenv()
-
-   conn = sqlite3.connect(exp.database, check_same_thread=False)
-   memory = SqliteSaver(conn)
 
    class State(TypedDict):
        messages: Annotated[list, add_messages]
