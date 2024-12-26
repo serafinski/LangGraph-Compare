@@ -55,17 +55,14 @@ This example is based on the [Building a Basic Chatbot](https://langchain-ai.git
 
 It will require You to install the following packages _(besides `langgraph_log_parser`)_:
 ```dotenv
-pip install python-dotenv langgraph-checkpoint-sqlite langchain-openai
+pip install python-dotenv langchain-openai
 ```
 **Example:**
 
 ```python
-import sqlite3
-
 from dotenv import load_dotenv
 from typing import Annotated
 
-from langgraph.checkpoint.sqlite import SqliteSaver
 from typing_extensions import TypedDict
 from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, START, END
@@ -74,11 +71,9 @@ from langgraph.graph.message import add_messages
 from langgraph_log_parser import *
 
 exp = create_experiment("main")
+memory = exp.memory
 
 load_dotenv()
-
-conn = sqlite3.connect(exp.database, check_same_thread=False)
-memory = SqliteSaver(conn)
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]

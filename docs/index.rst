@@ -85,11 +85,11 @@ Basic example
 *************
 This example is based on the `Building a Basic Chatbot <https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-1-build-a-basic-chatbot>`_ from LangGraph documentation.
 
-This code will require You to install the following packages (besides langgraph_log_parser):
+This code will require You to install the following packages `(besides langgraph_log_parser)`:
 
 .. code-block:: console
 
-   pip install python-dotenv langgraph-checkpoint-sqlite langchain-openai
+   pip install python-dotenv langchain-openai
 
 For detailed explanation of the code, see: :ref:`getting_started` and :ref:`advanced_examples`.
 
