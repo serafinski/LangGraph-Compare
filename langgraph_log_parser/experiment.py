@@ -135,34 +135,33 @@ class ExperimentPaths:
         return os.path.join(self.img_dir, filename)
 
 
-def _create_folder_structure(folder_name: str) -> None:
+def _create_folder_structure(folder_name: str, base_dir: str = "experiments") -> None:
     """
-    Create a folder structure inside 'experiments' directory with db, img, json, csv, and reports subfolders.
+    Create a folder structure with db, img, json, csv, and reports subfolders.
 
-    :param folder_name: Name of the main folder to be created inside experiments directory.
+    :param folder_name: Name of the main folder to be created inside base directory.
     :type folder_name: str
+    :param base_dir: Base directory where the experiment folder will be created, defaults to "experiments".
+    :type base_dir: str
 
     **Example:**
 
-    >>> _create_folder_structure("test_directory")
-    Successfully created 'experiments/test_directory' with subfolders: db, img, json, csv, reports
+    >>> _create_folder_structure("test_directory", base_dir="custom_experiments")
+    Successfully created 'custom_experiments/test_directory' with subfolders: db, img, json, csv, reports
     """
-    # Define experiments directory
-    experiments_dir = "experiments"
-
-    # Create experiments directory if it doesn't exist
-    if not os.path.exists(experiments_dir):
-        os.makedirs(experiments_dir)
+    # Create base directory if it doesn't exist
+    if not os.path.exists(base_dir):
+        os.makedirs(base_dir)
 
     # Full path for the main folder
-    full_path = os.path.join(experiments_dir, folder_name)
+    full_path = os.path.join(base_dir, folder_name)
 
     # Check if folder exists
     if os.path.exists(full_path):
         raise FileExistsError(f"Error: Folder '{full_path}' already exists!")
 
     try:
-        # Create main folder inside experiments
+        # Create main folder inside base directory
         os.makedirs(full_path)
 
         # Create all subfolders
@@ -177,31 +176,33 @@ def _create_folder_structure(folder_name: str) -> None:
         print(f"Error creating folder structure: {error}")
 
 
-def create_experiment(name: str) -> ExperimentPaths:
+def create_experiment(name: str, base_dir: str = "experiments") -> ExperimentPaths:
     """
     Main function to set up experiment and return paths. This is the main entry point
     for creating a new experiment structure.
 
     :param name: Name of the experiment to be created.
     :type name: str
+    :param base_dir: Base directory where the experiment folder will be created, defaults to "experiments".
+    :type base_dir: str
     :return: ExperimentPaths object containing all relevant paths.
     :rtype: ExperimentPaths
 
     **Example:**
 
-    >>> paths = create_experiment("my_experiment")
+    >>> paths = create_experiment("my_experiment", base_dir="custom_experiments")
     Creating new experiment...
-    Successfully created 'experiments/my_experiment' with subfolders: db, img, json, csv, reports
+    Successfully created 'custom_experiments/my_experiment' with subfolders: db, img, json, csv, reports
     Experiment 'my_experiment' created successfully!
-    Database path: experiments/my_experiment/db/my_experiment.sqlite
-    JSON directory: experiments/my_experiment/json
-    CSV directory: experiments/my_experiment/csv
-    Image directory: experiments/my_experiment/img
-    Reports directory: experiments/my_experiment/reports
+    Database path: custom_experiments/my_experiment/db/my_experiment.sqlite
+    JSON directory: custom_experiments/my_experiment/json
+    CSV directory: custom_experiments/my_experiment/csv
+    Image directory: custom_experiments/my_experiment/img
+    Reports directory: custom_experiments/my_experiment/reports
     """
     print("\nCreating new experiment...")
-    _create_folder_structure(name)
-    paths = ExperimentPaths(name)
+    _create_folder_structure(name, base_dir)
+    paths = ExperimentPaths(name, base_dir)
 
     print(f"\nExperiment '{paths.name}' created successfully!")
     print(f"Database path: {paths.database}")
