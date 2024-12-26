@@ -1,9 +1,6 @@
-import sqlite3
-
 from dotenv import load_dotenv
 from typing import Annotated
 
-from langgraph.checkpoint.sqlite import SqliteSaver
 from typing_extensions import TypedDict
 from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, START, END
@@ -12,12 +9,10 @@ from langgraph.graph.message import add_messages
 from langgraph_log_parser import *
 
 exp = create_experiment("main")
+memory = exp.memory
 
 # Inicjalizacja .env
 load_dotenv()
-
-conn = sqlite3.connect(exp.database, check_same_thread=False)
-memory = SqliteSaver(conn)
 
 class State(TypedDict):
     # Klucz Messages ma typ "list". The

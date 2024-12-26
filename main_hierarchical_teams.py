@@ -1,9 +1,7 @@
-import sqlite3
 import functools
 import operator
 
 from typing import Annotated, List, Dict, Optional
-from langgraph.checkpoint.sqlite import SqliteSaver
 from dotenv import load_dotenv
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.tools.tavily_search import TavilySearchResults
@@ -22,11 +20,10 @@ from langgraph.prebuilt import create_react_agent
 from langgraph_log_parser import *
 
 exp = create_experiment("hierarchical")
+memory = exp.memory
 
 # Inicjalizacja .env
 load_dotenv()
-conn = sqlite3.connect(exp.database, check_same_thread=False)
-memory = SqliteSaver(conn)
 
 #####
 # TWORZENIE NARZĘDZI

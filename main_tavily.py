@@ -1,9 +1,6 @@
-import sqlite3
-
 from dotenv import load_dotenv
 from typing import Annotated
 
-from langgraph.checkpoint.sqlite import SqliteSaver
 from langchain_openai import ChatOpenAI
 from langchain_community.tools.tavily_search import TavilySearchResults
 from typing_extensions import TypedDict
@@ -14,12 +11,10 @@ from langgraph.prebuilt import ToolNode, tools_condition
 from langgraph_log_parser import *
 
 exp = create_experiment("tavily")
+memory = exp.memory
 
 # Inicjalizacja .env
 load_dotenv()
-
-conn = sqlite3.connect(exp.database, check_same_thread=False)
-memory = SqliteSaver(conn)
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]

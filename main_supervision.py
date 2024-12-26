@@ -1,7 +1,5 @@
 # REQUIRES BUMP FROM 3.9 -> 3.11?
-import sqlite3
 
-from langgraph.checkpoint.sqlite import SqliteSaver
 from dotenv import load_dotenv
 from typing import Annotated
 from langchain_core.messages import HumanMessage
@@ -22,12 +20,11 @@ from langgraph.prebuilt import create_react_agent
 from langgraph_log_parser import *
 
 exp = create_experiment("supervision")
+memory = exp.memory
 
 # Inicjalizacja .env
 load_dotenv()
 
-conn = sqlite3.connect(exp.database, check_same_thread=False)
-memory = SqliteSaver(conn)
 
 #####
 # TWORZENIE NARZĘDZI
