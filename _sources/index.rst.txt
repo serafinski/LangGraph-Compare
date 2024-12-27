@@ -129,23 +129,26 @@ For detailed explanation of the code, see: :ref:`getting_started` and :ref:`adva
 
    graph = graph_builder.compile(checkpointer=memory)
 
+   print()
    run_multiple_iterations(graph, 1, 5, {"messages": [("user", "Tell me a joke")]})
 
-   export_sqlite_to_jsons(exp.database, exp.json_dir)
+   print()
+   export_sqlite_to_jsons(exp)
+   print()
 
    graph_config = GraphConfig(
        nodes=["chatbot_node"]
    )
 
-   export_jsons_to_csv(exp.json_dir, exp.get_csv_path(), graph_config)
+   export_jsons_to_csv(exp, graph_config)
 
    print()
-   event_log = load_event_log(exp.get_csv_path())
+   event_log = load_event_log(exp)
    print_analysis(event_log)
-
-   generate_reports(event_log, exp.reports_dir)
-
-   generate_visualizations(event_log, graph, exp.img_dir)
+   print()
+   generate_reports(event_log, exp)
+   print()
+   generate_visualizations(event_log, graph, exp)
 
 Modules
 *******

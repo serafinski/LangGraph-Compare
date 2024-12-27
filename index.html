@@ -5,9 +5,9 @@
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta property="article:modified_time" content="2024-12-26T23:36:19+00:00" />
+    <meta property="article:modified_time" content="2024-12-27T23:41:57+00:00" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LangGraph Log Parser documentation &mdash; LangGraph Log Parser 0.1.11 documentation</title>
+  <title>LangGraph Log Parser documentation &mdash; LangGraph Log Parser 0.1.12 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=1e825a29"></script>
+      <script src="_static/documentation_options.js?v=297ad043"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -196,23 +196,26 @@
 
 <span class="n">graph</span> <span class="o">=</span> <span class="n">graph_builder</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">checkpointer</span><span class="o">=</span><span class="n">memory</span><span class="p">)</span>
 
+<span class="nb">print</span><span class="p">()</span>
 <span class="n">run_multiple_iterations</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;Tell me a joke&quot;</span><span class="p">)]})</span>
 
-<span class="n">export_sqlite_to_jsons</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">json_dir</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="n">export_sqlite_to_jsons</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
 
 <span class="n">graph_config</span> <span class="o">=</span> <span class="n">GraphConfig</span><span class="p">(</span>
     <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;chatbot_node&quot;</span><span class="p">]</span>
 <span class="p">)</span>
 
-<span class="n">export_jsons_to_csv</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">json_dir</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">get_csv_path</span><span class="p">(),</span> <span class="n">graph_config</span><span class="p">)</span>
+<span class="n">export_jsons_to_csv</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="n">graph_config</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">()</span>
-<span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">get_csv_path</span><span class="p">())</span>
+<span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
 <span class="n">print_analysis</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
-
-<span class="n">generate_reports</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">reports_dir</span><span class="p">)</span>
-
-<span class="n">generate_visualizations</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">img_dir</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="n">generate_reports</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="n">generate_visualizations</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -245,7 +248,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2024, Tomasz Serafiński.
-      <span class="lastupdated">Last updated on Dec 26, 2024.
+      <span class="lastupdated">Last updated on Dec 27, 2024.
       </span></p>
   </div>
 

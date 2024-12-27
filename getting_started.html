@@ -5,9 +5,9 @@
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta property="article:modified_time" content="2024-12-26T23:22:23+00:00" />
+    <meta property="article:modified_time" content="2024-12-27T23:41:57+00:00" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Getting Started &mdash; LangGraph Log Parser 0.1.11 documentation</title>
+  <title>Getting Started &mdash; LangGraph Log Parser 0.1.12 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=1e825a29"></script>
+      <script src="_static/documentation_options.js?v=297ad043"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -158,10 +158,12 @@
 <section id="running-graph-multiple-times">
 <h3><a class="toc-backref" href="#id11" role="doc-backlink">Running graph multiple times</a><a class="headerlink" href="#running-graph-multiple-times" title="Link to this heading"></a></h3>
 <p>Since the aim of this package is to monitor and compare multi-agent architectures - we need to run the graphs multiple times to be able to compare the results.</p>
-<p>Because of this, I’ve created <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.graph_runner.run_multiple_iterations" title="langgraph_log_parser.graph_runner.run_multiple_iterations"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.graph_runner.run_multiple_iterations()</span></code></a>.</p>
+<p>Because of this, I’ve created <code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.graph_runner.run_multiple_iterations()</span></code>.</p>
 <p>This function will create a thread for every single run of the graph - starting from selected <code class="code docutils literal notranslate"><span class="pre">starting_thread_id</span></code>.</p>
 <p><strong>Example:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langgraph_log_parser.graph_runner</span> <span class="kn">import</span> <span class="n">run_multiple_iterations</span>
+
+<span class="c1"># Rest of the code... (building graph etc.)</span>
 
 <span class="c1"># Graph with SQLite checkpointer memory</span>
 <span class="n">graph</span> <span class="o">=</span> <span class="n">graph_builder</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">checkpointer</span><span class="o">=</span><span class="n">memory</span><span class="p">)</span>
@@ -170,14 +172,14 @@
 <span class="n">run_multiple_iterations</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;Tell me a joke&quot;</span><span class="p">)]})</span>
 </pre></div>
 </div>
-<p>For more details, refer to the documentation of the <a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.graph_runner" title="langgraph_log_parser.graph_runner"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.graph_runner</span></code></a> module.</p>
+<p>For more details, refer to the documentation of the <code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.graph_runner</span></code> module.</p>
 </section>
 <section id="exporting-sqlite-to-json-s">
 <h3><a class="toc-backref" href="#id12" role="doc-backlink">Exporting SQLite to JSON’s</a><a class="headerlink" href="#exporting-sqlite-to-json-s" title="Link to this heading"></a></h3>
 <p>After running graph multiple times, we need to retrieve the data from the SQLite database.</p>
-<p>For this, I’ve created a function <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.sql_to_jsons.export_sqlite_to_jsons" title="langgraph_log_parser.sql_to_jsons.export_sqlite_to_jsons"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.sql_to_jsons.export_sqlite_to_jsons()</span></code></a> that retrieves data from the database and deserializes it from <code class="code docutils literal notranslate"><span class="pre">msgpack</span></code>.</p>
+<p>For this, I’ve created a function <code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.sql_to_jsons.export_sqlite_to_jsons()</span></code> that retrieves data from the database and deserializes it from <code class="code docutils literal notranslate"><span class="pre">msgpack</span></code>.</p>
 <p>Post deserialization - function saves every single thread to a separate <code class="code docutils literal notranslate"><span class="pre">json</span></code> file.</p>
-<p>Once again - the benefits of using <code class="code docutils literal notranslate"><span class="pre">create_experiment</span></code> - you can just refer to the properties.</p>
+<p>Once again - the benefits of using <code class="code docutils literal notranslate"><span class="pre">create_experiment</span></code> - you can just refer directly to experiment.</p>
 <p><strong>Example:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
 <span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
@@ -188,8 +190,8 @@
 
 <span class="c1"># Rest of the code...</span>
 
-<span class="c1"># Exporting using experiment properties</span>
-<span class="n">export_sqlite_to_jsons</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">json_dir</span><span class="p">)</span>
+<span class="c1"># Exporting using experiment</span>
+<span class="n">export_sqlite_to_jsons</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Folder structure should like this now:</strong></p>
@@ -208,14 +210,14 @@
     └── reports/
 </pre></div>
 </div>
-<p>For more details, refer to the documentation of the <a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.sql_to_jsons" title="langgraph_log_parser.sql_to_jsons"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.sql_to_jsons</span></code></a> module.</p>
+<p>For more details, refer to the documentation of the <code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.sql_to_jsons</span></code> module.</p>
 </section>
 <section id="exporting-json-s-to-csv">
 <span id="exporting-jsons-to-csv"></span><h3><a class="toc-backref" href="#id13" role="doc-backlink">Exporting JSON’s to CSV</a><a class="headerlink" href="#exporting-json-s-to-csv" title="Link to this heading"></a></h3>
 <p>We retrieved the data from the database. Now it’s time to create a <code class="code docutils literal notranslate"><span class="pre">csv</span></code> file that can be loaded as an event log.</p>
-<p>For this, I’ve created <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.jsons_to_csv.export_jsons_to_csv" title="langgraph_log_parser.jsons_to_csv.export_jsons_to_csv"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.jsons_to_csv.export_jsons_to_csv()</span></code></a>.
+<p>For this, I’ve created <code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.jsons_to_csv.export_jsons_to_csv()</span></code>.
 This function takes every singe <code class="code docutils literal notranslate"><span class="pre">json</span></code> file from a selected directory and parses it - extracting all the necessary data to create an event log.
-This requires <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.jsons_to_csv.GraphConfig" title="langgraph_log_parser.jsons_to_csv.GraphConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">langgraph_log_parser.jsons_to_csv.GraphConfig</span></code></a> a custom class that defines how a graph was configured, so parser can parse accordingly.</p>
+This requires <code class="xref py py-class docutils literal notranslate"><span class="pre">langgraph_log_parser.jsons_to_csv.GraphConfig</span></code> a custom class that defines how a graph was configured, so parser can parse accordingly.</p>
 <p>In this example, we will focus on a basic usage of <code class="code docutils literal notranslate"><span class="pre">GraphConfig</span></code>.
 I dive deeper into <code class="code docutils literal notranslate"><span class="pre">GraphConfig</span></code> in <a class="reference internal" href="advanced_examples.html#advanced-examples"><span class="std std-ref">Advanced Examples</span></a>.</p>
 <p><strong>Example:</strong></p>
@@ -236,9 +238,9 @@ I dive deeper into <code class="code docutils literal notranslate"><span class="
 <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;chatbot_node&quot;</span><span class="p">]</span>
 <span class="p">)</span>
 
-<span class="c1"># You can provide You own file name in the parenthesis like - exp.get_csv_path(&quot;my_csv.csv&quot;)</span>
+<span class="c1"># You can provide You own file name as an optional attribute csv_path.</span>
 <span class="c1"># Otherwise it will use the default file name - &quot;csv_output.csv&quot;</span>
-<span class="n">export_jsons_to_csv</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">json_dir</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">get_csv_path</span><span class="p">(),</span> <span class="n">graph_config</span><span class="p">)</span>
+<span class="n">export_jsons_to_csv</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="n">graph_config</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Folder structure should like this now:</strong></p>
@@ -258,7 +260,7 @@ I dive deeper into <code class="code docutils literal notranslate"><span class="
     └── reports/
 </pre></div>
 </div>
-<p>For more details, refer to the documentation of the <a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.jsons_to_csv" title="langgraph_log_parser.jsons_to_csv"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.jsons_to_csv</span></code></a> module.</p>
+<p>For more details, refer to the documentation of the <code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.jsons_to_csv</span></code> module.</p>
 </section>
 <section id="running-analysis">
 <h3><a class="toc-backref" href="#id14" role="doc-backlink">Running analysis</a><a class="headerlink" href="#running-analysis" title="Link to this heading"></a></h3>
@@ -267,9 +269,9 @@ I dive deeper into <code class="code docutils literal notranslate"><span class="
 <p>You can find every function specification in modules here:</p>
 <ul class="simple">
 <li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.analyze</span></code> - for running analysis on every <code class="code docutils literal notranslate"><span class="pre">thread_id</span></code> <cite>(case_id)</cite></p></li>
-<li><p><a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.analyze_case_id" title="langgraph_log_parser.analyze_case_id"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.analyze_case_id</span></code></a> - for running analysis on single <code class="code docutils literal notranslate"><span class="pre">thread_id</span></code> <cite>(case_id)</cite></p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.analyze_case_id</span></code> - for running analysis on single <code class="code docutils literal notranslate"><span class="pre">thread_id</span></code> <cite>(case_id)</cite></p></li>
 </ul>
-<p>In both examples we will use <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.load_events.load_event_log" title="langgraph_log_parser.load_events.load_event_log"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.load_events.load_event_log()</span></code></a> from module <a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.load_events" title="langgraph_log_parser.load_events"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.load_events</span></code></a> to load event log we will use in analysis.</p>
+<p>In both examples we will use <code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.load_events.load_event_log()</span></code> from module <code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.load_events</span></code> to load event log we will use in analysis.</p>
 <section id="analysis-on-entire-event-log">
 <h4><a class="toc-backref" href="#id15" role="doc-backlink">Analysis on entire event log</a><a class="headerlink" href="#analysis-on-entire-event-log" title="Link to this heading"></a></h4>
 <p>In case of printing analysis for entire event log, we will use <code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.analyze.print_analysis()</span></code> from module <code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.analyze</span></code>.</p>
@@ -283,10 +285,9 @@ I dive deeper into <code class="code docutils literal notranslate"><span class="
 
 <span class="c1"># Rest of the code...</span>
 
-<span class="c1"># Using to load events from .csv file</span>
-<span class="c1"># It looks for a default name &quot;csv_output.csv&quot; in csv experiment directory</span>
-<span class="c1"># If you used the custom name -&gt; be sure to put it in parenthesis - like - exp.get_csv_path(&quot;my_csv.csv&quot;).</span>
-<span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">get_csv_path</span><span class="p">())</span>
+<span class="c1"># Using experiment to load events from .csv file</span>
+<span class="c1"># You can also provide path directly as a string</span>
+<span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
 
 <span class="c1"># This function will print an analysis in console for entire event log</span>
 <span class="n">print_analysis</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
@@ -308,7 +309,7 @@ I dive deeper into <code class="code docutils literal notranslate"><span class="
 </section>
 <section id="analysis-on-single-case-id">
 <h4><a class="toc-backref" href="#id16" role="doc-backlink">Analysis on single case_id</a><a class="headerlink" href="#analysis-on-single-case-id" title="Link to this heading"></a></h4>
-<p>In case of printing analysis for single <code class="code docutils literal notranslate"><span class="pre">case_id</span></code>, we will use <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.analyze_case_id.print_case_analysis" title="langgraph_log_parser.analyze_case_id.print_case_analysis"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.analyze_case_id.print_case_analysis()</span></code></a> from module <a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.analyze_case_id" title="langgraph_log_parser.analyze_case_id"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.analyze_case_id</span></code></a>.</p>
+<p>In case of printing analysis for single <code class="code docutils literal notranslate"><span class="pre">case_id</span></code>, we will use <code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.analyze_case_id.print_case_analysis()</span></code> from module <code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.analyze_case_id</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
 <span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
 <span class="kn">from</span> <span class="nn">langgraph_log_parser.load_events</span> <span class="kn">import</span> <span class="n">load_event_log</span>
@@ -319,10 +320,9 @@ I dive deeper into <code class="code docutils literal notranslate"><span class="
 
 <span class="c1"># Rest of the code...</span>
 
-<span class="c1"># Using to load events from .csv file</span>
-<span class="c1"># It looks for a default name &quot;csv_output.csv&quot; in csv experiment directory</span>
-<span class="c1"># If you used the custom name -&gt; be sure to put it in parenthesis - like - exp.get_csv_path(&quot;my_csv.csv&quot;).</span>
-<span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">get_csv_path</span><span class="p">())</span>
+<span class="c1"># Using experiment to load events from .csv file</span>
+<span class="c1"># You can also provide path directly as a string</span>
+<span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
 
 <span class="n">case_id</span> <span class="o">=</span> <span class="mi">15</span>
 
@@ -349,9 +349,9 @@ I dive deeper into <code class="code docutils literal notranslate"><span class="
 <h2><a class="toc-backref" href="#id17" role="doc-backlink">Generation</a><a class="headerlink" href="#generation" title="Link to this heading"></a></h2>
 <section id="creating-visualizations">
 <h3><a class="toc-backref" href="#id18" role="doc-backlink">Creating visualizations</a><a class="headerlink" href="#creating-visualizations" title="Link to this heading"></a></h3>
-<p>We are going to use <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.visualize.generate_visualizations" title="langgraph_log_parser.visualize.generate_visualizations"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.visualize.generate_visualizations()</span></code></a> to generate and save every visualization available.</p>
+<p>We are going to use <code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.visualize.generate_visualizations()</span></code> to generate and save every visualization available.</p>
 <p><strong>I’m not going to go into details on every single visualization function and what every singe one do - we will focus on one saves every visualization available to experiment img directory - since it’s the easiest approach.</strong></p>
-<p>You can find every function specification in module <a class="reference internal" href="langgraph_log_parser.html#module-langgraph_log_parser.visualize" title="langgraph_log_parser.visualize"><code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.visualize</span></code></a>.</p>
+<p>You can find every function specification in module <code class="xref py py-mod docutils literal notranslate"><span class="pre">langgraph_log_parser.visualize</span></code>.</p>
 <p>Once again, utilize the <code class="code docutils literal notranslate"><span class="pre">create_experiment</span></code> properties.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
 <span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
@@ -366,13 +366,12 @@ I dive deeper into <code class="code docutils literal notranslate"><span class="
 <span class="c1"># Graph is needed for the mermaid graph</span>
 <span class="n">graph</span> <span class="o">=</span> <span class="n">graph_builder</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">checkpointer</span><span class="o">=</span><span class="n">memory</span><span class="p">)</span>
 
-<span class="c1"># Using to load events from .csv file</span>
-<span class="c1"># It looks for a default name &quot;csv_output.csv&quot; in csv experiment directory</span>
-<span class="c1"># If you used the custom name -&gt; be sure to put it in parenthesis - like - exp.get_csv_path(&quot;my_csv.csv&quot;).</span>
-<span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">get_csv_path</span><span class="p">())</span>
+<span class="c1"># Using experiment to load events from .csv file</span>
+<span class="c1"># You can also provide path directly as a string</span>
+<span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
 
-<span class="c1"># Function saving every visualisation</span>
-<span class="n">generate_visualizations</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">img_dir</span><span class="p">)</span>
+<span class="c1"># Function saving every visualisation - via experiment</span>
+<span class="n">generate_visualizations</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Folder structure should like this now:</strong></p>
@@ -396,7 +395,7 @@ I dive deeper into <code class="code docutils literal notranslate"><span class="
 </pre></div>
 </div>
 <p><strong>Sample graphs:</strong></p>
-<p>This graph can also be generated using <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.visualize.generate_performance_dfg" title="langgraph_log_parser.visualize.generate_performance_dfg"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.visualize.generate_performance_dfg()</span></code></a>.</p>
+<p>This graph can also be generated using <code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.visualize.generate_performance_dfg()</span></code>.</p>
 <figure class="align-default" id="id3">
 <a class="reference internal image-reference" href="_images/sample_dfg_performance.png"><img alt="_images/sample_dfg_performance.png" src="_images/sample_dfg_performance.png" style="width: 800px;" />
 </a>
@@ -404,7 +403,7 @@ I dive deeper into <code class="code docutils literal notranslate"><span class="
 <p><span class="caption-text">Sample performance dfg</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p>This graph can also be generated using <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.visualize.generate_mermaid" title="langgraph_log_parser.visualize.generate_mermaid"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.visualize.generate_mermaid()</span></code></a>.</p>
+<p>This graph can also be generated using <code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.visualize.generate_mermaid()</span></code>.</p>
 <figure class="align-default" id="id4">
 <a class="reference internal image-reference" href="_images/sample_mermaid.png"><img alt="_images/sample_mermaid.png" src="_images/sample_mermaid.png" style="width: 400px;" />
 </a>
@@ -412,7 +411,7 @@ I dive deeper into <code class="code docutils literal notranslate"><span class="
 <p><span class="caption-text">Sample mermaid graph</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p>This graph can also be generated using <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.visualize.generate_prefix_tree" title="langgraph_log_parser.visualize.generate_prefix_tree"><code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.visualize.generate_prefix_tree()</span></code></a>.</p>
+<p>This graph can also be generated using <code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.visualize.generate_prefix_tree()</span></code>.</p>
 <figure class="align-default" id="id5">
 <a class="reference internal image-reference" href="_images/sample_tree.png"><img alt="_images/sample_tree.png" src="_images/sample_tree.png" style="width: 800px;" />
 </a>
@@ -426,7 +425,7 @@ I dive deeper into <code class="code docutils literal notranslate"><span class="
 <p>We can generate report for entire <code class="code docutils literal notranslate"><span class="pre">event_log</span></code>.
 The report will be saved in a <code class="code docutils literal notranslate"><span class="pre">json</span></code> format and will be used in a HTML comparison report.</p>
 <p>As in previous cases, we can use <code class="code docutils literal notranslate"><span class="pre">create_experiment</span></code> properties.</p>
-<p>In case of entire log, we will need to use a <code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.create_report.generate_reports()</span></code> with property <code class="code docutils literal notranslate"><span class="pre">reports_dir</span></code>.</p>
+<p>In case of entire log, we will need to use a <code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.create_report.generate_reports()</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
 <span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
 <span class="kn">from</span> <span class="nn">langgraph_log_parser.load_events</span> <span class="kn">import</span> <span class="n">load_event_log</span>
@@ -437,13 +436,12 @@ The report will be saved in a <code class="code docutils literal notranslate"><s
 
 <span class="c1"># Rest of the code...</span>
 
-<span class="c1"># Using to load events from .csv file</span>
-<span class="c1"># It looks for a default name &quot;csv_output.csv&quot; in csv experiment directory</span>
-<span class="c1"># If you used the custom name -&gt; be sure to put it in parenthesis - like - exp.get_csv_path(&quot;my_csv.csv&quot;).</span>
-<span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">get_csv_path</span><span class="p">())</span>
+<span class="c1"># Using experiment to load events from .csv file</span>
+<span class="c1"># You can also provide path directly as a string</span>
+<span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
 
-<span class="c1"># Function for saving report for entire event_log</span>
-<span class="n">generate_reports</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">reports_dir</span><span class="p">)</span>
+<span class="c1"># Function for generating and saving reports for entire event_log via experiment</span>
+<span class="n">generate_reports</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Folder structure should like this now:</strong></p>
@@ -473,7 +471,7 @@ The report will be saved in a <code class="code docutils literal notranslate"><s
 <h3><a class="toc-backref" href="#id20" role="doc-backlink">Generating architecture comparison</a><a class="headerlink" href="#generating-architecture-comparison" title="Link to this heading"></a></h3>
 <p>You can generate architecture comparison report by executing <code class="xref py py-func docutils literal notranslate"><span class="pre">langgraph_log_parser.create_html.compare()</span></code> and
 supplying the metod with the list of architectures You would like to compare. Function will look for experiments
-by default in the <code class="code docutils literal notranslate"><span class="pre">experiments</span></code> folder. After generating the function should automatically save the report in:
+by default in the <code class="code docutils literal notranslate"><span class="pre">experiments</span></code> folder <cite>(however if needed - You can specify the paths directly)</cite>. After generating the function should automatically save the report in:
 <code class="code docutils literal notranslate"><span class="pre">comparison_reports</span></code> directory and open the report in Your default browser.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
 <span class="kn">from</span> <span class="nn">langgraph_log_parser.create_html</span> <span class="kn">import</span> <span class="n">compare</span>
@@ -499,7 +497,7 @@ by default in the <code class="code docutils literal notranslate"><span class="p
 
   <div role="contentinfo">
     <p>&#169; Copyright 2024, Tomasz Serafiński.
-      <span class="lastupdated">Last updated on Dec 26, 2024.
+      <span class="lastupdated">Last updated on Dec 27, 2024.
       </span></p>
   </div>
 
