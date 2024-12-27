@@ -49,9 +49,9 @@ In case of this example - we will have 3 nodes - :code:`Researcher`, :code:`char
         nodes=['Researcher','chart_generator', 'call_tool']
     )
 
-    # You can provide You own file name in the parenthesis like - exp.get_csv_path("my_csv.csv")
+    # You can provide You own file name as an optional attribute csv_path.
     # Otherwise it will use the default file name - "csv_output.csv"
-    export_jsons_to_csv(exp.json_dir, exp.get_csv_path(), graph_config)
+    export_jsons_to_csv(exp, graph_config)
 
 Multi-Agent Supervisor
 **********************
@@ -87,9 +87,9 @@ In this example, we will introduce :class:`langgraph_log_parser.jsons_to_csv.Sup
         nodes=["Researcher", "Coder"]
     )
 
-    # You can provide You own file name in the parenthesis like - exp.get_csv_path("my_csv.csv")
+    # You can provide You own file name as an optional attribute csv_path.
     # Otherwise it will use the default file name - "csv_output.csv"
-    export_jsons_to_csv(exp.json_dir, exp.get_csv_path(), graph_config)
+    export_jsons_to_csv(exp, graph_config)
 
 .. _hierarchical_agent_teams:
 
@@ -156,9 +156,9 @@ IMPORTANT: Be sure to call supervisors with different names - so you can differe
         subgraphs=[research_team, paper_supervisor]
     )
 
-    # You can provide You own file name in the parenthesis like - exp.get_csv_path("my_csv.csv")
+    # You can provide You own file name as an optional attribute csv_path.
     # Otherwise it will use the default file name - "csv_output.csv"
-    export_jsons_to_csv(exp.json_dir, exp.get_csv_path(), graph_config)
+    export_jsons_to_csv(exp, graph_config)
 
 Notice how:
 

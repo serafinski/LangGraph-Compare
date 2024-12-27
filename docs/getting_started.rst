@@ -82,6 +82,8 @@ This function will create a thread for every single run of the graph - starting 
 
     from langgraph_log_parser.graph_runner import run_multiple_iterations
 
+    # Rest of the code... (building graph etc.)
+
     # Graph with SQLite checkpointer memory
     graph = graph_builder.compile(checkpointer=memory)
 
@@ -98,7 +100,7 @@ For this, I've created a function :func:`langgraph_log_parser.sql_to_jsons.expor
 
 Post deserialization - function saves every single thread to a separate :code:`json` file.
 
-Once again - the benefits of using :code:`create_experiment` - you can just refer to the properties.
+Once again - the benefits of using :code:`create_experiment` - you can just refer directly to experiment.
 
 **Example:**
 
@@ -113,8 +115,8 @@ Once again - the benefits of using :code:`create_experiment` - you can just refe
 
     # Rest of the code...
 
-    # Exporting using experiment properties
-    export_sqlite_to_jsons(exp.database, exp.json_dir)
+    # Exporting using experiment
+    export_sqlite_to_jsons(exp)
 
 **Folder structure should like this now:**
 
@@ -173,9 +175,9 @@ In this case, You can also use the benefits of :code:`create_experiment`.
     nodes=["chatbot_node"]
     )
 
-    # You can provide You own file name in the parenthesis like - exp.get_csv_path("my_csv.csv")
+    # You can provide You own file name as an optional attribute csv_path.
     # Otherwise it will use the default file name - "csv_output.csv"
-    export_jsons_to_csv(exp.json_dir, exp.get_csv_path(), graph_config)
+    export_jsons_to_csv(exp, graph_config)
 
 **Folder structure should like this now:**
 
@@ -229,10 +231,9 @@ In case of printing analysis for entire event log, we will use :func:`langgraph_
 
     # Rest of the code...
 
-    # Using to load events from .csv file
-    # It looks for a default name "csv_output.csv" in csv experiment directory
-    # If you used the custom name -> be sure to put it in parenthesis - like - exp.get_csv_path("my_csv.csv").
-    event_log = load_event_log(exp.get_csv_path())
+    # Using experiment to load events from .csv file
+    # You can also provide path directly as a string
+    event_log = load_event_log(exp)
 
     # This function will print an analysis in console for entire event log
     print_analysis(event_log)
@@ -267,10 +268,9 @@ In case of printing analysis for single :code:`case_id`, we will use :func:`lang
 
     # Rest of the code...
 
-    # Using to load events from .csv file
-    # It looks for a default name "csv_output.csv" in csv experiment directory
-    # If you used the custom name -> be sure to put it in parenthesis - like - exp.get_csv_path("my_csv.csv").
-    event_log = load_event_log(exp.get_csv_path())
+    # Using experiment to load events from .csv file
+    # You can also provide path directly as a string
+    event_log = load_event_log(exp)
 
     case_id = 15
 
@@ -317,13 +317,12 @@ Once again, utilize the :code:`create_experiment` properties.
     # Graph is needed for the mermaid graph
     graph = graph_builder.compile(checkpointer=memory)
 
-    # Using to load events from .csv file
-    # It looks for a default name "csv_output.csv" in csv experiment directory
-    # If you used the custom name -> be sure to put it in parenthesis - like - exp.get_csv_path("my_csv.csv").
-    event_log = load_event_log(exp.get_csv_path())
+    # Using experiment to load events from .csv file
+    # You can also provide path directly as a string
+    event_log = load_event_log(exp)
 
-    # Function saving every visualisation
-    generate_visualizations(event_log, graph, exp.img_dir)
+    # Function saving every visualisation - via experiment
+    generate_visualizations(event_log, graph, exp)
 
 **Folder structure should like this now:**
 
@@ -377,7 +376,7 @@ The report will be saved in a :code:`json` format and will be used in a HTML com
 
 As in previous cases, we can use :code:`create_experiment` properties.
 
-In case of entire log, we will need to use a :func:`langgraph_log_parser.create_report.generate_reports` with property :code:`reports_dir`.
+In case of entire log, we will need to use a :func:`langgraph_log_parser.create_report.generate_reports`.
 
 .. code-block:: python
 
@@ -391,13 +390,12 @@ In case of entire log, we will need to use a :func:`langgraph_log_parser.create_
 
     # Rest of the code...
 
-    # Using to load events from .csv file
-    # It looks for a default name "csv_output.csv" in csv experiment directory
-    # If you used the custom name -> be sure to put it in parenthesis - like - exp.get_csv_path("my_csv.csv").
-    event_log = load_event_log(exp.get_csv_path())
+    # Using experiment to load events from .csv file
+    # You can also provide path directly as a string
+    event_log = load_event_log(exp)
 
-    # Function for saving report for entire event_log
-    generate_reports(event_log, exp.reports_dir)
+    # Function for generating and saving reports for entire event_log via experiment
+    generate_reports(event_log, exp)
 
 **Folder structure should like this now:**
 
@@ -427,7 +425,7 @@ Generating architecture comparison
 ==================================
 You can generate architecture comparison report by executing :func:`langgraph_log_parser.create_html.compare` and
 supplying the metod with the list of architectures You would like to compare. Function will look for experiments
-by default in the :code:`experiments` folder. After generating the function should automatically save the report in:
+by default in the :code:`experiments` folder `(however if needed - You can specify the paths directly)`. After generating the function should automatically save the report in:
 :code:`comparison_reports` directory and open the report in Your default browser.
 
 .. code-block:: python
