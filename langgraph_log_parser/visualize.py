@@ -1,29 +1,35 @@
 import os
 import pandas as pd
 import pm4py
-from typing import Optional
+from typing import Union
 from langgraph.graph.state import CompiledStateGraph
 from .analyze import get_mean_act_times
+from .experiment import ExperimentPaths
 
-def generate_mermaid(graph: CompiledStateGraph, output_path: Optional[str] = None) -> None:
+def generate_mermaid(graph: CompiledStateGraph, output: Union[ExperimentPaths, str]) -> None:
     """
     Generate and save a mermaid graph visualization.
 
     :param graph: Compiled state graph
     :type graph: CompiledStateGraph
-    :param output_path: Path to save the mermaid visualization, defaults to 'mermaid.png'
-    :type output_path: Optional[str]
+    :param output: ExperimentPaths instance or path to save the visualization
+    :type output: Union[ExperimentPaths, str]
 
-    **Example:**
+    **Examples:**
 
-    >>> graph = graph_builder.compile(checkpointer=memory)
-    >>> generate_mermaid(graph)  # Will use default 'mermaid.png'
-    Event log loaded and formated from file: files/examples.csv
-    Mermaid saved as: mermaid.png
+    >>> # Using ExperimentPaths:
+    >>> exp = create_experiment("my_experiment")
+    >>> generate_mermaid(graph, exp)
+    Mermaid saved as: experiments/my_experiment/img/mermaid.png
+
+    >>> # Using direct path:
+    >>> generate_mermaid(graph, "output/mermaid.png")
+    Mermaid saved as: output/mermaid.png
     """
-    if output_path is None or os.path.isdir(output_path):
-        base_path = output_path or '.'
-        output_path = os.path.join(base_path, 'mermaid.png')
+    if isinstance(output, ExperimentPaths):
+        output_path = os.path.join(output.img_dir, 'mermaid.png')
+    else:
+        output_path = output
 
     with open(output_path, 'wb') as file:
         file.write(graph.get_graph().draw_mermaid_png())
@@ -31,28 +37,30 @@ def generate_mermaid(graph: CompiledStateGraph, output_path: Optional[str] = Non
     print("Mermaid saved as:", output_path)
 
 
-def generate_prefix_tree(event_log: pd.DataFrame, output_path: Optional[str] = None) -> None:
+def generate_prefix_tree(event_log: pd.DataFrame, output: Union[ExperimentPaths, str]) -> None:
     """
     Generate and save a prefix tree visualization.
 
-    :param event_log: Event log data.
+    :param event_log: Event log data
     :type event_log: pd.DataFrame
-    :param output_path: Path to save the prefix tree visualization, defaults to 'prefix_tree.png'
-    :type output_path: Optional[str]
+    :param output: ExperimentPaths instance or path to save the visualization
+    :type output: Union[ExperimentPaths, str]
 
-    **Example:**
+    **Examples:**
 
-    >>> csv_output = "files/examples.csv"
-    >>> event_log = load_event_log(csv_output)
-    >>> generate_prefix_tree(event_log)  # Will use default 'tree.png'
-    Event log loaded and formated from file: files/examples.csv
-    Prefix Tree saved as: prefix_tree.png
+    >>> # Using ExperimentPaths:
+    >>> exp = create_experiment("my_experiment")
+    >>> generate_prefix_tree(event_log, exp)
+    Prefix Tree saved as: experiments/my_experiment/img/prefix_tree.png
+
+    >>> # Using direct path:
+    >>> generate_prefix_tree(event_log, "output/prefix_tree.png")
+    Prefix Tree saved as: output/prefix_tree.png
     """
-
-    # Use the provided path or construct default
-    if output_path is None or os.path.isdir(output_path):
-        base_path = output_path or '.'
-        output_path = os.path.join(base_path, 'prefix_tree.png')
+    if isinstance(output, ExperimentPaths):
+        output_path = os.path.join(output.img_dir, 'prefix_tree.png')
+    else:
+        output_path = output
 
     # Jeżeli użytkownik nie podał ścieżki
     output_dir = os.path.dirname(output_path)
@@ -69,27 +77,31 @@ def generate_prefix_tree(event_log: pd.DataFrame, output_path: Optional[str] = N
     print("Prefix Tree saved as:", output_path)
 
 
-def generate_performance_dfg(event_log: pd.DataFrame, output_path: Optional[str] = None) -> None:
+def generate_performance_dfg(event_log: pd.DataFrame, output: Union[ExperimentPaths, str]) -> None:
     """
     Generate and save a visualization of directly-follows graph annotated with performance.
 
-    :param event_log: Event log data.
+    :param event_log: Event log data
     :type event_log: pd.DataFrame
-    :param output_path: Path to save the visualization of dfg with performance, defaults to 'dfg_performance.png'.
-    :type output_path: str
+    :param output: ExperimentPaths instance or path to save the visualization
+    :type output: Union[ExperimentPaths, str]
 
-    **Example:**
+    **Examples:**
 
-    >>> csv_output = "files/examples.csv"
-    >>> event_log = load_event_log(csv_output)
-    >>> generate_performance_dfg(event_log)  # Will use default 'dfg_performance.png'
-    Event log loaded and formated from file: files/examples.csv
-    Performance DFG saved as: dfg_performance.png
+    >>> # Using ExperimentPaths:
+    >>> exp = create_experiment("my_experiment")
+    >>> generate_performance_dfg(event_log, exp)
+    Performance DFG saved as: experiments/my_experiment/img/dfg_performance.png
+
+    >>> # Using direct path:
+    >>> generate_performance_dfg(event_log, "output/dfg_performance.png")
+    Performance DFG saved as: output/dfg_performance.png
     """
 
-    if output_path is None or os.path.isdir(output_path):
-        base_path = output_path or '.'
-        output_path = os.path.join(base_path, 'dfg_performance.png')
+    if isinstance(output, ExperimentPaths):
+        output_path = os.path.join(output.img_dir, 'dfg_performance.png')
+    else:
+        output_path = output
 
     # Jeżeli użytkownik nie podał ścieżki
     output_dir = os.path.dirname(output_path)
@@ -104,7 +116,7 @@ def generate_performance_dfg(event_log: pd.DataFrame, output_path: Optional[str]
 def generate_visualizations(
         event_log: pd.DataFrame,
         graph: CompiledStateGraph,
-        output_dir: Optional[str] = None
+        output: Union[ExperimentPaths, str]
 ) -> None:
     """
     Generate and save all process visualizations.
@@ -113,27 +125,39 @@ def generate_visualizations(
     :type event_log: pd.DataFrame
     :param graph: Compiled state graph
     :type graph: CompiledStateGraph
-    :param output_dir: Directory to save the visualizations
-    :type output_dir: Optional[str]
+    :param output: ExperimentPaths instance or directory to save visualizations
+    :type output: Union[ExperimentPaths, str]
 
-    **Example:**
+    **Examples:**
 
-    >>> csv_output = "files/examples.csv"
-    >>> event_log = load_event_log(csv_output)
-    >>> generate_visualizations(event_log, "output/visualizations")
-    Generating all process mining visualizations...
+    >>> # Using ExperimentPaths:
+    >>> exp = create_experiment("my_experiment")
+    >>> generate_visualizations(event_log, graph, exp)
+    Generating all visualizations...
+    Mermaid saved as: experiments/my_experiment/img/mermaid.png
+    Prefix Tree saved as: experiments/my_experiment/img/prefix_tree.png
+    Performance DFG saved as: experiments/my_experiment/img/dfg_performance.png
+    All visualizations generated successfully!
+
+    >>> # Using direct path:
+    >>> generate_visualizations(event_log, graph, "output/visualizations")
+    Generating all visualizations...
     Mermaid saved as: output/visualizations/mermaid.png
     Prefix Tree saved as: output/visualizations/prefix_tree.png
     Performance DFG saved as: output/visualizations/dfg_performance.png
     All visualizations generated successfully!
     """
 
-    # Create output directory if it doesn't exist
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-
     print("Generating all visualizations...")
 
+    if isinstance(output, ExperimentPaths):
+        output_dir = output.img_dir
+    else:
+        output_dir = output
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
+    # Generate mermaid diagram
     mermaid_path = os.path.join(output_dir, 'mermaid.png')
     generate_mermaid(graph, mermaid_path)
 

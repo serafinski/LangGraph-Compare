@@ -1,22 +1,35 @@
 import pandas as pd
 import pm4py
+from typing import Union
+from .experiment import ExperimentPaths
 
 #1
-def load_event_log(file_path: str) -> pd.DataFrame:
+def load_event_log(source: Union[ExperimentPaths, str]) -> pd.DataFrame:
     """
-    Load CSV data into a formatted PM4Py DataFrame.
+    Load CSV data into a formatted PM4Py DataFrame. Can load either from an ExperimentPaths
+    instance or directly from a file path.
 
-    :param file_path: Path to the CSV file containing the event log.
-    :type file_path: str
-    :return: PM4Py formatted DataFrame.
+    :param source: Either an ExperimentPaths instance or a direct file path
+    :type source: Union[ExperimentPaths, str]
+    :return: PM4Py formatted DataFrame
     :rtype: pd.DataFrame
 
-    **Example:**
+    **Examples:**
 
-    >>> csv_output = "files/examples.csv"
-    >>> event_log = load_event_log(csv_output)
-    Event log loaded and formated from file: files/examples.csv
+    >>> # Using ExperimentPaths:
+    >>> exp = create_experiment("my_experiment")
+    >>> event_log = load_event_log(exp)
+    Event log loaded and formatted from file: experiments/my_experiment/csv/csv_output.csv
+
+    >>> # Using direct file path:
+    >>> event_log = load_event_log("files/examples.csv")
+    Event log loaded and formatted from file: files/examples.csv
     """
+    if isinstance(source, ExperimentPaths):
+        file_path = source.get_csv_path()
+    else:
+        file_path = source
+
     # Ładowanie CSV do pandas DataFrame
     df = pd.read_csv(file_path)
 

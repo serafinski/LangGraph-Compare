@@ -1,9 +1,10 @@
 import os
 import json
 import csv
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Union
 from dataclasses import dataclass
 from glob import glob
+from .experiment import ExperimentPaths
 
 
 @dataclass
@@ -267,49 +268,60 @@ def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, confi
 
 
 def export_jsons_to_csv(
-        input_folder: str,
-        csv_path: str,
+        source: Union[ExperimentPaths, str],
         graph_config: GraphConfig,
-        csv_fields: Optional[List[str]] = None
+        csv_path: Optional[str] = None
 ) -> None:
     """
-    Process all JSON files in the input folder and combine them into a single CSV file.
+    Process all JSON files and export them to a CSV file.
+    Can use either an ExperimentPaths instance or explicit paths.
 
-    :param input_folder: Path to the folder containing JSON files.
-    :type input_folder: str
-    :param csv_path: Path to save the output CSV file.
-    :type csv_path: str
-    :param graph_config: The graph configuration object.
+    :param source: Either an ExperimentPaths instance or a path to the JSON directory
+    :type source: Union[ExperimentPaths, str]
+    :param graph_config: The graph configuration object
     :type graph_config: GraphConfig
-    :param csv_fields: Optional list of fields for the output CSV.
-    :type csv_fields: List[str], optional
+    :param csv_path: Path for the output CSV file (required if source is a str)
+    :type csv_path: Optional[str]
 
-    **Example:**
+    **Examples:**
 
-    >>> output = "json"
-    >>> csv_output = "csv_output.csv"
+    >>> # Using ExperimentPaths:
+    >>> exp = create_experiment("my_experiment")
     >>> graph_config = GraphConfig(nodes=["chatbot_node"])
-    >>> export_jsons_to_csv(output,csv_output,graph_config)
-    Processed: json/thread_1.json
-    Processed: json/thread_2.json
-    Processed: json/thread_3.json
-    Successfully exported combined data to: csv_output.csv
-    """
-    if csv_fields is None:
-        csv_fields = ['case_id', 'timestamp', 'end_timestamp', 'cost', 'activity', 'org:resource']
+    >>> export_jsons_to_csv(exp, graph_config)
+    Processed: experiments/my_experiment/json/thread_1.json
+    Processed: experiments/my_experiment/json/thread_2.json
+    Processed: experiments/my_experiment/json/thread_3.json
+    Successfully exported combined data to: experiments/my_experiment/csv/csv_output.csv
 
-    # Ensure output directory exists
-    if os.path.dirname(csv_path):
-        os.makedirs(os.path.dirname(csv_path), exist_ok=True)
+    >>> # Using direct paths:
+    >>> export_jsons_to_csv("path/to/jsons", graph_config, "path/to/output.csv")
+    Processed: path/to/jsons/thread_1.json
+    Processed: path/to/jsons/thread_2.json
+    Processed: path/to/jsons/thread_3.json
+    Successfully exported combined data to: path/to/output.csv
+    """
+
+    csv_fields = ['case_id', 'timestamp', 'end_timestamp', 'cost', 'activity', 'org:resource']
+
+    # Determine paths based on input type
+    if isinstance(source, ExperimentPaths):
+        json_dir = source.json_dir
+        output_path = source.get_csv_path()
+    else:
+        if csv_path is None:
+            raise ValueError("csv_path must be provided when using a JSON directory path directly")
+        json_dir = source
+        output_path = csv_path
 
     # Build configuration mappings
     config = _build_config_mappings(graph_config)
 
-    # Get all JSON files in the input folder
-    json_files = glob(os.path.join(input_folder, '*.json'))
+    # Get all JSON files from experiment's json directory
+    json_files = glob(os.path.join(json_dir, '*.json'))
 
     if not json_files:
-        raise ValueError(f"No JSON files found in {input_folder}")
+        raise ValueError(f"No JSON files found in {json_dir}")
 
     all_entries = []
 
@@ -331,7 +343,7 @@ def export_jsons_to_csv(
     all_entries.sort(key=lambda x: x['timestamp'])
 
     # Write combined results to CSV
-    with open(csv_path, mode='w', newline='') as csv_file:
+    with open(output_path, mode='w', newline='') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=csv_fields)
         writer.writeheader()
         writer.writerows(all_entries)

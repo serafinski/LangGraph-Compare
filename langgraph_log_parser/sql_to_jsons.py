@@ -2,7 +2,8 @@ import os
 import sqlite3
 import json
 import msgpack
-from typing import Dict, Any
+from typing import Dict, Any, Union, Optional
+from .experiment import ExperimentPaths
 
 def _convert(obj):
     """
@@ -32,28 +33,41 @@ def _convert(obj):
         return obj
 
 
-def export_sqlite_to_jsons(db_path: str = "checkpoints.sqlite", output_folder: str ="files/json") -> None:
+def export_sqlite_to_jsons(source: Union[ExperimentPaths, str], output_folder: Optional[str] = None) -> None:
     """
     Fetch data from the SQLite database and export it as JSON files.
+    Can use either an ExperimentPaths instance or explicit database and output paths.
 
-    :param db_path: Path to the SQLite database file.
-    :type db_path: str
-    :param output_folder: Path to the folder where output JSON files will be saved.
-    :type output_folder: str
+    :param source: Either an ExperimentPaths instance or a path to the SQLite database
+    :type source: Union[ExperimentPaths, str]
+    :param output_folder: Path to the output folder for JSON files (required if source is a str)
+    :type output_folder: Optional[str]
 
-    **Example:**
+    **Examples:**
 
-    >>> database = "test.sqlite"
-    >>> output = "files"
-    >>> export_sqlite_to_jsons(database,output)
-    JSON file created: files/thread_1.json
-    JSON file created: files/thread_2.json
-    JSON file created: files/thread_3.json
+    >>> # Using ExperimentPaths:
+    >>> exp = create_experiment("my_experiment")
+    >>> export_sqlite_to_jsons(exp)
+    JSON file created: experiments/my_experiment/json/thread_1.json
+    JSON file created: experiments/my_experiment/json/thread_2.json
+    JSON file created: experiments/my_experiment/json/thread_3.json
+
+    >>> # Using direct paths:
+    >>> export_sqlite_to_jsons("path/to/db.sqlite", "path/to/output")
+    JSON file created: path/to/output/thread_1.json
+    JSON file created: path/to/output/thread_2.json
+    JSON file created: path/to/output/thread_3.json
     """
 
-    # Upewnij się, że folder istnieje
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
+    # Determine paths based on input type
+    if isinstance(source, ExperimentPaths):
+        db_path = source.database
+        json_dir = source.json_dir
+    else:
+        if output_folder is None:
+            raise ValueError("output_folder must be provided when using a database path directly")
+        db_path = source
+        json_dir = output_folder
 
     # Połączenie do bazy danych
     conn = sqlite3.connect(db_path, check_same_thread=False)
@@ -102,7 +116,7 @@ def export_sqlite_to_jsons(db_path: str = "checkpoints.sqlite", output_folder: s
 
         # Zapisz dane dla każdego thread_ID w osobnym pliku JSON
         for thread_id, jsons in data_by_thread.items():
-            output_path = os.path.join(output_folder, f"thread_{thread_id}.json")
+            output_path = os.path.join(json_dir, f"thread_{thread_id}.json")
             try:
                 with open(output_path, 'w') as json_file:
                     # Zapisz dane jako JSON
