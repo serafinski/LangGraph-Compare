@@ -165,10 +165,13 @@ user_input = {
     ]
 }
 
+print()
 run_multiple_iterations(graph=graph, starting_thread_id=4, num_repetitions=3, user_input_template=user_input,
                         recursion_limit=100)
 
-export_sqlite_to_jsons(exp.database, exp.json_dir)
+print()
+export_sqlite_to_jsons(exp)
+print()
 
 supervisor = SupervisorConfig(
     name="supervisor",
@@ -180,13 +183,13 @@ graph_config = GraphConfig(
     nodes=["Researcher", "Coder"]
 )
 
-export_jsons_to_csv(exp.json_dir, exp.get_csv_path(), graph_config)
+export_jsons_to_csv(exp, graph_config)
 
 # ANALIZA
 print()
-event_log = load_event_log(exp.get_csv_path())
+event_log = load_event_log(exp)
 print_analysis(event_log)
-
-generate_reports(event_log, exp.reports_dir)
-
-generate_visualizations(event_log, graph, exp.img_dir)
+print()
+generate_reports(event_log, exp)
+print()
+generate_visualizations(event_log, graph, exp)
