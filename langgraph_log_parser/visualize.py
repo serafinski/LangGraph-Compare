@@ -113,11 +113,7 @@ def generate_performance_dfg(event_log: pd.DataFrame, output: Union[ExperimentPa
     print("Performance DFG saved as:", output_path)
 
 
-def generate_visualizations(
-        event_log: pd.DataFrame,
-        graph: CompiledStateGraph,
-        output: Union[ExperimentPaths, str]
-) -> None:
+def generate_visualizations(event_log: pd.DataFrame, graph: CompiledStateGraph, output: Union[ExperimentPaths, str]) -> None:
     """
     Generate and save all process visualizations.
 

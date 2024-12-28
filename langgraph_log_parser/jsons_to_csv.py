@@ -267,11 +267,7 @@ def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, confi
     return entries_to_write
 
 
-def export_jsons_to_csv(
-        source: Union[ExperimentPaths, str],
-        graph_config: GraphConfig,
-        csv_path: Optional[str] = None
-) -> None:
+def export_jsons_to_csv(source: Union[ExperimentPaths, str], graph_config: GraphConfig, csv_path: Optional[str] = None) -> None:
     """
     Process all JSON files and export them to a CSV file.
     Can use either an ExperimentPaths instance or explicit paths.
