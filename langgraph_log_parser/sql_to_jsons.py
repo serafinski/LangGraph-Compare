@@ -16,7 +16,14 @@ def _convert(obj):
     """
     # Konwersja byte'ów do string'ów
     if isinstance(obj, bytes):
-        return obj.decode("utf-8", errors="ignore")
+        if isinstance(obj, bytes):
+            encodings = ['utf-8', 'latin1', 'cp1252', 'iso-8859-1']
+            for encoding in encodings:
+                try:
+                    return obj.decode(encoding)
+                except UnicodeDecodeError:
+                    continue
+        return obj
     # Konwersja słowników do string'ów
     elif isinstance(obj, dict):
         # Konwersja elementów słownika rekursywnie
