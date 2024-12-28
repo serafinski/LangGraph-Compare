@@ -62,22 +62,18 @@ user_input = {"messages": [("user", "Tell me about PJATK in Warsaw")]}
 
 print()
 run_multiple_iterations(graph, 1, 3, user_input)
-
-print()
-export_sqlite_to_jsons(exp)
 print()
 
 graph_config = GraphConfig(
     nodes=["chatbot_node", "tools"]
 )
 
-export_jsons_to_csv(exp, graph_config)
+prepare_data(exp, graph_config)
 
 # ANALIZA
 print()
 event_log = load_event_log(exp)
 print_analysis(event_log)
 print()
-generate_reports(event_log, exp)
-print()
-generate_visualizations(event_log, graph, exp)
+
+generate_artifacts(event_log, graph, exp)

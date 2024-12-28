@@ -472,10 +472,6 @@ user_input = {
 print()
 run_multiple_iterations(graph=super_graph, starting_thread_id=1, num_repetitions=3, user_input_template=user_input,
                         recursion_limit=150)
-
-
-print()
-export_sqlite_to_jsons(exp)
 print()
 
 test_supervisor = SupervisorConfig(
@@ -513,13 +509,12 @@ graph_config = GraphConfig(
     subgraphs=[research_team, authoring_team]
 )
 
-export_jsons_to_csv(exp, graph_config)
+prepare_data(exp, graph_config)
 
 # ANALIZA
 print()
 event_log = load_event_log(exp)
 print_analysis(event_log)
 print()
-generate_reports(event_log, exp)
-print()
-generate_visualizations(event_log, graph, exp)
+
+generate_artifacts(event_log, super_graph, exp)
