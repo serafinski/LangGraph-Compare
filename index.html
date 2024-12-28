@@ -5,9 +5,9 @@
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta property="article:modified_time" content="2024-12-27T23:41:57+00:00" />
+    <meta property="article:modified_time" content="2024-12-28T22:59:19+00:00" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LangGraph Log Parser documentation &mdash; LangGraph Log Parser 0.1.12 documentation</title>
+  <title>LangGraph Log Parser documentation &mdash; LangGraph Log Parser 0.1.13 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=297ad043"></script>
+      <script src="_static/documentation_options.js?v=8d02545a"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -198,26 +198,32 @@
 
 <span class="nb">print</span><span class="p">()</span>
 <span class="n">run_multiple_iterations</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;Tell me a joke&quot;</span><span class="p">)]})</span>
-
-<span class="nb">print</span><span class="p">()</span>
-<span class="n">export_sqlite_to_jsons</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
 
 <span class="n">graph_config</span> <span class="o">=</span> <span class="n">GraphConfig</span><span class="p">(</span>
     <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;chatbot_node&quot;</span><span class="p">]</span>
 <span class="p">)</span>
 
-<span class="n">export_jsons_to_csv</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="n">graph_config</span><span class="p">)</span>
+<span class="n">prepare_data</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="n">graph_config</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">()</span>
 <span class="n">event_log</span> <span class="o">=</span> <span class="n">load_event_log</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
 <span class="n">print_analysis</span><span class="p">(</span><span class="n">event_log</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
-<span class="n">generate_reports</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">()</span>
-<span class="n">generate_visualizations</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
+
+<span class="n">generate_artifacts</span><span class="p">(</span><span class="n">event_log</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>When You have multiple architectures analyzed, You can use the following code to compare them <cite>(by default, it will look in</cite> <code class="code docutils literal notranslate"><span class="pre">experiments</span></code> <cite>directory)</cite>:</p>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langgraph_log_parser</span> <span class="kn">import</span> <span class="n">compare</span>
+
+<span class="n">infrastructures</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="s2">&quot;other1&quot;</span><span class="p">,</span> <span class="s2">&quot;other2&quot;</span><span class="p">]</span>
+
+<span class="n">compare</span><span class="p">(</span><span class="n">infrastructures</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This should generate a file in a <code class="code docutils literal notranslate"><span class="pre">comparison_reports</span></code> directory, with the name: <code class="code docutils literal notranslate"><span class="pre">main_vs_other1_vs_other2.html</span></code>.</p>
 </section>
 <section id="modules">
 <h2><a class="toc-backref" href="#id10" role="doc-backlink">Modules</a><a class="headerlink" href="#modules" title="Link to this heading"></a></h2>
@@ -248,7 +254,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2024, Tomasz Serafiński.
-      <span class="lastupdated">Last updated on Dec 27, 2024.
+      <span class="lastupdated">Last updated on Dec 28, 2024.
       </span></p>
   </div>
 

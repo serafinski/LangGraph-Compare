@@ -17,6 +17,14 @@ langgraph\_log\_parser.analyze\_case\_id
    :undoc-members:
    :show-inheritance:
 
+langgraph\_log\_parser.artifacts
+-----------------------------------------------
+
+.. automodule:: langgraph_log_parser.artifacts
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 langgraph\_log\_parser.create\_html
 -----------------------------------------------
 
