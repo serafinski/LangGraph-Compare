@@ -1,7 +1,7 @@
 __all__ = [
     # Modules
     "load_events", "analyze", "analyze_case_id", "graph_runner", "jsons_to_csv", "sql_to_jsons", "visualize",
-    "experiment", "create_report", "create_html",
+    "experiment", "create_report", "create_html", "artifacts",
 
     # Functions - load_csv
     "load_event_log",
@@ -54,6 +54,9 @@ __all__ = [
     # Functions - create_html
     "compare",
 
+    # Functions - artifacts
+    "prepare_data", "generate_artifacts",
+
     #Classes - jsons_to_csv
     "SubgraphConfig", "SupervisorConfig", "GraphConfig",
 
@@ -71,6 +74,7 @@ from . import visualize
 from . import experiment
 from . import create_report
 from . import create_html
+from . import artifacts
 
 
 from .load_events import *
@@ -83,3 +87,4 @@ from .visualize import *
 from .experiment import *
 from .create_report import *
 from .create_html import *
+from .artifacts import *
