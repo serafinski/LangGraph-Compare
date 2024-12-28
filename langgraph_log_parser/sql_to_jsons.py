@@ -17,7 +17,7 @@ def _convert(obj):
     # Konwersja byte'ów do string'ów
     if isinstance(obj, bytes):
         if isinstance(obj, bytes):
-            encodings = ['utf-8', 'latin1', 'cp1252', 'iso-8859-1']
+            encodings = ['latin1', 'utf-8', 'cp1252', 'iso-8859-1']
             for encoding in encodings:
                 try:
                     return obj.decode(encoding)
