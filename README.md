@@ -93,22 +93,27 @@ graph = graph_builder.compile(checkpointer=memory)
 
 print()
 run_multiple_iterations(graph, 1, 5, {"messages": [("user", "Tell me a joke")]})
-
-print()
-export_sqlite_to_jsons(exp)
 print()
 
 graph_config = GraphConfig(
     nodes=["chatbot_node"]
 )
 
-export_jsons_to_csv(exp, graph_config)
+prepare_data(exp, graph_config)
 
 print()
 event_log = load_event_log(exp)
 print_analysis(event_log)
 print()
-generate_reports(event_log, exp)
-print()
-generate_visualizations(event_log, graph, exp)
+
+generate_artifacts(event_log, graph, exp)
 ```
+When You have multiple architectures analyzed, You can use the following code to compare them _(by default, it will look in `experiments` directory)_:
+```python
+from langgraph_log_parser import compare
+
+infrastructures = ["main", "other1", "other2"]
+
+compare(infrastructures)
+```
+This should generate a file in a `comparison_reports` directory, with the name: `main_vs_other1_vs_other2.html`.

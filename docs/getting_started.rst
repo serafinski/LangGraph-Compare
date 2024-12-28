@@ -92,8 +92,16 @@ This function will create a thread for every single run of the graph - starting 
 
 For more details, refer to the documentation of the :mod:`langgraph_log_parser.graph_runner` module.
 
+Preparing data for analysis
+===========================
+Preparation of data can be easily achieved by using :func:`langgraph_log_parser.artifacts.prepare_data` from module :mod:`langgraph_log_parser.artifacts`.
+
+However, before doing so I would strongly recommend to read documentation bellow since it shows how to use :code:`GraphConfig` - a custom class that defines how a graph was configured, so parser can parse accordingly.
+
+If you want to see how to use :func:`langgraph_log_parser.artifacts.prepare_data` refer to :ref:`exporting_data`.
+
 Exporting SQLite to JSON's
-==========================
+--------------------------
 After running graph multiple times, we need to retrieve the data from the SQLite database.
 
 For this, I've created a function :func:`langgraph_log_parser.sql_to_jsons.export_sqlite_to_jsons` that retrieves data from the database and deserializes it from :code:`msgpack`.
@@ -141,7 +149,7 @@ For more details, refer to the documentation of the :mod:`langgraph_log_parser.s
 .. _exporting_jsons_to_csv:
 
 Exporting JSON's to CSV
-=======================
+-----------------------
 We retrieved the data from the database. Now it's time to create a :code:`csv` file that can be loaded as an event log.
 
 For this, I've created :func:`langgraph_log_parser.jsons_to_csv.export_jsons_to_csv`.
@@ -199,6 +207,32 @@ In this case, You can also use the benefits of :code:`create_experiment`.
         └── reports/
 
 For more details, refer to the documentation of the :mod:`langgraph_log_parser.jsons_to_csv` module.
+
+.. _exporting_data:
+
+Exporting data using :code:`prepare_data`
+-----------------------------------------
+This function simplifies the process of exporting data to :code:`csv` file by running previously mentioned functions.
+
+.. code-block:: python
+
+    from langgraph_log_parser.experiment import create_experiment
+    from langgraph_log_parser.jsons_to_csv import GraphConfig
+    from langgraph_log_parser.artifacts import prepare_data
+
+    # Init for experiment project structure
+    exp = create_experiment("test")
+
+    # Rest of the code...
+
+    # Basic graph config
+    graph_config = GraphConfig(
+    nodes=["chatbot_node"]
+    )
+
+    prepare_data(exp, graph_config)
+
+This function will run the :code:`export_sqlite_to_jsons` and :code:`export_jsons_to_csv` in order preparing the data for analysis.
 
 Running analysis
 ================
@@ -291,12 +325,36 @@ This will return information for single :code:`thread_id` `(case_id)` about the 
 
 Generation
 **********
+You can easily generate visualizations and reports using :func:`langgraph_log_parser.artifacts.generate_artifacts`.
+This function will generate visualizations and reports for entire event log.
+
+.. code-block:: python
+
+    # Needed imports
+    from langgraph_log_parser.experiment import create_experiment
+    from langgraph_log_parser.load_events import load_event_log
+    from langgraph_log_parser.artifacts import generate_artifacts
+
+    # Init for experiment project structure
+    exp = create_experiment("test")
+
+    # Rest of the code...
+
+    # Graph is needed for the mermaid graph
+    graph = graph_builder.compile(checkpointer=memory)
+
+    # Using experiment to load events from .csv file
+    # You can also provide path directly as a string
+    event_log = load_event_log(exp)
+
+    # Function for generating and saving reports for entire event_log via experiment
+    generate_artifacts(event_log, graph, exp)
+
+If you would like to generate it manually, you can refer to the sections below.
 
 Creating visualizations
 =======================
 We are going to use :func:`langgraph_log_parser.visualize.generate_visualizations` to generate and save every visualization available.
-
-**I'm not going to go into details on every single visualization function and what every singe one do - we will focus on one saves every visualization available to experiment img directory - since it's the easiest approach.**
 
 You can find every function specification in module :mod:`langgraph_log_parser.visualize`.
 
@@ -422,7 +480,7 @@ In case of entire log, we will need to use a :func:`langgraph_log_parser.create_
             └── sequences_report.json
 
 Generating architecture comparison
-==================================
+**********************************
 You can generate architecture comparison report by executing :func:`langgraph_log_parser.create_html.compare` and
 supplying the metod with the list of architectures You would like to compare. Function will look for experiments
 by default in the :code:`experiments` folder `(however if needed - You can specify the paths directly)`. After generating the function should automatically save the report in:
