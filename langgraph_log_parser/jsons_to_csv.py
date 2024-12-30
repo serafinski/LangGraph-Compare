@@ -1,7 +1,7 @@
 import os
 import json
 import csv
-from typing import Dict, List, Optional, Any, Union
+from typing import Dict, List, Optional, Any, Union, Tuple
 from dataclasses import dataclass
 from glob import glob
 from .experiment import ExperimentPaths
@@ -74,7 +74,8 @@ def _build_config_mappings(graph_config: GraphConfig) -> Dict[str, Any]:
     graph_supervisors = set()
     # Dictionary -> key: subgraph name, value: SubgraphConfig object
     subgraph_map = {}
-    # Dictionary -> key: subgraph supervisor name, value: subgraph name - for quick lookup to which subgraph a supervisor belongs
+    # Dictionary -> key: subgraph supervisor name, value: subgraph name
+    # For quick lookup to which subgraph a supervisor belongs
     subgraph_supervisors = {}
     # Dictionary -> key: node name, value: subgraph name - for assigning nodes to subgraphs
     node_to_subgraph = {}
@@ -118,6 +119,251 @@ def _build_config_mappings(graph_config: GraphConfig) -> Dict[str, Any]:
     }
 
 
+def _is_graph_supervisor(activity: str, config: Dict[str, Any]) -> bool:
+    """
+    Check if an activity is a graph-level supervisor.
+
+    :param activity: Name of the activity.
+    :type activity: str
+    :param config: Precomputed configuration mappings.
+    :type config: Dict
+
+    :return: True if the activity is a graph-level supervisor.
+    :rtype: bool
+    """
+    return activity in config['graph_supervisors']
+
+
+def _get_subgraph_context(json_entry: Dict, config: Dict[str, Any], has_subgraphs: bool) -> Optional[str]:
+    """
+    Determine the current subgraph context from a JSON entry.
+
+    :param json_entry: A single JSON entry to evaluate.
+    :type json_entry: Dict
+    :param config: Precomputed configuration mappings.
+    :type config: Dict
+    :param has_subgraphs: Indicates whether the graph config has subgraphs.
+    :type has_subgraphs: bool
+
+    :return: Name of the subgraph, if applicable.
+    :rtype: Optional[str]
+    """
+    # If there are no subgraphs, we can't determine the subgraph context
+    if not has_subgraphs:
+        return None
+
+    # Fetch metadata field from JSON entry
+    metadata = json_entry.get('metadata', {})
+    # langgraph_checkpoint_ns can contain information on what subgraph we're in like:
+    # "langgraph_checkpoint_ns": "ResearchTeam:513d809b-96a1-a27b-6e39-d31ac60f8c30|Search:a5527da0-52df-17fe-4e51-e7073b748101"
+    if 'langgraph_checkpoint_ns' in metadata:
+        checkpoint_ns = metadata['langgraph_checkpoint_ns']
+        # Split the checkpoint_ns by '|' and take the first part
+        parts = checkpoint_ns.split('|')
+        if parts:
+            # Split the first part by ':' and take the first part (e.g. "ResearchTeam")
+            subgraph_name = parts[0].split(':')[0]
+            # Check if the subgraph_name is in the subgraph_map
+            if subgraph_name in config['subgraph_map']:
+                return subgraph_name
+
+    # If langgraph_checkpoint_ns is not present, we can try to get the langgraph_node like:
+    # "langgraph_node": "ResearchTeam"
+    node = metadata.get('langgraph_node')
+    # If the node is in the node_to_subgraph mapping, we can return the subgraph name
+    if node in config['node_to_subgraph']:
+        return config['node_to_subgraph'][node]
+
+    return None
+
+
+def _find_end_timestamp(json_data: List[Dict], start_index: int, case_id: Any) -> Optional[Any]:
+    """
+    Look ahead in the JSON entries to find the next timestamp for the same case_id.
+
+    :param json_data: List of all JSON entries.
+    :type json_data: List[Dict]
+    :param start_index: Current index in the JSON data.
+    :type start_index: int
+    :param case_id: The thread_ID/case_id we are processing.
+    :type case_id: Any
+
+    :return: The next timestamp or None if not found.
+    :rtype: Optional[Any]
+    """
+    for j in range(start_index + 1, len(json_data)):
+        next_json = json_data[j]
+        if next_json.get('thread_ID') == case_id and next_json.get('metadata', {}).get('writes'):
+            # If the next JSON entry has writes, we can use its timestamp as end_timestamp
+            return next_json['checkpoint'].get('ts')
+    return None
+
+
+def _insert_subgraph_start_if_needed(
+    json_data: List[Dict],
+    current_index: int,
+    case_id: Any,
+    entries_to_write: List[Dict[str, Any]],
+    config: Dict[str, Any]
+) -> None:
+    """
+    Look ahead for a subgraph supervisor activity when we're currently on a graph supervisor
+    and insert a '__start__' entry for it, if found.
+
+    :param json_data: List of all JSON entries.
+    :type json_data: List[Dict]
+    :param current_index: Current index in the JSON data.
+    :type current_index: int
+    :param case_id: The thread_ID/case_id we are processing.
+    :type case_id: Any
+    :param entries_to_write: The list of entries to eventually be written to CSV.
+    :type entries_to_write: List[Dict[str, Any]]
+    :param config: Precomputed configuration mappings.
+    :type config: Dict
+    """
+    # Look ahead for next subgraph supervisor activity
+    for j in range(current_index + 1, len(json_data)):
+        next_json = json_data[j]
+        # If the thread_ID is different, skip
+        if next_json.get('thread_ID') != case_id:
+            continue
+
+        # Looking for the next JSON entry with writes
+        next_metadata = next_json.get('metadata', {})
+        next_writes = next_metadata.get('writes', {})
+        if not next_writes:
+            continue
+
+        # Find the next key that isn't 'messages' - this is the next activity
+        next_activity = next((key for key in next_writes.keys() if key != 'messages'), None)
+
+        # If the next activity is a subgraph supervisor, we need to write an __start__ entry
+        if next_activity in config['subgraph_supervisors']:
+            # Get information about the next subgraph supervisor (the subgraph name)
+            next_context = config['subgraph_supervisors'][next_activity]
+            # Write an __start__ entry for the next subgraph supervisor
+            entries_to_write.append({
+                'case_id': case_id,
+                'timestamp': next_json['checkpoint'].get('ts'),
+                'end_timestamp': next_json['checkpoint'].get('ts'),
+                'cost': 0,
+                'activity': '__start__',
+                # org:resource is the next subgraph's name
+                'org:resource': next_context
+            })
+            break
+
+
+def _handle_subgraph_mode(
+    activity: str,
+    visited_global_start: bool,
+    i: int,
+    json_data: List[Dict],
+    case_id: Any,
+    config: Dict[str, Any],
+    context: Optional[str],
+    entries_to_write: List[Dict[str, Any]]
+) -> Tuple[bool, Optional[str], bool]:
+    """
+    Handle the processing logic for subgraph mode.
+
+    :param activity: The identified activity from a JSON entry.
+    :type activity: str
+    :param visited_global_start: Whether we've visited the global '__start__'.
+    :type visited_global_start: bool
+    :param i: The current index of the JSON entry in the json_data list.
+    :type i: int
+    :param json_data: The entire list of JSON entries.
+    :type json_data: List[Dict]
+    :param case_id: The thread_ID/case_id we are processing.
+    :type case_id: Any
+    :param config: Precomputed configuration mappings.
+    :type config: Dict
+    :param context: The subgraph context if available.
+    :type context: Optional[str]
+    :param entries_to_write: The list where processed entries are accumulated.
+    :type entries_to_write: List[Dict]
+
+    :return: A tuple of (should_write, org_resource, visited_global_start).
+    :rtype: Tuple[bool, Optional[str], bool]
+    """
+    should_write = False
+    org_resource = None
+
+    # Visiting global __start__ activity for the first time
+    if activity == '__start__' and not visited_global_start:
+        should_write = True
+        org_resource = '__start__'
+        visited_global_start = True
+
+    # If activity is a graph supervisor
+    elif _is_graph_supervisor(activity, config):
+        should_write = True
+        # org_resource is the name of the graph supervisor
+        org_resource = activity
+        # Look ahead for next subgraph supervisor activity
+        _insert_subgraph_start_if_needed(json_data, i, case_id, entries_to_write, config)
+
+    # If activity is a subgraph supervisor
+    elif activity in config['subgraph_supervisors']:
+        should_write = True
+        # org_resource is name of the subgraph
+        org_resource = config['subgraph_supervisors'][activity]
+
+    # If activity is a node in a subgraph
+    elif activity in config['valid_nodes'] and context:
+        should_write = True
+        # org_resource is the subgraph name
+        org_resource = config['node_to_subgraph'][activity]
+
+    return should_write, org_resource, visited_global_start
+
+
+def _handle_non_subgraph_mode(
+    activity: str,
+    visited_global_start: bool,
+    has_supervisors: bool,
+    config: Dict[str, Any]
+) -> Tuple[bool, Optional[str], bool]:
+    """
+    Handle the processing logic for non-subgraph mode.
+
+    :param activity: The identified activity from a JSON entry.
+    :type activity: str
+    :param visited_global_start: Whether we've visited the global '__start__'.
+    :type visited_global_start: bool
+    :param has_supervisors: Indicates whether the graph config has supervisors.
+    :type has_supervisors: bool
+    :param config: Precomputed configuration mappings.
+    :type config: Dict
+
+    :return: A tuple of (should_write, org_resource, visited_global_start).
+    :rtype: Tuple[bool, Optional[str], bool]
+    """
+    should_write = False
+    org_resource = None
+
+    # Visiting global __start__ activity for the first time
+    if activity == '__start__' and not visited_global_start:
+        should_write = True
+        org_resource = '__start__'
+        visited_global_start = True
+
+    # If activity is a graph supervisor
+    elif has_supervisors and _is_graph_supervisor(activity, config):
+        should_write = True
+        # org_resource is the activity itself
+        org_resource = activity
+
+    # Only process explicitly listed nodes
+    elif activity in config['valid_nodes']:
+        should_write = True
+        # org_resource is the activity itself
+        org_resource = activity
+
+    return should_write, org_resource, visited_global_start
+
+
 def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, config: Dict) -> List[Dict[str, Any]]:
     """
     Process a single JSON and return entries to write.
@@ -141,61 +387,7 @@ def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, confi
     # For collecting entries to write to CSV
     entries_to_write = []
 
-    def _get_subgraph_context(json_entry: Dict) -> Optional[str]:
-        """
-        Determine the current subgraph context from a JSON entry.
-
-        :param json_entry: A single JSON entry to evaluate.
-        :type json_entry: Dict
-
-        :return: Name of the subgraph, if applicable.
-        :rtype: Optional[str]
-        """
-
-        if not has_subgraphs:
-            return None
-
-        # Fetch metadata field from JSON entry
-        metadata = json_entry.get('metadata', {})
-        # langgraph_checkpoint_ns can contain information on what subgraph we're in like:
-        # "langgraph_checkpoint_ns": "ResearchTeam:513d809b-96a1-a27b-6e39-d31ac60f8c30|Search:a5527da0-52df-17fe-4e51-e7073b748101"
-        if 'langgraph_checkpoint_ns' in metadata:
-            checkpoint_ns = metadata['langgraph_checkpoint_ns']
-            # Split the checkpoint_ns by '|' and take the first part
-            # ResearchTeam:513d809b-96a1-a27b-6e39-d31ac60f8c30
-            parts = checkpoint_ns.split('|')
-            if parts:
-                # Split the first part by ':' and take the first part
-                # ResearchTeam
-                subgraph_name = parts[0].split(':')[0]
-                # Check if the subgraph_name is in the subgraph_map
-                if subgraph_name in config['subgraph_map']:
-                    return subgraph_name
-
-        # If langgraph_checkpoint_ns is not present, we can try to get the langgraph_node like:
-        # "langgraph_node": "ResearchTeam"
-        node = metadata.get('langgraph_node')
-        # If the node is in the node_to_subgraph mapping, we can return the subgraph name
-        if node in config['node_to_subgraph']:
-            return config['node_to_subgraph'][node]
-
-        return None
-
-    def _is_graph_supervisor(activity: str) -> bool:
-        """
-        Check if an activity is a graph-level supervisor.
-
-        :param activity: Name of the activity.
-        :type activity: str
-
-        :return: True if the activity is a graph-level supervisor.
-        :rtype: bool
-        """
-        return activity in config['graph_supervisors']
-
     ### ACTUAL PROCESSING OF JSON DATA ###
-
-    # Iterate over each JSON entry
     for i, json_entry in enumerate(json_data):
         # Extract thread_ID from JSON entry
         case_id = json_entry.get('thread_ID')
@@ -218,117 +410,43 @@ def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, confi
 
         # Skip activities that aren't:
         # - __start__ (global start)
-        if (activity != '__start__' and
-                # - in graph_supervisors map
-                not _is_graph_supervisor(activity) and
-                # - in subgraph_supervisors map
-                activity not in config['subgraph_supervisors'] and
-                # - in valid_nodes set
-                activity not in config['valid_nodes']):
+        # - in graph_supervisors map
+        # - in subgraph_supervisors map
+        # - in valid_nodes set
+        if (
+            activity != '__start__'
+            and not _is_graph_supervisor(activity, config)
+            and activity not in config['subgraph_supervisors']
+            and activity not in config['valid_nodes']
+        ):
             continue
 
         # Get subgraph context (if applicable)
-        context = _get_subgraph_context(json_entry)
-        # Flag - if we should write the entry to entries_to_write
-        should_write = False
-        # Placeholder for org:resource
-        org_resource = None
+        context = _get_subgraph_context(json_entry, config, has_subgraphs)
 
-        # === SUBGRAPH MODE ===
-        # If we are in subgraph mode, we need to handle subgraph supervisors and nodes
+        # Process according to subgraph mode or non-subgraph mode
         if has_subgraphs:
-            # Visiting global __start__ activity for the first time
-            if activity == '__start__' and not visited_global_start:
-                should_write = True
-                org_resource = '__start__'
-                visited_global_start = True
-
-            # If activity is a graph supervisor
-            elif _is_graph_supervisor(activity):
-                should_write = True
-                # org_resource is the name of the graph supervisor
-                org_resource = activity
-
-                # Look ahead for next subgraph supervisor activity
-                for j in range(i + 1, len(json_data)):
-                    next_json = json_data[j]
-
-                    # If the thread_ID is different, skip
-                    if next_json.get('thread_ID') != case_id:
-                        continue
-
-                    # Looking for the next JSON entry with writes
-                    next_metadata = next_json.get('metadata', {})
-                    next_writes = next_metadata.get('writes', {})
-
-                    # If there are no writes, skip
-                    if not next_writes:
-                        continue
-
-                    # Find the next key that isn't 'messages' - this is the next activity
-                    next_activity = next((key for key in next_writes.keys() if key != 'messages'), None)
-
-                    # If the next activity is a subgraph supervisor, we need to write an __start__ entry
-                    if next_activity in config['subgraph_supervisors']:
-                        # Get information about the next subgraph supervisor
-                        next_context = config['subgraph_supervisors'][next_activity]
-                        # Write an __start__ entry for the next subgraph supervisor
-                        entries_to_write.append({
-                            'case_id': case_id,
-                            'timestamp': next_json['checkpoint'].get('ts'),
-                            'end_timestamp': next_json['checkpoint'].get('ts'),
-                            'cost': 0,
-                            'activity': '__start__',
-                            # org:resource is the next subgraph supervisor
-                            'org:resource': next_context
-                        })
-                        break
-
-            # If activity is a subgraph supervisor
-            elif activity in config['subgraph_supervisors']:
-                should_write = True
-                # org_resource is name of the subgraph
-                org_resource = config['subgraph_supervisors'][activity]
-
-            # If activity is a node in a subgraph
-            elif activity in config['valid_nodes'] and context:
-                should_write = True
-                # org_resource is the subgraph name
-                org_resource = config['node_to_subgraph'][activity]
-
-        # === NON-SUBGRAPH MODE ===
-        # If we are not in subgraph mode, we only process explicitly listed nodes
+            should_write, org_resource, visited_global_start = _handle_subgraph_mode(
+                activity=activity,
+                visited_global_start=visited_global_start,
+                i=i,
+                json_data=json_data,
+                case_id=case_id,
+                config=config,
+                context=context,
+                entries_to_write=entries_to_write
+            )
         else:
-            # Visiting global __start__ activity for the first time
-            if activity == '__start__' and not visited_global_start:
-                should_write = True
-                org_resource = '__start__'
-                visited_global_start = True
+            should_write, org_resource, visited_global_start = _handle_non_subgraph_mode(
+                activity=activity,
+                visited_global_start=visited_global_start,
+                has_supervisors=has_supervisors,
+                config=config
+            )
 
-            # If activity is a graph supervisor
-            elif has_supervisors and _is_graph_supervisor(activity):
-                should_write = True
-                # org_resource is the activity itself
-                org_resource = activity
-
-            # Only process explicitly listed nodes
-            elif activity in config['valid_nodes']:
-                should_write = True
-                # org_resource is the activity itself
-                org_resource = activity
-
+        # If the activity should be written, compute end_timestamp
         if should_write:
-            # Placeholder for end_timestamp
-            end_timestamp = None
-
-            # Look ahead for the next JSON entry with writes
-            for j in range(i + 1, len(json_data)):
-                next_json = json_data[j]
-                if next_json.get('thread_ID') == case_id and next_json.get('metadata', {}).get('writes'):
-                    # If the next JSON entry has writes, we can use its timestamp as end_timestamp
-                    end_timestamp = next_json['checkpoint'].get('ts')
-                    break
-
+            end_timestamp = _find_end_timestamp(json_data, i, case_id)
             # If end_timestamp is not found, use the current timestamp
             if end_timestamp is None:
                 end_timestamp = timestamp
@@ -391,7 +509,7 @@ def export_jsons_to_csv(source: Union[ExperimentPaths, str], graph_config: Graph
     # Build configuration mappings
     config = _build_config_mappings(graph_config)
 
-    # Get all JSON files from experiment's json directory
+    # Get all JSON files from the experiment's json directory
     json_files = glob(os.path.join(json_dir, '*.json'))
 
     if not json_files:
@@ -424,4 +542,4 @@ def export_jsons_to_csv(source: Union[ExperimentPaths, str], graph_config: Graph
         writer.writeheader()
         writer.writerows(all_entries)
 
-    print(f"Successfully exported combined data to: {csv_path}")
+    print(f"Successfully exported combined data to: {output_path}")
