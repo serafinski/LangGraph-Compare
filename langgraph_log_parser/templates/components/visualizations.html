@@ -9,7 +9,7 @@
                 <img src="data:image/png;base64,{{ img_data }}"
                      alt="{{ img_name }}"
                      class="max-w-full cursor-pointer hover:opacity-80"
-                     onclick="showImage('{{ img_data }}', '{{ img_name }}')">
+                     onclick="showImage('{{ img_data | escape }}', '{{ img_name | escape }}')">
             </div>
             {% endfor %}
         </div>

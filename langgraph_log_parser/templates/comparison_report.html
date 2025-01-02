@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Architecture Comparison Report</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     {% include 'components/styles.html' %}
 </head>
 <body class="bg-gray-100">
@@ -11,17 +11,21 @@
 
         <!-- Tab Buttons -->
         <div class="mb-4">
-            <button onclick="showTab('metrics')" class="px-4 py-2 bg-blue-500 text-white rounded mr-2">Metrics</button>
-            <button onclick="showTab('sequences')" class="px-4 py-2 bg-blue-500 text-white rounded mr-2">Sequences</button>
-            <button onclick="showTab('visualizations')" class="px-4 py-2 bg-blue-500 text-white rounded mr-2">Visualizations</button>
+            <button data-tab="metrics" class="tab-button active" onclick="showTab('metrics')">Metrics</button>
+            <button data-tab="sequences" class="tab-button inactive" onclick="showTab('sequences')">Sequences</button>
+            <button data-tab="visualizations" class="tab-button inactive" onclick="showTab('visualizations')">Visualizations</button>
         </div>
 
+        <!-- Tabs Content -->
         {% include 'components/metrics.html' %}
         {% include 'components/sequences.html' %}
         {% include 'components/visualizations.html' %}
     </div>
 
+    <!-- Image Modal -->
     {% include 'components/modal.html' %}
+
+    <!-- Scripts -->
     {% include 'components/scripts.html' %}
 </body>
 </html>

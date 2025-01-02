@@ -46,6 +46,7 @@ class _MetricsFormatter:
         return f"{value:,}"
 
     @staticmethod
+    # Format sequences into a more readable structure - connecting steps with arrows
     def format_sequences(sequences: Dict[str, list]) -> Dict[str, Any]:
         """Format sequences into a more readable structure."""
         return {
@@ -57,6 +58,7 @@ class _MetricsFormatter:
         }
 
     @staticmethod
+    # Same as above but additionally with probabilities
     def format_sequences_with_probabilities(sequences: List) -> Dict[str, Any]:
         """Format sequences with probabilities into a readable structure."""
         return {
@@ -69,6 +71,7 @@ class _MetricsFormatter:
         }
 
     @staticmethod
+    # Format self distances into a more readable structure - how many steps to reach the same activity
     def format_self_distances(distances: Dict[str, Dict[str, int]]) -> Dict[str, Any]:
         """Format self distances into a more readable structure."""
         return {
@@ -80,6 +83,7 @@ class _MetricsFormatter:
         }
 
     @staticmethod
+    # Format activities count into a more readable structure - how many times each activity was executed (percentage)
     def format_activities_count(counts: Dict[str, int]) -> Dict[str, str]:
         """Format activity counts with percentage of total."""
         total = sum(counts.values())
@@ -89,6 +93,7 @@ class _MetricsFormatter:
         }
 
     @staticmethod
+    # Format rework counts into a more readable structure - how many times each activity was reworked (percentage)
     def format_rework_counts(counts: Dict[str, int]) -> Union[str, Dict[str, str]]:
         """Format rework counts with percentages of total activities."""
         if not counts:
@@ -188,8 +193,11 @@ class _ArchitectureComparisonReport:
                     base_path = infra_path
                 self.infra_dirs[infra_name] = InfrastructureDirs.from_default_structure(base_path)
 
+        # Storage for data from reports (JSON files)
         self.infrastructures_data = {}
+        # Storage for images data (base64 encoded)
         self.images_data = {}
+        # Formatter for metrics
         self.formatter = _MetricsFormatter()
 
     def generate_report_filename(self) -> str:
@@ -201,7 +209,9 @@ class _ArchitectureComparisonReport:
 
     def load_data(self):
         for infra_name, dirs in self.infra_dirs.items():
+            # Storage for data from reports (JSON files)
             self.infrastructures_data[infra_name] = {}
+            # Storage for images data (base64 encoded)
             self.images_data[infra_name] = {}
 
             # Load metrics report data
@@ -209,6 +219,7 @@ class _ArchitectureComparisonReport:
             try:
                 with open(metrics_path) as f:
                     report_data = json.load(f)
+                    # Format the data as needed
                     _MetricsFormatter.set_context(report_data)
                     self.infrastructures_data[infra_name]['main_report'] = {
                         key: self.formatter.format_metric(key, value)
@@ -225,6 +236,7 @@ class _ArchitectureComparisonReport:
                     # Format the data as needed
                     # Get and sort sequence probabilities
                     sequence_probabilities = sequences_data.get('sequence_probabilities', [])
+                    # Sort by probability in descending order
                     sorted_sequences = sorted(sequence_probabilities, key=lambda x: x[2], reverse=True)
 
                     formatted_sequences = {
@@ -232,12 +244,14 @@ class _ArchitectureComparisonReport:
                         'end_activities': sequences_data.get('end_activities', {}),
                         'sequence_probabilities': sorted_sequences
                     }
+                    # Save formatted sequences data
                     self.infrastructures_data[infra_name]['sequences_report'] = formatted_sequences
 
             # Load images if directory is provided
             if dirs.images_dir and Path(dirs.images_dir).exists():
                 for img_file in Path(dirs.images_dir).glob("*.png"):
                     with open(img_file, 'rb') as f:
+                        # Encode image as base64 and store in dictionary
                         self.images_data[infra_name][img_file.stem] = base64.b64encode(f.read()).decode('utf-8')
 
     def generate_report(self, open_browser: bool = True):
@@ -247,19 +261,21 @@ class _ArchitectureComparisonReport:
 
         # Prepare metrics comparison data
         first_infra = next(iter(self.infrastructures_data))
+        # Create a dictionary with metrics as keys and lists of values for each infrastructure
         metrics_comparison = {
             metric: [self.infrastructures_data[infra]['main_report'].get(metric)
                      for infra in self.infrastructures_data]
             for metric in self.infrastructures_data[first_infra]['main_report']
         }
 
-        # Prepare sequences data
+        # Create a dictionary with sequences data for each infrastructure
         sequences_data = {
             infra: data.get('sequences_report', {})
             for infra, data in self.infrastructures_data.items()
         }
 
         template = self.get_template()
+        # Render the template with the data
         html_content = template.render(
             infrastructures_data=self.infrastructures_data,
             images_data=self.images_data,

@@ -4,20 +4,20 @@
     let startX, startY;
     let scrollLeft, scrollTop;
 
-    // Tab functionality remains the same
+    // Function to switch tabs
     function showTab(tabName) {
         document.querySelectorAll('.tab-content').forEach(tab => {
             tab.classList.remove('active');
         });
         document.getElementById(tabName).classList.add('active');
 
-        document.querySelectorAll('[onclick^="showTab"]').forEach(button => {
-            if (button.getAttribute('onclick').includes(tabName)) {
-                button.classList.remove('bg-gray-200');
-                button.classList.add('bg-blue-500', 'text-white');
+        document.querySelectorAll('.tab-button').forEach(button => {
+            if (button.dataset.tab === tabName) {
+                button.classList.add('active');
+                button.classList.remove('inactive');
             } else {
-                button.classList.remove('bg-blue-500', 'text-white');
-                button.classList.add('bg-gray-200');
+                button.classList.add('inactive');
+                button.classList.remove('active');
             }
         });
     }
@@ -58,23 +58,32 @@
 
         modalImg.onload = function() {
             const zoomLevels = calculateZoomLevel(modalImg);
-            currentScale = zoomLevels.initial;
 
-            modalImg.style.transform = `scale(${currentScale})`;
+            // If the image is bigger than the viewport, start "zoomed"
+            if (zoomLevels.initial < 1) {
+                currentScale = zoomLevels.zoomed;
+                modalImg.classList.add('zoomed');
+            } else {
+                // Otherwise, it fits the viewport or is smaller; don't zoom
+                currentScale = zoomLevels.initial;
+                modalImg.classList.remove('zoomed');
+            }
+
+            // Store scales (even if we don't toggle)
             modalImg.dataset.initialScale = zoomLevels.initial;
             modalImg.dataset.zoomedScale = zoomLevels.zoomed;
 
-            // Adjust initial scroll position
+            // Apply the chosen scale
+            modalImg.style.transform = `scale(${currentScale})`;
+
+            // Center the image at that scale (especially if it's zoomed)
             setTimeout(() => {
-                if (imgData.naturalWidth > window.innerWidth || imgData.naturalHeight > window.innerHeight) {
-                    centerImage(modalContent, modalImg);
-                } else {
-                    modalContent.scrollLeft = 0;
-                    modalContent.scrollTop = 0;
-                }
+                centerImage(modalContent, modalImg);
             }, 0);
         };
     }
+
+
 
     function centerImage(container, img) {
         const containerWidth = container.clientWidth - 40;  // Account for padding
@@ -91,15 +100,15 @@
         }
     }
 
-    // Rest of the functions (startDragging, drag, stopDragging, etc.) remain the same
     function startDragging(e) {
+        // Only allow dragging if we're in "zoomed" state
         const modalImg = document.getElementById('modalImage');
         if (!modalImg.classList.contains('zoomed')) return;
 
         isDragging = true;
+        e.preventDefault();
 
         if (e.type === 'mousedown') {
-            e.preventDefault();
             startX = e.clientX;
             startY = e.clientY;
         } else if (e.type === 'touchstart') {
@@ -125,34 +134,14 @@
             currentY = e.touches[0].clientY;
         }
 
-        const deltaX = (startX - currentX);
-        const deltaY = (startY - currentY);
-
+        // Perform the scroll
         const modalContent = document.querySelector('.modal-content');
-        modalContent.scrollLeft = scrollLeft + deltaX;
-        modalContent.scrollTop = scrollTop + deltaY;
+        modalContent.scrollLeft = scrollLeft + (startX - currentX);
+        modalContent.scrollTop = scrollTop + (startY - currentY);
     }
 
     function stopDragging() {
         isDragging = false;
-    }
-
-    function toggleZoom(event) {
-        const modalImg = document.getElementById('modalImage');
-        const modalContent = document.querySelector('.modal-content');
-
-        if (modalImg.classList.contains('zoomed')) {
-            currentScale = modalImg.dataset.initialScale;
-            modalImg.classList.remove('zoomed');
-            modalImg.style.transform = `scale(${currentScale})`;
-            centerImage(modalContent, modalImg);
-        } else {
-            currentScale = modalImg.dataset.zoomedScale;
-            modalImg.classList.add('zoomed');
-            modalImg.style.transform = `scale(${currentScale})`;
-        }
-
-        event.stopPropagation();
     }
 
     function hideModal() {
@@ -178,12 +167,7 @@
         modalContent.addEventListener('mousemove', drag);
         document.addEventListener('mouseup', stopDragging);
 
-        modalImg.addEventListener('touchstart', startDragging, {passive: false});
-        modalContent.addEventListener('touchmove', drag, {passive: false});
-        modalContent.addEventListener('touchend', stopDragging);
-
-        modalImg.addEventListener('click', toggleZoom);
-
+        // Prevent the default drag image behavior
         modalImg.addEventListener('dragstart', function (e) {
             e.preventDefault();
         });
