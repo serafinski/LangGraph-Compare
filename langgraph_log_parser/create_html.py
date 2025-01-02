@@ -4,6 +4,22 @@ import base64
 import jinja2
 from typing import Any, Dict, List, Optional, Union
 import webbrowser
+from dataclasses import dataclass
+
+
+@dataclass
+class InfrastructureDirs:
+    """Class to hold directory paths for infrastructure data."""
+    reports_dir: str
+    images_dir: Optional[str] = None
+
+    @classmethod
+    def from_default_structure(cls, base_path: str) -> 'InfrastructureDirs':
+        """Create paths using default directory structure."""
+        return cls(
+            reports_dir=str(Path(base_path) / "reports"),
+            images_dir=str(Path(base_path) / "img")
+        )
 
 
 class _MetricsFormatter:
@@ -127,30 +143,50 @@ class _MetricsFormatter:
 
 class _ArchitectureComparisonReport:
     DEFAULT_EXPERIMENTS_DIR = "experiments"
-    DEFAULT_REPORTS_DIR = Path("comparison_reports")
+    DEFAULT_REPORTS_DIR = "comparison_reports"
 
-    def __init__(self, infrastructures, base_dir=None, output_dir=None):
-        self.base_dir = Path(base_dir) if base_dir else None
-        self.base_paths = []
+    def __init__(
+            self,
+            infrastructures: Dict[str, Union[str, InfrastructureDirs]],
+            base_dir: Optional[str] = None,
+            output_dir: Optional[str] = None
+    ):
+        """
+        Initialize the report generator.
+
+        Args:
+            infrastructures: Dict mapping infrastructure names to either:
+                           - Directory path string (uses default structure)
+                           - InfrastructureDirs object (custom directories)
+            base_dir: Optional base directory for relative paths
+            output_dir: Optional output directory for reports
+        """
+        self.base_dir = base_dir
         self.infrastructures = infrastructures
         # Allow custom output directory or use default
-        self.report_dir = Path(output_dir) if output_dir else self.DEFAULT_REPORTS_DIR
+        self.report_dir = output_dir if output_dir else self.DEFAULT_REPORTS_DIR
         # Ensure the report directory exists
-        self.report_dir.mkdir(parents=True, exist_ok=True)
+        Path(self.report_dir).mkdir(parents=True, exist_ok=True)
 
-        for infra in infrastructures:
-            infra_path = Path(infra)
-
-            # If it's just a name (no parent directory) and no base_dir was specified,
-            # assume it's under the experiments directory
-            if not infra_path.parent.name and not self.base_dir:
-                self.base_paths.append(Path(self.DEFAULT_EXPERIMENTS_DIR) / infra_path)
-            # If base_dir was specified, use it
-            elif self.base_dir:
-                self.base_paths.append(self.base_dir / infra_path)
-            # Otherwise, use the path as-is
+        # Process infrastructure directories
+        self.infra_dirs = {}
+        for infra_name, dir_info in infrastructures.items():
+            if isinstance(dir_info, InfrastructureDirs):
+                self.infra_dirs[infra_name] = dir_info
             else:
-                self.base_paths.append(infra_path)
+                # Handle string path
+                infra_path = dir_info
+                # If it's just a name (no parent directory) and no base_dir was specified,
+                # assume it's under the experiments directory
+                if not Path(infra_path).parent.name and not self.base_dir:
+                    base_path = str(Path(self.DEFAULT_EXPERIMENTS_DIR) / infra_path)
+                # If base_dir was specified, use it
+                elif self.base_dir:
+                    base_path = str(Path(base_dir) / infra_path)
+                # Otherwise, use the path as-is
+                else:
+                    base_path = infra_path
+                self.infra_dirs[infra_name] = InfrastructureDirs.from_default_structure(base_path)
 
         self.infrastructures_data = {}
         self.images_data = {}
@@ -164,25 +200,27 @@ class _ArchitectureComparisonReport:
         return f"{'_vs_'.join(infra_names)}.html"
 
     def load_data(self):
-        for base_path in self.base_paths:
-            infra_name = base_path.name
+        for infra_name, dirs in self.infra_dirs.items():
             self.infrastructures_data[infra_name] = {}
             self.images_data[infra_name] = {}
 
             # Load metrics report data
-            metrics_report_path = base_path / "reports" / "metrics_report.json"
-            with open(metrics_report_path) as f:
-                report_data = json.load(f)
-                _MetricsFormatter.set_context(report_data)
-                self.infrastructures_data[infra_name]['main_report'] = {
-                    key: self.formatter.format_metric(key, value)
-                    for key, value in report_data.items()
-                }
+            metrics_path = Path(dirs.reports_dir) / "metrics_report.json"
+            try:
+                with open(metrics_path) as f:
+                    report_data = json.load(f)
+                    _MetricsFormatter.set_context(report_data)
+                    self.infrastructures_data[infra_name]['main_report'] = {
+                        key: self.formatter.format_metric(key, value)
+                        for key, value in report_data.items()
+                    }
+            except FileNotFoundError:
+                raise FileNotFoundError(f"Metrics report not found at {metrics_path}")
 
-            # Load sequences report data
-            sequences_report_path = base_path / "reports" / "sequences_report.json"
-            if sequences_report_path.exists():
-                with open(sequences_report_path) as f:
+            # Load sequences report data if available
+            sequences_path = Path(dirs.reports_dir) / "sequences_report.json"
+            if sequences_path.exists():
+                with open(sequences_path) as f:
                     sequences_data = json.load(f)
                     # Format the data as needed
                     # Get and sort sequence probabilities
@@ -196,16 +234,16 @@ class _ArchitectureComparisonReport:
                     }
                     self.infrastructures_data[infra_name]['sequences_report'] = formatted_sequences
 
-            # Load images
-            img_path = base_path / "img"
-            for img_file in img_path.glob("*.png"):
-                with open(img_file, 'rb') as f:
-                    self.images_data[infra_name][img_file.stem] = base64.b64encode(f.read()).decode('utf-8')
+            # Load images if directory is provided
+            if dirs.images_dir and Path(dirs.images_dir).exists():
+                for img_file in Path(dirs.images_dir).glob("*.png"):
+                    with open(img_file, 'rb') as f:
+                        self.images_data[infra_name][img_file.stem] = base64.b64encode(f.read()).decode('utf-8')
 
     def generate_report(self, open_browser: bool = True):
         # Generate the report path using the configured directory and automatic filename
         report_filename = self.generate_report_filename()
-        report_path = self.report_dir / report_filename
+        report_path = Path(self.report_dir) / report_filename
 
         # Prepare metrics comparison data
         first_infra = next(iter(self.infrastructures_data))
@@ -229,6 +267,7 @@ class _ArchitectureComparisonReport:
             sequences_data=sequences_data
         )
 
+        report_path.parent.mkdir(parents=True, exist_ok=True)
         with open(report_path, 'w') as f:
             f.write(html_content)
 
@@ -254,31 +293,57 @@ class _ArchitectureComparisonReport:
         return env.get_template("comparison_report.html")
 
 
-def compare(infrastructures: list, output_dir: Optional[str] = None) -> None:
+def compare(
+        infrastructures: Union[List[str], Dict[str, Union[str, InfrastructureDirs]]],
+        base_dir: Optional[str] = None,
+        output_dir: Optional[str] = None
+) -> None:
     """
     Generate and open HTML comparison report comparing multi-agent infrastructures.
-    The report filename is automatically generated based on the compared architectures.
 
-    :param infrastructures: List of infrastructures to compare.
-    :type infrastructures: list
-    :param output_dir: Optional directory where reports should be saved. If not provided, reports will be saved in the default 'comparison_reports' directory.
-    :type output_dir: str, optional
+    :param infrastructures: List of infrastructure names or dictionary mapping names to paths. Can be:
+                          - List of infrastructure names for default structure
+                          - Dict mapping names to directory paths or InfrastructureDirs objects
+    :type infrastructures: Union[List[str], Dict[str, Union[str, InfrastructureDirs]]]
+    :param base_dir: Base directory where all experiments are stored, defaults to "experiments"
+    :type base_dir: Optional[str]
+    :param output_dir: Directory where generated reports will be saved, defaults to "comparison_reports"
+    :type output_dir: Optional[str]
 
-    **Example:**
+    **Examples:**
 
-    .. code-block:: python
+    Basic usage with default directory structure::
 
-        # List the experiments you would like to compare
-        infrastructures = ["test_1", "test_2"]
+        compare(["test_1", "test_2"])
 
-        # Basic usage (saves to default location)
-        compare(infrastructures)
-        # Output: Report generated at comparison_reports/test_1_vs_test_2.html
+    Using custom paths with default subdirectory structure::
 
-        # Save to specific directory
+        # Will use path/to/test1/reports/ and path/to/test1/img/
+        compare({
+            "test_1": "path/to/test1",
+            "test_2": "path/to/test2"
+        })
+
+    Using fully custom directory paths::
+
+        compare({
+            "test_1": InfrastructureDirs(
+                reports_dir="custom/path1/my_reports",
+                images_dir="custom/path1/my_images"
+            ),
+            "test_2": InfrastructureDirs(
+                reports_dir="custom/path2/my_reports"
+            )
+        })
+
+    Save to specific output directory::
+
         compare(infrastructures, output_dir="my_reports")
-        # Output: Report generated at my_reports/test_1_vs_test_2.html
     """
-    report_generator = _ArchitectureComparisonReport(infrastructures, output_dir=output_dir)
+    # Convert list to dict if necessary
+    if isinstance(infrastructures, list):
+        infrastructures = {infra: infra for infra in infrastructures}
+
+    report_generator = _ArchitectureComparisonReport(infrastructures, base_dir, output_dir)
     report_generator.load_data()
     report_generator.generate_report()

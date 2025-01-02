@@ -10,14 +10,26 @@ def _convert_keys_to_serializable(data):
     """Recursively convert all keys in dictionaries to serializable types."""
     if isinstance(data, dict):
         return {str(k) if not isinstance(k, (str, int, float, bool, type(None))) else k:
-            _convert_keys_to_serializable(v) for k, v in data.items()}
+                    _convert_keys_to_serializable(v) for k, v in data.items()}
     elif isinstance(data, list):
         return [_convert_keys_to_serializable(item) for item in data]
     else:
         return data
 
 
-def write_metrics_report(event_log: pd.DataFrame, output: Union[ExperimentPaths, str]) -> None:
+def _validate_directory(directory_path: str) -> None:
+    """
+    Validate that the specified directory exists.
+
+    :param directory_path: Path to the directory
+    :type directory_path: str
+    :raises FileNotFoundError: If the directory does not exist
+    """
+    if not os.path.exists(directory_path):
+        raise FileNotFoundError(f"Directory does not exist: {directory_path}")
+
+
+def write_metrics_report(event_log: pd.DataFrame, output_dir: Union[ExperimentPaths, str]) -> None:
     """
     Generate and save a comprehensive analysis report of the entire event log in JSON format.
 
@@ -29,8 +41,8 @@ def write_metrics_report(event_log: pd.DataFrame, output: Union[ExperimentPaths,
 
     :param event_log: Event log data containing process execution information
     :type event_log: pd.DataFrame
-    :param output: ExperimentPaths instance or path to save the JSON report
-    :type output: Union[ExperimentPaths, str]
+    :param output_dir: ExperimentPaths instance or directory path where the report will be saved
+    :type output_dir: Union[ExperimentPaths, str]
 
     **Examples:**
 
@@ -40,8 +52,8 @@ def write_metrics_report(event_log: pd.DataFrame, output: Union[ExperimentPaths,
     Metrics report successfully generated at: experiments/my_experiment/reports/metrics_report.json
 
     >>> # Using direct path:
-    >>> write_metrics_report(event_log, "analysis/custom_report.json")
-    Metrics report successfully generated at: analysis/custom_report.json
+    >>> write_metrics_report(event_log, "analysis")
+    Metrics report successfully generated at: analysis/metrics_report.json
     """
     event_log = event_log.copy()
 
@@ -52,11 +64,17 @@ def write_metrics_report(event_log: pd.DataFrame, output: Union[ExperimentPaths,
         "avg_graph_duration": get_avg_duration(event_log)
     }
 
-    # Determine output path
-    if isinstance(output, ExperimentPaths):
-        output_file = os.path.join(output.reports_dir, "metrics_report.json")
+    # Determine output directory
+    if isinstance(output_dir, ExperimentPaths):
+        report_dir = output_dir.reports_dir
     else:
-        output_file = output
+        report_dir = output_dir
+
+    # Ensure the directory exists
+    _validate_directory(report_dir)
+
+    # Create the full file path
+    output_file = os.path.join(report_dir, "metrics_report.json")
 
     # Convert all keys to serializable types
     structured_data = _convert_keys_to_serializable(structured_data)
@@ -67,7 +85,8 @@ def write_metrics_report(event_log: pd.DataFrame, output: Union[ExperimentPaths,
 
     print(f"Metrics report successfully generated at: {output_file}")
 
-def write_sequences_report(event_log: pd.DataFrame, output: Union[ExperimentPaths, str]) -> None:
+
+def write_sequences_report(event_log: pd.DataFrame, output_dir: Union[ExperimentPaths, str]) -> None:
     """
     Generate and save a comprehensive sequences report in JSON format.
 
@@ -78,8 +97,8 @@ def write_sequences_report(event_log: pd.DataFrame, output: Union[ExperimentPath
 
     :param event_log: Event log data containing process execution information
     :type event_log: pd.DataFrame
-    :param output: ExperimentPaths instance or path to save the JSON report
-    :type output: Union[ExperimentPaths, str]
+    :param output_dir: ExperimentPaths instance or directory path where the report will be saved
+    :type output_dir: Union[ExperimentPaths, str]
 
     **Examples:**
 
@@ -89,8 +108,8 @@ def write_sequences_report(event_log: pd.DataFrame, output: Union[ExperimentPath
     Sequences report successfully generated at: experiments/my_experiment/reports/sequences_report.json
 
     >>> # Using direct path:
-    >>> write_sequences_report(event_log, "analysis/custom_report.json")
-    Sequences report successfully generated at: analysis/custom_report.json
+    >>> write_sequences_report(event_log, "analysis")
+    Sequences report successfully generated at: analysis/sequences_report.json
     """
     event_log = event_log.copy()
 
@@ -100,11 +119,17 @@ def write_sequences_report(event_log: pd.DataFrame, output: Union[ExperimentPath
         "sequence_probabilities": get_sequence_probs(event_log),
     }
 
-    # Determine output path
-    if isinstance(output, ExperimentPaths):
-        output_file = os.path.join(output.reports_dir, "sequences_report.json")
+    # Determine output directory
+    if isinstance(output_dir, ExperimentPaths):
+        report_dir = output_dir.reports_dir
     else:
-        output_file = output
+        report_dir = output_dir
+
+    # Ensure the directory exists
+    _validate_directory(report_dir)
+
+    # Create the full file path
+    output_file = os.path.join(report_dir, "sequences_report.json")
 
     # Convert all keys to serializable types
     structured_data = _convert_keys_to_serializable(structured_data)
@@ -115,7 +140,8 @@ def write_sequences_report(event_log: pd.DataFrame, output: Union[ExperimentPath
 
     print(f"Sequences report successfully generated at: {output_file}")
 
-def generate_reports(event_log: pd.DataFrame, output: Union[ExperimentPaths, str]) -> None:
+
+def generate_reports(event_log: pd.DataFrame, output_dir: Union[ExperimentPaths, str]) -> None:
     """
     Generate and save all analysis reports in JSON format.
 
@@ -130,8 +156,8 @@ def generate_reports(event_log: pd.DataFrame, output: Union[ExperimentPaths, str
 
     :param event_log: Event log data containing process execution information
     :type event_log: pd.DataFrame
-    :param output: ExperimentPaths instance or path to save the JSON reports
-    :type output: Union[ExperimentPaths, str]
+    :param output_dir: ExperimentPaths instance or directory path where the reports will be saved
+    :type output_dir: Union[ExperimentPaths, str]
 
     **Examples:**
 
@@ -148,7 +174,6 @@ def generate_reports(event_log: pd.DataFrame, output: Union[ExperimentPaths, str
     Sequences report successfully generated at: analysis/sequences_report.json
     All reports successfully generated.
     """
-
-    write_metrics_report(event_log, output)
-    write_sequences_report(event_log, output)
+    write_metrics_report(event_log, output_dir)
+    write_sequences_report(event_log, output_dir)
     print("All reports successfully generated.")

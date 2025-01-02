@@ -61,7 +61,10 @@ __all__ = [
     "SubgraphConfig", "SupervisorConfig", "GraphConfig",
 
     #Classes - experiment
-    "ExperimentPaths"
+    "ExperimentPaths",
+
+    # Classes - create_html
+    "InfrastructureDirs"
 ]
 
 from . import load_events

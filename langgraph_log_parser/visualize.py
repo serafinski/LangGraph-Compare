@@ -6,14 +6,28 @@ from langgraph.graph.state import CompiledStateGraph
 from .analyze import get_mean_act_times
 from .experiment import ExperimentPaths
 
-def generate_mermaid(graph: CompiledStateGraph, output: Union[ExperimentPaths, str]) -> None:
+
+def _validate_directory(directory_path: str) -> None:
+    """
+    Validate that the specified directory exists.
+
+    :param directory_path: Path to the directory
+    :type directory_path: str
+    :raises FileNotFoundError: If the directory does not exist
+    """
+    if not os.path.exists(directory_path):
+        raise FileNotFoundError(f"Directory does not exist: {directory_path}")
+
+
+def generate_mermaid(graph: CompiledStateGraph, output_dir: Union[ExperimentPaths, str]) -> None:
     """
     Generate and save a mermaid graph visualization.
 
     :param graph: Compiled state graph
     :type graph: CompiledStateGraph
-    :param output: ExperimentPaths instance or path to save the visualization
-    :type output: Union[ExperimentPaths, str]
+    :param output_dir: ExperimentPaths instance or directory path where visualization will be saved
+    :type output_dir: Union[ExperimentPaths, str]
+    :raises FileNotFoundError: If the output directory does not exist
 
     **Examples:**
 
@@ -23,13 +37,18 @@ def generate_mermaid(graph: CompiledStateGraph, output: Union[ExperimentPaths, s
     Mermaid saved as: experiments/my_experiment/img/mermaid.png
 
     >>> # Using direct path:
-    >>> generate_mermaid(graph, "output/mermaid.png")
-    Mermaid saved as: output/mermaid.png
+    >>> generate_mermaid(graph, "output/visualizations")  # Directory must exist
+    Mermaid saved as: output/visualizations/mermaid.png
     """
-    if isinstance(output, ExperimentPaths):
-        output_path = os.path.join(output.img_dir, 'mermaid.png')
+    if isinstance(output_dir, ExperimentPaths):
+        img_dir = output_dir.img_dir
     else:
-        output_path = output
+        img_dir = output_dir
+
+    _validate_directory(img_dir)
+
+    # Create the full file path
+    output_path = os.path.join(img_dir, 'mermaid.png')
 
     with open(output_path, 'wb') as file:
         file.write(graph.get_graph().draw_mermaid_png())
@@ -37,14 +56,15 @@ def generate_mermaid(graph: CompiledStateGraph, output: Union[ExperimentPaths, s
     print("Mermaid saved as:", output_path)
 
 
-def generate_prefix_tree(event_log: pd.DataFrame, output: Union[ExperimentPaths, str]) -> None:
+def generate_prefix_tree(event_log: pd.DataFrame, output_dir: Union[ExperimentPaths, str]) -> None:
     """
     Generate and save a prefix tree visualization.
 
     :param event_log: Event log data
     :type event_log: pd.DataFrame
-    :param output: ExperimentPaths instance or path to save the visualization
-    :type output: Union[ExperimentPaths, str]
+    :param output_dir: ExperimentPaths instance or directory path where visualization will be saved
+    :type output_dir: Union[ExperimentPaths, str]
+    :raises FileNotFoundError: If the output directory does not exist
 
     **Examples:**
 
@@ -54,37 +74,36 @@ def generate_prefix_tree(event_log: pd.DataFrame, output: Union[ExperimentPaths,
     Prefix Tree saved as: experiments/my_experiment/img/prefix_tree.png
 
     >>> # Using direct path:
-    >>> generate_prefix_tree(event_log, "output/prefix_tree.png")
-    Prefix Tree saved as: output/prefix_tree.png
+    >>> generate_prefix_tree(event_log, "output/visualizations")  # Directory must exist
+    Prefix Tree saved as: output/visualizations/prefix_tree.png
     """
-    if isinstance(output, ExperimentPaths):
-        output_path = os.path.join(output.img_dir, 'prefix_tree.png')
+    if isinstance(output_dir, ExperimentPaths):
+        img_dir = output_dir.img_dir
     else:
-        output_path = output
+        img_dir = output_dir
 
-    # Jeżeli użytkownik nie podał ścieżki
-    output_dir = os.path.dirname(output_path)
-    if output_dir and not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    _validate_directory(img_dir)
+    output_path = os.path.join(img_dir, 'prefix_tree.png')
 
-    # Wygeneruj prefix tree
+    # Generate prefix tree
     prefix_tree = pm4py.discover_prefix_tree(
         event_log, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp'
     )
 
-    # Zapisz wizualizacje prefix tree
+    # Save prefix tree visualization
     pm4py.save_vis_prefix_tree(prefix_tree, output_path)
     print("Prefix Tree saved as:", output_path)
 
 
-def generate_performance_dfg(event_log: pd.DataFrame, output: Union[ExperimentPaths, str]) -> None:
+def generate_performance_dfg(event_log: pd.DataFrame, output_dir: Union[ExperimentPaths, str]) -> None:
     """
     Generate and save a visualization of directly-follows graph annotated with performance.
 
     :param event_log: Event log data
     :type event_log: pd.DataFrame
-    :param output: ExperimentPaths instance or path to save the visualization
-    :type output: Union[ExperimentPaths, str]
+    :param output_dir: ExperimentPaths instance or directory path where visualization will be saved
+    :type output_dir: Union[ExperimentPaths, str]
+    :raises FileNotFoundError: If the output directory does not exist
 
     **Examples:**
 
@@ -94,26 +113,25 @@ def generate_performance_dfg(event_log: pd.DataFrame, output: Union[ExperimentPa
     Performance DFG saved as: experiments/my_experiment/img/dfg_performance.png
 
     >>> # Using direct path:
-    >>> generate_performance_dfg(event_log, "output/dfg_performance.png")
-    Performance DFG saved as: output/dfg_performance.png
+    >>> generate_performance_dfg(event_log, "output/visualizations")  # Directory must exist
+    Performance DFG saved as: output/visualizations/dfg_performance.png
     """
-
-    if isinstance(output, ExperimentPaths):
-        output_path = os.path.join(output.img_dir, 'dfg_performance.png')
+    if isinstance(output_dir, ExperimentPaths):
+        img_dir = output_dir.img_dir
     else:
-        output_path = output
+        img_dir = output_dir
 
-    # Jeżeli użytkownik nie podał ścieżki
-    output_dir = os.path.dirname(output_path)
-    if output_dir and not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    _validate_directory(img_dir)
+    output_path = os.path.join(img_dir, 'dfg_performance.png')
 
     dfg, start_activities, end_activities = pm4py.discover_dfg(event_log)
-    pm4py.save_vis_performance_dfg(dfg,start_activities, end_activities, output_path,serv_time=get_mean_act_times(event_log))
+    pm4py.save_vis_performance_dfg(dfg, start_activities, end_activities, output_path,
+                                   serv_time=get_mean_act_times(event_log))
     print("Performance DFG saved as:", output_path)
 
 
-def generate_visualizations(event_log: pd.DataFrame, graph: CompiledStateGraph, output: Union[ExperimentPaths, str]) -> None:
+def generate_visualizations(event_log: pd.DataFrame, graph: CompiledStateGraph,
+                            output_dir: Union[ExperimentPaths, str]) -> None:
     """
     Generate and save all process visualizations.
 
@@ -121,8 +139,9 @@ def generate_visualizations(event_log: pd.DataFrame, graph: CompiledStateGraph, 
     :type event_log: pd.DataFrame
     :param graph: Compiled state graph
     :type graph: CompiledStateGraph
-    :param output: ExperimentPaths instance or directory to save visualizations
-    :type output: Union[ExperimentPaths, str]
+    :param output_dir: ExperimentPaths instance or directory path where visualizations will be saved
+    :type output_dir: Union[ExperimentPaths, str]
+    :raises FileNotFoundError: If the output directory does not exist
 
     **Examples:**
 
@@ -136,33 +155,17 @@ def generate_visualizations(event_log: pd.DataFrame, graph: CompiledStateGraph, 
     All visualizations generated successfully!
 
     >>> # Using direct path:
-    >>> generate_visualizations(event_log, graph, "output/visualizations")
+    >>> generate_visualizations(event_log, graph, "output/visualizations")  # Directory must exist
     Generating all visualizations...
     Mermaid saved as: output/visualizations/mermaid.png
     Prefix Tree saved as: output/visualizations/prefix_tree.png
     Performance DFG saved as: output/visualizations/dfg_performance.png
     All visualizations generated successfully!
     """
-
     print("Generating all visualizations...")
 
-    if isinstance(output, ExperimentPaths):
-        output_dir = output.img_dir
-    else:
-        output_dir = output
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-
-    # Generate mermaid diagram
-    mermaid_path = os.path.join(output_dir, 'mermaid.png')
-    generate_mermaid(graph, mermaid_path)
-
-    # Generate prefix tree
-    tree_path = os.path.join(output_dir, 'prefix_tree.png')
-    generate_prefix_tree(event_log, tree_path)
-
-    # Generate performance DFG
-    dfg_path = os.path.join(output_dir, 'dfg_performance.png')
-    generate_performance_dfg(event_log, dfg_path)
+    generate_mermaid(graph, output_dir)
+    generate_prefix_tree(event_log, output_dir)
+    generate_performance_dfg(event_log, output_dir)
 
     print("All visualizations generated successfully!")
