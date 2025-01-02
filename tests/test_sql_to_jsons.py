@@ -31,12 +31,19 @@ def test_export_sqlite_to_jsons(sample_db_path, log_file_paths, tmp_path):
         f"Expected {len(log_file_paths)} files, but got {len(created_files)}"
 
     # Compare content of each file
-    for ref_path, created_path in zip(log_file_paths, created_files):
+    for ref_path, created_path in zip(sorted(log_file_paths), created_files):
         # Load and parse both files
         with open(ref_path, 'r') as f:
             expected_content = json.load(f)
         with open(created_path, 'r') as f:
             actual_content = json.load(f)
 
-        # Compare the JSON content
-        assert expected_content == actual_content, f"Content mismatch between {ref_path} and {created_path}"
+        # Compare each record
+        assert len(actual_content) == len(expected_content), \
+            f"Number of records mismatch in {created_path}"
+
+        for actual_record, expected_record in zip(actual_content, expected_content):
+            # Compare each key separately for better error messages
+            for key in ['thread_ID', 'checkpoint', 'metadata']:
+                assert actual_record[key] == expected_record[key], \
+                    f"Mismatch in {key} for {created_path}"

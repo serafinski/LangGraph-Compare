@@ -31,7 +31,7 @@ def log_file_paths():
     :return: List of paths to the test JSON files
     :rtype: List[str]
     """
-    json_pattern = "tests/files/jsons/thread_*.json"
+    json_pattern = "tests/files/json/thread_*.json"
     return sorted(glob.glob(json_pattern))
 
 
@@ -43,7 +43,7 @@ def sample_db_path():
     :return: Path to the test database file
     :rtype: str
     """
-    return "tests/files/db/hierarchical.sqlite"
+    return "tests/files/db/files.sqlite"
 
 
 @pytest.fixture

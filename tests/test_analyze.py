@@ -269,7 +269,7 @@ def test_get_global_act_reworks(sample_event_log):
     assert all(count >= 0 for count in result.values()), "All global rework counts should be non-negative"
     # Check essential activities are present
     expected_activities = ['__start__', 'test_supervisor', 'rg_supervisor',
-                           'ag_supervisor', 'NoteTaker', 'ChartGenerator', 'DocWriter']
+                           'ag_supervisor', 'DocWriter', 'NoteTaker']
     for activity in expected_activities:
         assert activity in result, f"Missing activity '{activity}' in global reworks"
 
@@ -290,7 +290,7 @@ def test_print_global_act_reworks(sample_event_log, capsys):
 
     # Verify activities are present in output
     expected_activities = ['__start__', 'test_supervisor', 'rg_supervisor',
-                         'ag_supervisor', 'NoteTaker', 'ChartGenerator', 'DocWriter']
+                         'ag_supervisor', 'DocWriter','NoteTaker']
     for activity in expected_activities:
         assert activity in captured.out, f"print_global_act_reworks output missing activity '{activity}'"
 

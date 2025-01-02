@@ -1,34 +1,33 @@
 {
     "activities_count": {
-        "ag_supervisor": 24,
-        "__start__": 14,
-        "test_supervisor": 14,
-        "rg_supervisor": 12,
-        "DocWriter": 7,
-        "NoteTaker": 6,
-        "ChartGenerator": 6,
+        "ag_supervisor": 15,
+        "__start__": 13,
+        "test_supervisor": 13,
+        "rg_supervisor": 9,
+        "NoteTaker": 4,
+        "DocWriter": 4,
         "Search": 3,
-        "WebScraper": 3
+        "WebScraper": 2,
+        "ChartGenerator": 1
     },
     "rework_counts": {
-        "__start__": 11,
-        "test_supervisor": 11,
-        "rg_supervisor": 9,
-        "ag_supervisor": 21,
-        "NoteTaker": 3,
-        "ChartGenerator": 3,
-        "DocWriter": 4
+        "__start__": 10,
+        "test_supervisor": 10,
+        "rg_supervisor": 6,
+        "ag_supervisor": 12,
+        "NoteTaker": 2,
+        "DocWriter": 1
     },
     "activities_mean_service_time": {
-        "ChartGenerator": 0.5413366666666667,
-        "DocWriter": 0.5227941428571429,
-        "NoteTaker": 0.606278,
-        "Search": 1.5871443333333335,
-        "WebScraper": 0.5251283333333333,
-        "__start__": 0.2882565714285715,
-        "ag_supervisor": 0.004749291666666666,
-        "rg_supervisor": 0.7590284166666666,
-        "test_supervisor": 0.0034047857142857144
+        "ChartGenerator": 0.42780399999999996,
+        "DocWriter": 0.9102392499999999,
+        "NoteTaker": 0.53207425,
+        "Search": 0.5138866666666666,
+        "WebScraper": 0.512594,
+        "__start__": 0.16230538461538463,
+        "ag_supervisor": 0.005092466666666667,
+        "rg_supervisor": 0.0032121111111111113,
+        "test_supervisor": 0.034385846153846156
     },
-    "avg_graph_duration": 45.27
+    "avg_graph_duration": 35.18
 }
