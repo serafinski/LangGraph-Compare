@@ -12,7 +12,7 @@ def prepare_data(
     source: Union[ExperimentPaths, str],
     graph_config: GraphConfig,
     output_folder: Optional[str] = None,
-    csv_path: Optional[str] = None
+    output_csv_dir: Optional[str] = None
 ) -> None:
     """
     Complete pipeline to export data from SQLite to CSV via JSON intermediary.
@@ -24,8 +24,8 @@ def prepare_data(
     :type graph_config: GraphConfig
     :param output_folder: Path to the output folder for JSON files (required if source is a str)
     :type output_folder: Optional[str]
-    :param csv_path: Path for the output CSV file (required if source is a str)
-    :type csv_path: Optional[str]
+    :param output_csv_dir: Directory where csv_output.csv will be saved (required if source is a str)
+    :type output_csv_dir: Optional[str]
 
     **Examples:**
 
@@ -61,7 +61,7 @@ def prepare_data(
     # If using ExperimentPaths, we pass the same source
     # If using direct paths, we need to pass the JSON output directory as source
     json_source = source if isinstance(source, ExperimentPaths) else output_folder
-    export_jsons_to_csv(json_source, graph_config, csv_path)
+    export_jsons_to_csv(json_source, graph_config, output_csv_dir)
 
 def generate_artifacts(
     event_log: pd.DataFrame,

@@ -177,34 +177,64 @@ def _get_subgraph_context(json_entry: Dict, config: Dict[str, Any], has_subgraph
     return None
 
 
-def _find_end_timestamp(json_data: List[Dict], start_index: int, case_id: Any) -> Optional[Any]:
+def _is_valid_activity(activity: str, config: Dict[str, Any]) -> bool:
     """
-    Look ahead in the JSON entries to find the next timestamp for the same case_id.
+    Check if an activity should be included in the CSV output.
 
-    :param json_data: List of all JSON entries.
-    :type json_data: List[Dict]
-    :param start_index: Current index in the JSON data.
-    :type start_index: int
-    :param case_id: The thread_ID/case_id we are processing.
-    :type case_id: Any
-
-    :return: The next timestamp or None if not found.
-    :rtype: Optional[Any]
+    :param activity: Name of the activity
+    :param config: Precomputed configuration mappings
+    :return: True if the activity should be included
     """
+    return (
+            activity == '__start__' or
+            _is_graph_supervisor(activity, config) or
+            activity in config['subgraph_supervisors'] or
+            activity in config['valid_nodes']
+    )
+
+
+def _find_end_timestamp(json_data: List[Dict], start_index: int, case_id: Any, config: Dict[str, Any]) -> Optional[Any]:
+    """
+    Look ahead in the JSON entries to find the next timestamp for the same case_id,
+    but only from activities that will be saved to the CSV.
+
+    :param json_data: List of all JSON entries
+    :param start_index: Current index in the JSON data
+    :param case_id: The thread_ID/case_id we are processing
+    :param config: Precomputed configuration mappings
+    :return: The next valid timestamp or None if not found
+    """
+    # Look ahead for the next timestamp
     for j in range(start_index + 1, len(json_data)):
+        # Get the next JSON entry
         next_json = json_data[j]
-        if next_json.get('thread_ID') == case_id and next_json.get('metadata', {}).get('writes'):
-            # If the next JSON entry has writes, we can use its timestamp as end_timestamp
+        # Check same thread_ID
+        if next_json.get('thread_ID') != case_id:
+            continue
+
+        # Get writes from metadata
+        writes = next_json.get('metadata', {}).get('writes', {})
+        if not writes:
+            continue
+
+        # Find the next activity (first key that isn't 'messages')
+        next_activity = next((key for key in writes.keys() if key != 'messages'), None)
+        if not next_activity:
+            continue
+
+        # Only use timestamp if the activity would be saved to CSV
+        if _is_valid_activity(next_activity, config):
             return next_json['checkpoint'].get('ts')
+
     return None
 
 
 def _insert_subgraph_start_if_needed(
-    json_data: List[Dict],
-    current_index: int,
-    case_id: Any,
-    entries_to_write: List[Dict[str, Any]],
-    config: Dict[str, Any]
+        json_data: List[Dict],
+        current_index: int,
+        case_id: Any,
+        entries_to_write: List[Dict[str, Any]],
+        config: Dict[str, Any]
 ) -> None:
     """
     Look ahead for a subgraph supervisor activity when we're currently on a graph supervisor
@@ -255,14 +285,14 @@ def _insert_subgraph_start_if_needed(
 
 
 def _handle_subgraph_mode(
-    activity: str,
-    visited_global_start: bool,
-    i: int,
-    json_data: List[Dict],
-    case_id: Any,
-    config: Dict[str, Any],
-    context: Optional[str],
-    entries_to_write: List[Dict[str, Any]]
+        activity: str,
+        visited_global_start: bool,
+        i: int,
+        json_data: List[Dict],
+        case_id: Any,
+        config: Dict[str, Any],
+        context: Optional[str],
+        entries_to_write: List[Dict[str, Any]]
 ) -> Tuple[bool, Optional[str], bool]:
     """
     Handle the processing logic for subgraph mode.
@@ -320,10 +350,10 @@ def _handle_subgraph_mode(
 
 
 def _handle_non_subgraph_mode(
-    activity: str,
-    visited_global_start: bool,
-    has_supervisors: bool,
-    config: Dict[str, Any]
+        activity: str,
+        visited_global_start: bool,
+        has_supervisors: bool,
+        config: Dict[str, Any]
 ) -> Tuple[bool, Optional[str], bool]:
     """
     Handle the processing logic for non-subgraph mode.
@@ -384,10 +414,11 @@ def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, confi
     has_supervisors = bool(graph_config.supervisors)
     # Have we visited global __start__ activity?
     visited_global_start = False
-    # For collecting entries to write to CSV
-    entries_to_write = []
 
-    ### ACTUAL PROCESSING OF JSON DATA ###
+    # First collect all valid entries organized by case_id
+    entries_by_case = {}
+
+    # First pass to collect valid activities
     for i, json_entry in enumerate(json_data):
         # Extract thread_ID from JSON entry
         case_id = json_entry.get('thread_ID')
@@ -405,26 +436,19 @@ def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, confi
         # Look for the first key in writes that isn't 'messages'
         # This is the activity name
         activity = next((key for key in writes.keys() if key != 'messages'), None)
-        if not activity:
+
+        # Skip if no activity or not a valid activity
+        if not activity or not _is_valid_activity(activity, config):
             continue
 
-        # Skip activities that aren't:
-        # - __start__ (global start)
-        # - in graph_supervisors map
-        # - in subgraph_supervisors map
-        # - in valid_nodes set
-        if (
-            activity != '__start__'
-            and not _is_graph_supervisor(activity, config)
-            and activity not in config['subgraph_supervisors']
-            and activity not in config['valid_nodes']
-        ):
-            continue
+        # If we haven't seen this case_id before, create an empty list
+        if case_id not in entries_by_case:
+            entries_by_case[case_id] = []
 
-        # Get subgraph context (if applicable)
-        context = _get_subgraph_context(json_entry, config, has_subgraphs)
+        # Get the subgraph context if applicable
+        context = _get_subgraph_context(json_entry, config, has_subgraphs) if has_subgraphs else None
 
-        # Process according to subgraph mode or non-subgraph mode
+        # Determine if we should write this entry and get its org_resource
         if has_subgraphs:
             should_write, org_resource, visited_global_start = _handle_subgraph_mode(
                 activity=activity,
@@ -434,7 +458,8 @@ def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, confi
                 case_id=case_id,
                 config=config,
                 context=context,
-                entries_to_write=entries_to_write
+                # Empty list since we're not using it here
+                entries_to_write=[]
             )
         else:
             should_write, org_resource, visited_global_start = _handle_non_subgraph_mode(
@@ -446,34 +471,64 @@ def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, confi
 
         # If the activity should be written, compute end_timestamp
         if should_write:
-            end_timestamp = _find_end_timestamp(json_data, i, case_id)
-            # If end_timestamp is not found, use the current timestamp
-            if end_timestamp is None:
-                end_timestamp = timestamp
-
-            entries_to_write.append({
+            entries_by_case[case_id].append({
                 'case_id': case_id,
                 'timestamp': timestamp,
-                'end_timestamp': end_timestamp,
-                'cost': 0,
                 'activity': activity,
-                'org:resource': org_resource
+                'org:resource': org_resource,
+                'index': i
             })
 
-    return entries_to_write
+    # Now process the collected entries and set end_timestamps
+    final_entries = []
+    for case_id, entries in entries_by_case.items():
+        # Sort entries by timestamp
+        entries.sort(key=lambda x: x['timestamp'])
 
+        # Process entries for this case
+        for i, entry in enumerate(entries):
+            if i < len(entries) - 1:
+                # If not the last entry, end_timestamp is the next entry's timestamp
+                end_timestamp = entries[i + 1]['timestamp']
+            else:
+                # If last entry, end_timestamp is its own timestamp
+                end_timestamp = entry['timestamp']
 
-def export_jsons_to_csv(source: Union[ExperimentPaths, str], graph_config: GraphConfig, csv_path: Optional[str] = None) -> None:
+            final_entries.append({
+                'case_id': entry['case_id'],
+                'timestamp': entry['timestamp'],
+                'end_timestamp': end_timestamp,
+                'cost': 0,
+                'activity': entry['activity'],
+                'org:resource': entry['org:resource']
+            })
+
+    return final_entries
+
+def _validate_directory(directory_path: str) -> None:
     """
-    Process all JSON files and export them to a CSV file.
+    Validate that the specified directory exists.
+
+    :param directory_path: Path to the directory
+    :type directory_path: str
+    :raises FileNotFoundError: If the directory does not exist
+    """
+    if not os.path.exists(directory_path):
+        raise FileNotFoundError(f"Directory does not exist: {directory_path}")
+
+
+def export_jsons_to_csv(source: Union[ExperimentPaths, str], graph_config: GraphConfig,
+                        output_dir: Optional[str] = None) -> None:
+    """
+    Process all JSON files and export them to csv_output.csv in the specified directory.
     Can use either an ExperimentPaths instance or explicit paths.
 
     :param source: Either an ExperimentPaths instance or a path to the JSON directory
     :type source: Union[ExperimentPaths, str]
     :param graph_config: The graph configuration object
     :type graph_config: GraphConfig
-    :param csv_path: Path for the output CSV file (required if source is a str)
-    :type csv_path: Optional[str]
+    :param output_dir: Directory where csv_output.csv will be saved (required if source is a str)
+    :type output_dir: Optional[str]
 
     **Examples:**
 
@@ -487,11 +542,11 @@ def export_jsons_to_csv(source: Union[ExperimentPaths, str], graph_config: Graph
     Successfully exported combined data to: experiments/my_experiment/csv/csv_output.csv
 
     >>> # Using direct paths:
-    >>> export_jsons_to_csv("path/to/jsons", graph_config, "path/to/output.csv")
+    >>> export_jsons_to_csv("path/to/jsons", graph_config, "path/to/output_directory")
     Processed: path/to/jsons/thread_1.json
     Processed: path/to/jsons/thread_2.json
     Processed: path/to/jsons/thread_3.json
-    Successfully exported combined data to: path/to/output.csv
+    Successfully exported combined data to: path/to/output_directory/csv_output.csv
     """
 
     csv_fields = ['case_id', 'timestamp', 'end_timestamp', 'cost', 'activity', 'org:resource']
@@ -501,10 +556,15 @@ def export_jsons_to_csv(source: Union[ExperimentPaths, str], graph_config: Graph
         json_dir = source.json_dir
         output_path = source.get_csv_path()
     else:
-        if csv_path is None:
-            raise ValueError("csv_path must be provided when using a JSON directory path directly")
+        if output_dir is None:
+            raise ValueError("output_dir must be provided when using a JSON directory path directly")
+
+        # Validate that both directories exist
+        _validate_directory(source)  # Validate JSON directory
+        _validate_directory(output_dir)  # Validate output directory
+
         json_dir = source
-        output_path = csv_path
+        output_path = os.path.join(output_dir, 'csv_output.csv')
 
     # Build configuration mappings
     config = _build_config_mappings(graph_config)
