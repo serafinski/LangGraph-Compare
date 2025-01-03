@@ -418,7 +418,7 @@ def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, confi
     # First collect all valid entries organized by case_id
     entries_by_case = {}
 
-    # First pass to collect valid activities and insert subgraph starts
+    # First pass to collect valid activities
     for i, json_entry in enumerate(json_data):
         # Extract thread_ID from JSON entry
         case_id = json_entry.get('thread_ID')
@@ -469,37 +469,43 @@ def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, confi
 
         # If the activity should be written, compute end_timestamp
         if should_write:
-            current_entry = {
+            entries_by_case[case_id].append({
                 'case_id': case_id,
                 'timestamp': timestamp,
                 'activity': activity,
                 'org:resource': org_resource,
-            }
+            })
 
-            # If this is a subgraph supervisor, insert a __start__ entry right before it
-            if activity in config['subgraph_supervisors']:
-                subgraph_name = config['subgraph_supervisors'][activity]
-                start_entry = {
-                    'case_id': case_id,
-                    'timestamp': timestamp,
-                    'activity': '__start__',
-                    'org:resource': subgraph_name,
-                }
-                entries_by_case[case_id].append(start_entry)
-
-            entries_by_case[case_id].append(current_entry)
-
-    # Now process the collected entries and set end_timestamps
+    # Now process the collected entries, add subgraph __start__ entries where needed, and set end_timestamps
     final_entries = []
     for case_id, entries in entries_by_case.items():
         # Sort entries by timestamp
         entries.sort(key=lambda x: x['timestamp'])
+        processed_entries = []
 
-        # Process entries for this case
+        # Process entries and add __start__ entries where needed
         for i, entry in enumerate(entries):
-            if i < len(entries) - 1:
+            current_activity = entry['activity']
+
+            # If this is a subgraph supervisor and the previous activity was a global supervisor
+            # (or we're just starting), add a __start__ entry
+            if (current_activity in config['subgraph_supervisors'] and
+                    (i == 0 or _is_graph_supervisor(entries[i - 1]['activity'], config))):
+                subgraph_name = config['subgraph_supervisors'][current_activity]
+                processed_entries.append({
+                    'case_id': case_id,
+                    'timestamp': entry['timestamp'],
+                    'activity': '__start__',
+                    'org:resource': subgraph_name,
+                })
+
+            processed_entries.append(entry)
+
+        # Set end_timestamps
+        for i, entry in enumerate(processed_entries):
+            if i < len(processed_entries) - 1:
                 # If not the last entry, end_timestamp is the next entry's timestamp
-                end_timestamp = entries[i + 1]['timestamp']
+                end_timestamp = processed_entries[i + 1]['timestamp']
             else:
                 # If last entry, end_timestamp is its own timestamp
                 end_timestamp = entry['timestamp']
