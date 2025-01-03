@@ -524,7 +524,7 @@ def print_mean_act_times(event_log: pd.DataFrame) -> None:
     mean_serv_time = get_mean_act_times(event_log)
     print("Mean duration of every activity:")
     for activity, time in mean_serv_time.items():
-        print(f"Activity '{activity}': {round(time,3)} s")
+        print(f"Activity '{activity}': {round(time,5)} s")
 
 
 #30
@@ -580,7 +580,7 @@ def print_durations(event_log: pd.DataFrame) -> None:
     print("Duration of the case:")
 
     for case_id, duration in case_durations.items():
-        print(f"Case ID {case_id}: {round(duration,3)} s")
+        print(f"Case ID {case_id}: {round(duration,5)} s")
 
 
 def get_avg_duration(event_log: pd.DataFrame) -> float:
@@ -600,8 +600,7 @@ def get_avg_duration(event_log: pd.DataFrame) -> float:
     """
     duration = pm4py.get_all_case_durations(event_log)
     avg = (sum(duration) / len(duration))
-    rounded_avg = round(avg, 2)
-    return rounded_avg
+    return avg
 
 
 def print_avg_duration(event_log: pd.DataFrame) -> None:
@@ -620,7 +619,7 @@ def print_avg_duration(event_log: pd.DataFrame) -> None:
     Average case duration: 91.56 s
     """
     duration = get_avg_duration(event_log)
-    print(f"Average case duration: {duration} s.")
+    print(f"Average case duration: {round(duration,5)} s.")
 
 
 def get_self_dist_witnesses(event_log: pd.DataFrame) -> dict[int, dict[str, list[list[str]]]]:
