@@ -27,8 +27,11 @@ def test_export_jsons_to_csv(log_file_paths, sample_event_log, tmp_path):
     """
     # Setup paths
     json_dir = str(tmp_path / "json_input")
+    # Directory for the CSV output
+    output_dir = str(tmp_path / "csv_output")
     os.makedirs(json_dir)
-    temp_csv = str(tmp_path / "output.csv")
+    # Create output directory
+    os.makedirs(output_dir)
 
     # Copy test JSON files to temporary directory
     for src_path in log_file_paths:
@@ -71,15 +74,18 @@ def test_export_jsons_to_csv(log_file_paths, sample_event_log, tmp_path):
     # Execute the function
     export_jsons_to_csv(
         source=json_dir,
-        csv_path=temp_csv,
-        graph_config=graph_config
+        graph_config=graph_config,
+        output_dir=output_dir
     )
 
+    # The output CSV will now be in the output directory with the name 'csv_output.csv'
+    generated_csv = os.path.join(output_dir, 'csv_output.csv')
+
     # Assert that the output file exists
-    assert os.path.exists(temp_csv), "Output CSV file was not created"
+    assert os.path.exists(generated_csv), "Output CSV file was not created"
 
     # Get the path to the expected CSV
     expected_csv = "tests/files/csv/csv_output.csv"
 
     # Compare with expected CSV
-    assert compare_csv_files(temp_csv, expected_csv), "Generated CSV does not match expected output"
+    assert compare_csv_files(generated_csv, expected_csv), "Generated CSV does not match expected output"

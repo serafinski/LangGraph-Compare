@@ -16,23 +16,29 @@ def test_prepare_data_with_paths(
         sample_db_path: str,
         log_file_paths: List[str],
         graph_config,
-        project_root: Path  # Add project_root fixture
+        # Add project_root fixture
+        project_root: Path
 ):
     """Test prepare_data using direct paths and verify output matches reference files"""
     # Set up output paths in temporary directory
     output_folder = setup_cleanup / "json_output"
-    output_folder.mkdir(parents=True, exist_ok=True)  # Ensure directory exists
-    csv_path = setup_cleanup / "output.csv"
+    # Ensure directory exists
+    output_folder.mkdir(parents=True, exist_ok=True)
+
+    # Create directory for CSV output
+    csv_output_dir = setup_cleanup / "csv_output"
+    csv_output_dir.mkdir(parents=True, exist_ok=True)
 
     # Get absolute path to the database
     db_path = project_root / sample_db_path
 
-    # Run prepare_data
+    # Run prepare_data with updated parameters
     prepare_data(
-        str(db_path),  # Convert Path to string
+        # Convert Path to string
+        str(db_path),
         graph_config,
         output_folder=str(output_folder),
-        csv_path=str(csv_path)
+        output_csv_dir=str(csv_output_dir)
     )
 
     # Compare generated JSON files with reference files
@@ -46,8 +52,9 @@ def test_prepare_data_with_paths(
             assert gen_json == ref_json, f"Generated JSON {gen_path} doesn't match reference {ref_path}"
 
     # Compare generated CSV with reference
+    generated_csv = csv_output_dir / "csv_output.csv"
     ref_csv_path = project_root / "tests/files/csv/csv_output.csv"
-    assert filecmp.cmp(csv_path, ref_csv_path, shallow=False), "Generated CSV doesn't match reference"
+    assert filecmp.cmp(generated_csv, ref_csv_path, shallow=False), "Generated CSV doesn't match reference"
 
 
 class State(TypedDict):
