@@ -418,7 +418,7 @@ def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, confi
     # First collect all valid entries organized by case_id
     entries_by_case = {}
 
-    # First pass to collect valid activities
+    # First pass to collect valid activities and insert subgraph starts
     for i, json_entry in enumerate(json_data):
         # Extract thread_ID from JSON entry
         case_id = json_entry.get('thread_ID')
@@ -436,9 +436,7 @@ def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, confi
         # Look for the first key in writes that isn't 'messages'
         # This is the activity name
         activity = next((key for key in writes.keys() if key != 'messages'), None)
-
-        # Skip if no activity or not a valid activity
-        if not activity or not _is_valid_activity(activity, config):
+        if not activity:
             continue
 
         # If we haven't seen this case_id before, create an empty list
@@ -458,7 +456,7 @@ def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, confi
                 case_id=case_id,
                 config=config,
                 context=context,
-                # Empty list since we're not using it here
+                # We'll handle __start__ entries separately
                 entries_to_write=[]
             )
         else:
@@ -471,13 +469,25 @@ def _process_single_json(json_data: List[Dict], graph_config: GraphConfig, confi
 
         # If the activity should be written, compute end_timestamp
         if should_write:
-            entries_by_case[case_id].append({
+            current_entry = {
                 'case_id': case_id,
                 'timestamp': timestamp,
                 'activity': activity,
                 'org:resource': org_resource,
-                'index': i
-            })
+            }
+
+            # If this is a subgraph supervisor, insert a __start__ entry right before it
+            if activity in config['subgraph_supervisors']:
+                subgraph_name = config['subgraph_supervisors'][activity]
+                start_entry = {
+                    'case_id': case_id,
+                    'timestamp': timestamp,
+                    'activity': '__start__',
+                    'org:resource': subgraph_name,
+                }
+                entries_by_case[case_id].append(start_entry)
+
+            entries_by_case[case_id].append(current_entry)
 
     # Now process the collected entries and set end_timestamps
     final_entries = []
