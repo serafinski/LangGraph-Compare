@@ -23,7 +23,7 @@ Multi-Agent Network
 *******************
 This example is based on `Agent Architectures - Multi-Agent Network <https://langchain-ai.github.io/langgraph/tutorials/multi_agent/multi-agent-collaboration/>`_ and expands on :ref:`exporting_jsons_to_csv` from :ref:`getting_started`.
 
-.. figure:: img/collaboration.png
+.. figure:: img/network.png
   :width: 800
 
   `Multi-Agent Network diagram - LangGraph Documentation <https://langchain-ai.github.io/langgraph/tutorials/multi_agent/multi-agent-collaboration/>`_
@@ -31,7 +31,7 @@ This example is based on `Agent Architectures - Multi-Agent Network <https://lan
 
 The premise of this example is to show that :code:`GraphConfig` can have multiple nodes.
 
-In case of this example - we will have 3 nodes - :code:`Researcher`, :code:`chart_generator` and :code:`call_tool`.
+In case of this example - we will have 2 nodes - :code:`researcher`, :code:`chart_generator`.
 
 **Example:**
 
@@ -46,7 +46,7 @@ In case of this example - we will have 3 nodes - :code:`Researcher`, :code:`char
 
     # We can add multiple nodes!
     graph_config = GraphConfig(
-        nodes=['Researcher','chart_generator', 'call_tool']
+        nodes=['researcher','chart_generator']
     )
 
     # You can provide You own file name as an optional attribute csv_path.
