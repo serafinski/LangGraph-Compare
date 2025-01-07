@@ -8,7 +8,7 @@
     <meta property="article:modified_time" content="2025-01-03T20:42:43+00:00" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Advanced Examples &mdash; LangGraph Log Parser 0.1.14 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
 
@@ -95,7 +95,7 @@
 <li><p><a class="reference external" href="https://langchain-ai.github.io/langgraph/tutorials/multi_agent/agent_supervisor/">Agent Architectures - Multi-Agent Supervisor</a></p></li>
 <li><p><a class="reference external" href="https://langchain-ai.github.io/langgraph/tutorials/multi_agent/hierarchical_agent_teams/">Agent Architectures - Hierarchical Agent Teams</a></p></li>
 </ul>
-<p>We are also not going to focus on a basic usage - the main focus is going to be on <code class="xref py py-class docutils literal notranslate"><span class="pre">langgraph_log_parser.jsons_to_csv.GraphConfig</span></code>.</p>
+<p>We are also not going to focus on a basic usage - the main focus is going to be on <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.jsons_to_csv.GraphConfig" title="langgraph_log_parser.jsons_to_csv.GraphConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">langgraph_log_parser.jsons_to_csv.GraphConfig</span></code></a>.</p>
 <p>If You want to check basic usage, refer to: <a class="reference internal" href="getting_started.html#getting-started"><span class="std std-ref">Getting Started</span></a>.</p>
 </section>
 <section id="multi-agent-network">
@@ -112,8 +112,8 @@
 <p>In case of this example - we will have 2 nodes - <code class="code docutils literal notranslate"><span class="pre">researcher</span></code>, <code class="code docutils literal notranslate"><span class="pre">chart_generator</span></code>.</p>
 <p><strong>Example:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
-<span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
-<span class="kn">from</span> <span class="nn">langgraph_log_parser.jsons_to_csv</span> <span class="kn">import</span> <span class="n">GraphConfig</span><span class="p">,</span> <span class="n">export_jsons_to_csv</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langgraph_log_parser.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_experiment</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langgraph_log_parser.jsons_to_csv</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphConfig</span><span class="p">,</span> <span class="n">export_jsons_to_csv</span>
 
 <span class="c1"># Init for experiment project structure</span>
 <span class="n">exp</span> <span class="o">=</span> <span class="n">create_experiment</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
@@ -139,11 +139,11 @@
 <p><span class="caption-text"><a class="reference external" href="https://langchain-ai.github.io/langgraph/tutorials/multi_agent/agent_supervisor/">Multi-Agent Supervisor diagram - LangGraph Documentation</a></span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p>In this example, we will introduce <code class="xref py py-class docutils literal notranslate"><span class="pre">langgraph_log_parser.jsons_to_csv.SupervisorConfig</span></code>. It will supervise the graph - working more or less work the same as <code class="code docutils literal notranslate"><span class="pre">GraphConfig</span></code>. The concept of supervisors will make more sense in <a class="reference internal" href="#hierarchical-agent-teams"><span class="std std-ref">Hierarchical Agent Teams</span></a>.</p>
+<p>In this example, we will introduce <a class="reference internal" href="langgraph_log_parser.html#langgraph_log_parser.jsons_to_csv.SupervisorConfig" title="langgraph_log_parser.jsons_to_csv.SupervisorConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">langgraph_log_parser.jsons_to_csv.SupervisorConfig</span></code></a>. It will supervise the graph - working more or less work the same as <code class="code docutils literal notranslate"><span class="pre">GraphConfig</span></code>. The concept of supervisors will make more sense in <a class="reference internal" href="#hierarchical-agent-teams"><span class="std std-ref">Hierarchical Agent Teams</span></a>.</p>
 <p><strong>Example:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
-<span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
-<span class="kn">from</span> <span class="nn">langgraph_log_parser.jsons_to_csv</span> <span class="kn">import</span> <span class="n">GraphConfig</span><span class="p">,</span> <span class="n">SupervisorConfig</span><span class="p">,</span> <span class="n">export_jsons_to_csv</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langgraph_log_parser.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_experiment</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langgraph_log_parser.jsons_to_csv</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphConfig</span><span class="p">,</span> <span class="n">SupervisorConfig</span><span class="p">,</span> <span class="n">export_jsons_to_csv</span>
 
 <span class="c1"># Init for experiment project structure</span>
 <span class="n">exp</span> <span class="o">=</span> <span class="n">create_experiment</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
@@ -181,8 +181,8 @@ Furthermore, every graph has its own supervisor - that controls what is happenin
 <p>IMPORTANT: Be sure to call supervisors with different names - so you can differentiate between them! Calling supervisors with the same names WILL brake the parser.</p>
 <p><strong>Example:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Needed imports</span>
-<span class="kn">from</span> <span class="nn">langgraph_log_parser.experiment</span> <span class="kn">import</span> <span class="n">create_experiment</span>
-<span class="kn">from</span> <span class="nn">langgraph_log_parser.jsons_to_csv</span> <span class="kn">import</span> <span class="n">GraphConfig</span><span class="p">,</span> <span class="n">SubgraphConfig</span><span class="p">,</span> <span class="n">SupervisorConfig</span><span class="p">,</span> <span class="n">export_jsons_to_csv</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langgraph_log_parser.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_experiment</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langgraph_log_parser.jsons_to_csv</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphConfig</span><span class="p">,</span> <span class="n">SubgraphConfig</span><span class="p">,</span> <span class="n">SupervisorConfig</span><span class="p">,</span> <span class="n">export_jsons_to_csv</span>
 
 <span class="c1"># Init for experiment project structure</span>
 <span class="n">exp</span> <span class="o">=</span> <span class="n">create_experiment</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
