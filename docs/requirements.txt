@@ -7,3 +7,6 @@ pandas
 pm4py
 langgraph
 numpy
+langgraph-checkpoint-sqlite
+msgpack
+jinja2
