@@ -12,7 +12,7 @@ from typing import Annotated, Literal
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 
-from langgraph_log_parser import *
+from langgraph_compare import *
 
 exp = create_experiment("network")
 memory = exp.memory

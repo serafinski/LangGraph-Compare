@@ -1,7 +1,7 @@
 from unittest.mock import MagicMock
 import os
 
-from langgraph_log_parser import generate_mermaid, generate_prefix_tree, generate_performance_dfg, generate_visualizations
+from langgraph_compare import generate_mermaid, generate_prefix_tree, generate_performance_dfg, generate_visualizations
 
 def test_generate_mermaid(mock_state_graph, setup_cleanup):
     """

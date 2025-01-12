@@ -8,7 +8,7 @@ from langgraph.graph import StateGraph
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
 
-from langgraph_log_parser import *
+from langgraph_compare import *
 
 exp = create_experiment("tavily")
 memory = exp.memory

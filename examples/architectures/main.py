@@ -6,7 +6,7 @@ from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 
-from langgraph_log_parser import *
+from langgraph_compare import *
 
 exp = create_experiment("main")
 memory = exp.memory

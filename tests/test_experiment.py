@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from langgraph_log_parser import create_experiment, ExperimentPaths
+from langgraph_compare import create_experiment, ExperimentPaths
 
 
 def test_create_experiment(setup_cleanup: Path, capsys):

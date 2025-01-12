@@ -1,10 +1,10 @@
-.. LangGraph Log Parser documentation master file, created by
+.. LangGraph Compare documentation master file, created by
    sphinx-quickstart on Sat Nov 16 00:19:00 2024.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-LangGraph Log Parser documentation
-##################################
+LangGraph Compare documentation
+###############################
 
 .. contents:: Table of Contents
 
@@ -54,15 +54,15 @@ For Fedora, Rocky Linux, RHEL or CentOS use the following command:
 
 Environment setup
 -----------------
-This `package <https://pypi.org/project/langgraph_log_parser/>`_ requires Python 3.9 or higher.
+This `package <https://pypi.org/project/langgraph_compare/>`_ requires Python 3.9 or higher.
 
 To create virtual environment (using conda), use the following commands:
 
 .. code-block:: console
 
-   conda create -n langgraph_log_parser python=3.9
-   conda activate langgraph_log_parser
-   pip install langgraph_log_parser
+   conda create -n langgraph_compare python=3.9
+   conda activate langgraph_compare
+   pip install langgraph_compare
 
 If you would like to develop this package, use poetry with Python 3.10 - since 3.10 is the needed minimum by Sphinx.
 
@@ -85,7 +85,7 @@ Basic example
 *************
 This example is based on the `Building a Basic Chatbot <https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-1-build-a-basic-chatbot>`_ from LangGraph documentation.
 
-This code will require You to install the following packages `(besides langgraph_log_parser)`:
+This code will require You to install the following packages `(besides langgraph_compare)`:
 
 .. code-block:: console
 
@@ -105,7 +105,7 @@ For detailed explanation of the code, see: :ref:`getting_started` and :ref:`adva
    from langgraph.graph import StateGraph, START, END
    from langgraph.graph.message import add_messages
 
-   from langgraph_log_parser import *
+   from langgraph_compare import *
 
    exp = create_experiment("main")
    memory = exp.memory
@@ -152,7 +152,7 @@ When You have multiple architectures analyzed, You can use the following code to
 
 .. code-block:: python
 
-   from langgraph_log_parser import compare
+   from langgraph_compare import compare
 
    infrastructures = ["main", "other1", "other2"]
 

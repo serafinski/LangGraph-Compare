@@ -17,7 +17,7 @@ from langchain_core.messages import BaseMessage
 from langgraph.graph import END, StateGraph, START
 from langgraph.prebuilt import create_react_agent
 
-from langgraph_log_parser import *
+from langgraph_compare import *
 
 exp = create_experiment("supervision")
 memory = exp.memory

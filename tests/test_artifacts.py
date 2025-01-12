@@ -8,7 +8,7 @@ from langgraph.graph.state import CompiledStateGraph
 from langchain_core.messages import HumanMessage, BaseMessage
 import operator
 
-from langgraph_log_parser.artifacts import prepare_data, generate_artifacts
+from langgraph_compare.artifacts import prepare_data, generate_artifacts
 
 
 def test_prepare_data_with_paths(

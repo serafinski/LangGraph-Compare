@@ -8,7 +8,7 @@ from typing import Generator
 from unittest.mock import MagicMock
 from langgraph.graph.state import CompiledStateGraph
 
-from langgraph_log_parser import load_event_log, SupervisorConfig, SubgraphConfig, GraphConfig
+from langgraph_compare import load_event_log, SupervisorConfig, SubgraphConfig, GraphConfig
 
 
 @pytest.fixture

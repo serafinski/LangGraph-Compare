@@ -1,5 +1,5 @@
 import json
-from langgraph_log_parser.sql_to_jsons import export_sqlite_to_jsons
+from langgraph_compare.sql_to_jsons import export_sqlite_to_jsons
 
 
 def test_export_sqlite_to_jsons(sample_db_path, log_file_paths, tmp_path):

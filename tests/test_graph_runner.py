@@ -1,4 +1,4 @@
-from langgraph_log_parser.graph_runner import run_multiple_iterations
+from langgraph_compare.graph_runner import run_multiple_iterations
 
 def test_run_graph_iterations(mock_state_graph, capsys):
     """

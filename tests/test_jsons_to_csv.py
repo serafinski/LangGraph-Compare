@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import shutil
-from langgraph_log_parser.jsons_to_csv import export_jsons_to_csv, SupervisorConfig, SubgraphConfig, GraphConfig
+from langgraph_compare.jsons_to_csv import export_jsons_to_csv, SupervisorConfig, SubgraphConfig, GraphConfig
 
 def compare_csv_files(file1: str, file2: str) -> bool:
     """

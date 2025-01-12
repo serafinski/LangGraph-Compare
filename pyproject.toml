@@ -6,9 +6,9 @@
 # poetry run pytest
 
 [tool.poetry]
-name = "langgraph_log_parser"
-version = "0.1.14"
-description = "Parser for logs from LangGraph"
+name = "langgraph-compare"
+version = "0.1.2"
+description = "Package for comparing and monitoring performance of LangGraph architectures."
 authors = ["Tomasz Serafiński <tomasz@serafinski.net>"]
 readme = "README.md"
 

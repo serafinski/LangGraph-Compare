@@ -1,4 +1,4 @@
-from langgraph_log_parser.analyze_case_id import (
+from langgraph_compare.analyze_case_id import (
     get_case_sequence, print_case_sequence,
     get_case_sequence_prob, print_case_sequence_prob,
     get_case_min_self_dists, print_case_min_self_dists,

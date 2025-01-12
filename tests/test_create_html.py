@@ -1,4 +1,4 @@
-from langgraph_log_parser.create_html import compare
+from langgraph_compare.create_html import compare
 
 def test_generated_report_matches_reference(test_infrastructure, reference_html, setup_cleanup):
     """Test that generated report matches the reference file."""

@@ -15,7 +15,7 @@ As advanced examples, we are going to use the following tutorials from LangGraph
 * `Agent Architectures - Multi-Agent Supervisor <https://langchain-ai.github.io/langgraph/tutorials/multi_agent/agent_supervisor/>`_
 * `Agent Architectures - Hierarchical Agent Teams <https://langchain-ai.github.io/langgraph/tutorials/multi_agent/hierarchical_agent_teams/>`_
 
-We are also not going to focus on a basic usage - the main focus is going to be on :class:`langgraph_log_parser.jsons_to_csv.GraphConfig`.
+We are also not going to focus on a basic usage - the main focus is going to be on :class:`langgraph_compare.jsons_to_csv.GraphConfig`.
 
 If You want to check basic usage, refer to: :ref:`getting_started`.
 
@@ -38,8 +38,8 @@ In case of this example - we will have 2 nodes - :code:`researcher`, :code:`char
 .. code-block:: python
 
     # Needed imports
-    from langgraph_log_parser.experiment import create_experiment
-    from langgraph_log_parser.jsons_to_csv import GraphConfig, export_jsons_to_csv
+    from langgraph_compare.experiment import create_experiment
+    from langgraph_compare.jsons_to_csv import GraphConfig, export_jsons_to_csv
 
     # Init for experiment project structure
     exp = create_experiment("test")
@@ -62,15 +62,15 @@ This example is based on `Agent Architectures - Multi-Agent Supervisor <https://
 
   `Multi-Agent Supervisor diagram - LangGraph Documentation <https://langchain-ai.github.io/langgraph/tutorials/multi_agent/agent_supervisor/>`_
 
-In this example, we will introduce :class:`langgraph_log_parser.jsons_to_csv.SupervisorConfig`. It will supervise the graph - working more or less work the same as :code:`GraphConfig`. The concept of supervisors will make more sense in :ref:`hierarchical_agent_teams`.
+In this example, we will introduce :class:`langgraph_compare.jsons_to_csv.SupervisorConfig`. It will supervise the graph - working more or less work the same as :code:`GraphConfig`. The concept of supervisors will make more sense in :ref:`hierarchical_agent_teams`.
 
 **Example:**
 
 .. code-block:: python
 
     # Needed imports
-    from langgraph_log_parser.experiment import create_experiment
-    from langgraph_log_parser.jsons_to_csv import GraphConfig, SupervisorConfig, export_jsons_to_csv
+    from langgraph_compare.experiment import create_experiment
+    from langgraph_compare.jsons_to_csv import GraphConfig, SupervisorConfig, export_jsons_to_csv
 
     # Init for experiment project structure
     exp = create_experiment("test")
@@ -112,8 +112,8 @@ IMPORTANT: Be sure to call supervisors with different names - so you can differe
 .. code-block:: python
 
     # Needed imports
-    from langgraph_log_parser.experiment import create_experiment
-    from langgraph_log_parser.jsons_to_csv import GraphConfig, SubgraphConfig, SupervisorConfig, export_jsons_to_csv
+    from langgraph_compare.experiment import create_experiment
+    from langgraph_compare.jsons_to_csv import GraphConfig, SubgraphConfig, SupervisorConfig, export_jsons_to_csv
 
     # Init for experiment project structure
     exp = create_experiment("test")

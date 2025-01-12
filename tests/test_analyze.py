@@ -1,4 +1,4 @@
-from langgraph_log_parser.analyze import (
+from langgraph_compare.analyze import (
     get_starts, print_starts,
     get_ends, print_ends,
     get_act_counts, print_act_counts,

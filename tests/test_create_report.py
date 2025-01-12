@@ -1,5 +1,5 @@
 import json
-from langgraph_log_parser.create_report import write_metrics_report, write_sequences_report, generate_reports
+from langgraph_compare.create_report import write_metrics_report, write_sequences_report, generate_reports
 
 
 def test_write_metrics_report(sample_event_log, reference_metrics, setup_cleanup):

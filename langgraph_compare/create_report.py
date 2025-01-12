@@ -1,5 +1,5 @@
 import json
-from langgraph_log_parser.analyze import (get_act_counts, get_global_act_reworks, get_mean_act_times, get_avg_duration,
+from .analyze import (get_act_counts, get_global_act_reworks, get_mean_act_times, get_avg_duration,
                                           get_starts, get_ends, get_sequence_probs)
 from .experiment import ExperimentPaths
 import pandas as pd

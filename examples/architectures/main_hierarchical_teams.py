@@ -17,7 +17,7 @@ from langgraph.graph import END, StateGraph, START
 from langchain_core.messages import HumanMessage, trim_messages, BaseMessage
 from langgraph.prebuilt import create_react_agent
 
-from langgraph_log_parser import *
+from langgraph_compare import *
 
 exp = create_experiment("hierarchical")
 memory = exp.memory

@@ -1,7 +1,7 @@
-Langgraph Log Parser
-====================
+Langgraph Compare
+=================
 
 .. toctree::
    :maxdepth: 4
 
-   langgraph_log_parser
+   langgraph_compare
