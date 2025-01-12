@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>langgraph_log_parser.visualize &mdash; LangGraph Log Parser 0.1.14 documentation</title>
+  <title>langgraph_compare.visualize &mdash; LangGraph Compare 0.1.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=468bc497"></script>
+      <script src="../../_static/documentation_options.js?v=92734c54"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -32,7 +32,7 @@
           
           
           <a href="../../index.html" class="icon icon-home">
-            LangGraph Log Parser
+            LangGraph Compare
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -43,7 +43,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Langgraph Log Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Langgraph Compare</a></li>
 </ul>
 
         </div>
@@ -52,7 +52,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">LangGraph Log Parser</a>
+          <a href="../../index.html">LangGraph Compare</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -61,7 +61,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">langgraph_log_parser.visualize</li>
+      <li class="breadcrumb-item active">langgraph_compare.visualize</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -70,7 +70,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for langgraph_log_parser.visualize</h1><div class="highlight"><pre>
+  <h1>Source code for langgraph_compare.visualize</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pm4py</span>
@@ -93,7 +93,7 @@
 
 
 <div class="viewcode-block" id="generate_mermaid">
-<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.visualize.generate_mermaid">[docs]</a>
+<a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.visualize.generate_mermaid">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">generate_mermaid</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">CompiledStateGraph</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ExperimentPaths</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate and save a mermaid graph visualization.</span>
@@ -133,7 +133,7 @@
 
 
 <div class="viewcode-block" id="generate_prefix_tree">
-<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.visualize.generate_prefix_tree">[docs]</a>
+<a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.visualize.generate_prefix_tree">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">generate_prefix_tree</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ExperimentPaths</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate and save a prefix tree visualization.</span>
@@ -175,7 +175,7 @@
 
 
 <div class="viewcode-block" id="generate_performance_dfg">
-<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.visualize.generate_performance_dfg">[docs]</a>
+<a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.visualize.generate_performance_dfg">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">generate_performance_dfg</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ExperimentPaths</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate and save a visualization of directly-follows graph annotated with performance.</span>
@@ -213,7 +213,7 @@
 
 
 <div class="viewcode-block" id="generate_visualizations">
-<a class="viewcode-back" href="../../langgraph_log_parser.html#langgraph_log_parser.visualize.generate_visualizations">[docs]</a>
+<a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.visualize.generate_visualizations">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">generate_visualizations</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">CompiledStateGraph</span><span class="p">,</span>
                             <span class="n">output_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ExperimentPaths</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
