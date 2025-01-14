@@ -1,5 +1,5 @@
 from langgraph_compare import compare
 
-infrastructures = ["event", "linear", "random"]
+infrastructures = ["supervise", "linear", "random"]
 
 compare(infrastructures)
