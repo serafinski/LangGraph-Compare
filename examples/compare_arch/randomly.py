@@ -1,9 +1,7 @@
-from typing import TypedDict, Annotated
-from langgraph.graph import StateGraph, START, END
+from langgraph.graph import StateGraph, START, END, MessagesState
 from langchain_core.messages import AIMessage
 from langgraph_compare import *
 from dotenv import load_dotenv
-from langgraph.graph.message import add_messages
 import random
 
 exp = create_experiment("random")
@@ -11,8 +9,7 @@ memory = exp.memory
 
 load_dotenv()
 
-class State(TypedDict):
-    messages: Annotated[list, add_messages]
+class State(MessagesState):
     current_step: int
     final_answer: str
     visited_agents: list
@@ -21,7 +18,6 @@ class State(TypedDict):
 
 def researcher(state: State) -> State:
     """Research agent that processes the initial query."""
-    messages = state["messages"]
     state["messages"].append(AIMessage(content="Research completed: Found relevant information"))
     state["current_step"] += 1
     state["visited_agents"].append("researcher")
@@ -30,7 +26,6 @@ def researcher(state: State) -> State:
 
 def analyzer(state: State) -> State:
     """Analyzer agent that processes research results."""
-    messages = state["messages"]
     state["messages"].append(AIMessage(content="Analysis completed: Processed research data"))
     state["current_step"] += 1
     state["visited_agents"].append("analyzer")
@@ -39,7 +34,6 @@ def analyzer(state: State) -> State:
 
 def writer(state: State) -> State:
     """Writer agent that creates final response."""
-    messages = state["messages"]
     state["final_answer"] = "Final synthesized response"
     state["current_step"] += 1
     state["visited_agents"].append("writer")
@@ -49,11 +43,12 @@ def writer(state: State) -> State:
 def should_end(state: State) -> bool:
     """Determines if the workflow should end."""
     agents = ["researcher", "analyzer", "writer"]
-    max_attempts = random.randint(1, 12)
+    max_attempts = random.randint(1, 10)
     conditions = [
-        state["attempts"] >= max_attempts,  # Maximum attempts reached
-        all(agent in state["visited_agents"] for agent in agents),  # All agents visited
-        # "writer" in state["visited_agents"] and random.random() < 0.66  # 70% chance after writer
+        # Maximum attempts reached
+        state["attempts"] >= max_attempts,
+        # All agents visited
+        all(agent in state["visited_agents"] for agent in agents),
     ]
     return any(conditions)
 
@@ -66,12 +61,7 @@ def route_next_step(state: State) -> str:
         return END
 
     agents = ["researcher", "analyzer", "writer"]
-    # available_agents = [agent for agent in agents if agent not in state["visited_agents"]]
 
-    # if not available_agents:
-    #     available_agents = agents
-
-    # return random.choice(available_agents)
     return random.choice(agents)
 
 
@@ -109,7 +99,7 @@ chain = build_random_graph()
 
 # Run multiple iterations and analyze results
 initial_state = {
-    "messages": [("user", "Test query")],
+    "messages": [("user", "Please research the topic of multi-agent systems")],
     "current_step": 0,
     "visited_agents": [],
     "attempts": 0

@@ -1,38 +1,31 @@
-from typing import TypedDict
-from langgraph.graph import StateGraph, START, END
+from langgraph.graph import StateGraph, START, END, MessagesState
 from langchain_core.messages import AIMessage
 from langgraph_compare import *
 from dotenv import load_dotenv
-from typing import Annotated
-from langgraph.graph.message import add_messages
 
 exp = create_experiment("linear")
 memory = exp.memory
 
 load_dotenv()
 
-class State(TypedDict):
-    messages: Annotated[list, add_messages]
+class State(MessagesState):
     current_step: int
     final_answer: str
 
 def researcher(state: State) -> State:
     """Research agent that processes the initial query."""
-    messages = state["messages"]
     # Simulate research processing
     state["messages"].append(AIMessage(content="Research completed: Found relevant information"))
     return state
 
 def analyzer(state: State) -> State:
     """Analyzer agent that processes research results."""
-    messages = state["messages"]
     # Simulate analysis
     state["messages"].append(AIMessage(content="Analysis completed: Processed research data"))
     return state
 
 def writer(state: State) -> State:
     """Writer agent that creates final response."""
-    messages = state["messages"]
     state["final_answer"] = "Final synthesized response"
     return state
 
@@ -59,7 +52,8 @@ def build_linear_graph():
 chain = build_linear_graph()
 
 print()
-run_multiple_iterations(chain, 1,1000,{"messages": [("user", "Test")]})
+run_multiple_iterations(chain, 1,1000,
+                        {"messages": [("user", "Please research the topic of multi-agent systems")]})
 print()
 
 graph_config = GraphConfig(
