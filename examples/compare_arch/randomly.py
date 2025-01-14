@@ -24,11 +24,11 @@ def researcher(state: State) -> State:
     return state
 
 
-def analyzer(state: State) -> State:
-    """Analyzer agent that processes research results."""
+def analyser(state: State) -> State:
+    """Analyser agent that processes research results."""
     state["messages"].append(AIMessage(content="Analysis completed: Processed research data"))
     state["current_step"] += 1
-    state["visited_agents"].append("analyzer")
+    state["visited_agents"].append("analyser")
     return state
 
 
@@ -42,7 +42,7 @@ def writer(state: State) -> State:
 
 def should_end(state: State) -> bool:
     """Determines if the workflow should end."""
-    agents = ["researcher", "analyzer", "writer"]
+    agents = ["researcher", "analyser", "writer"]
     max_attempts = random.randint(1, 10)
     conditions = [
         # Maximum attempts reached
@@ -60,7 +60,7 @@ def route_next_step(state: State) -> str:
     if should_end(state):
         return END
 
-    agents = ["researcher", "analyzer", "writer"]
+    agents = ["researcher", "analyser", "writer"]
 
     return random.choice(agents)
 
@@ -71,19 +71,19 @@ def build_random_graph():
 
     # Add nodes
     workflow.add_node("researcher", researcher)
-    workflow.add_node("analyzer", analyzer)
+    workflow.add_node("analyser", analyser)
     workflow.add_node("writer", writer)
 
     # Add edges with conditional routing
     workflow.add_edge(START, "researcher")
 
-    for node in ["researcher", "analyzer", "writer"]:
+    for node in ["researcher", "analyser", "writer"]:
         workflow.add_conditional_edges(
             node,
             route_next_step,
             {
                 "researcher": "researcher",
-                "analyzer": "analyzer",
+                "analyser": "analyser",
                 "writer": "writer",
                 END: END
             }
@@ -110,7 +110,7 @@ run_multiple_iterations(chain, 1, 1000, initial_state)
 print()
 
 graph_config = GraphConfig(
-    nodes=["researcher", "analyzer", "writer"]
+    nodes=["researcher", "analyser", "writer"]
 )
 
 prepare_data(exp, graph_config)

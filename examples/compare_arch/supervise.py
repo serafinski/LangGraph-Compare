@@ -12,13 +12,13 @@ memory = exp.memory
 load_dotenv()
 
 # Define valid routing options
-VALID_STEPS = ["researcher", "analyzer", "writer"]
+VALID_STEPS = ["researcher", "analyser", "writer"]
 options = ["FINISH"] + VALID_STEPS
 
 
 # Define the response model for supervisor
 class RouteResponse(BaseModel):
-    next: Literal["FINISH", "researcher", "analyzer", "writer"]
+    next: Literal["FINISH", "researcher", "analyser", "writer"]
 
 
 # Define the agent state
@@ -48,7 +48,7 @@ def supervisor(state: AgentState) -> AgentState:
         last_message = state["messages"][-1].content if state["messages"] else None
 
         if "Research completed" in str(last_message):
-            return {"next": "analyzer", "current_step": state["current_step"]}
+            return {"next": "analyser", "current_step": state["current_step"]}
         elif "Analysis completed" in str(last_message):
             return {"next": "writer", "current_step": state["current_step"]}
         elif "Final synthesized" in str(last_message):
@@ -75,8 +75,8 @@ def researcher(state: AgentState) -> AgentState:
     }
 
 
-def analyzer(state: AgentState) -> AgentState:
-    """Analyzer agent that processes research results."""
+def analyser(state: AgentState) -> AgentState:
+    """Analyser agent that processes research results."""
     state = increment_step(state)
     return {
         "messages": [AIMessage(content="Analysis completed: Processed research data")],
@@ -99,7 +99,7 @@ def build_graph():
     # Add nodes
     workflow.add_node("supervisor", supervisor)
     workflow.add_node("researcher", researcher)
-    workflow.add_node("analyzer", analyzer)
+    workflow.add_node("analyser", analyser)
     workflow.add_node("writer", writer)
 
     # Add initial edge from START to supervisor
@@ -140,7 +140,7 @@ graph_supervisor = SupervisorConfig(
 
 graph_config = GraphConfig(
     supervisors=[graph_supervisor],
-    nodes=["researcher", "analyzer", "writer"]
+    nodes=["researcher", "analyser", "writer"]
 )
 
 prepare_data(exp, graph_config)

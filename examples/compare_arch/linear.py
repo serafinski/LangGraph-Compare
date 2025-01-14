@@ -18,8 +18,8 @@ def researcher(state: State) -> State:
     state["messages"].append(AIMessage(content="Research completed: Found relevant information"))
     return state
 
-def analyzer(state: State) -> State:
-    """Analyzer agent that processes research results."""
+def analyser(state: State) -> State:
+    """Analyser agent that processes research results."""
     # Simulate analysis
     state["messages"].append(AIMessage(content="Analysis completed: Processed research data"))
     return state
@@ -35,13 +35,13 @@ def build_linear_graph():
 
     # Add nodes
     workflow.add_node("researcher", researcher)
-    workflow.add_node("analyzer", analyzer)
+    workflow.add_node("analyser", analyser)
     workflow.add_node("writer", writer)
 
     # Add edges
     workflow.add_edge(START, "researcher")
-    workflow.add_edge("researcher", "analyzer")
-    workflow.add_edge("analyzer", "writer")
+    workflow.add_edge("researcher", "analyser")
+    workflow.add_edge("analyser", "writer")
     workflow.add_edge("writer", END)
 
     # Compile
@@ -57,7 +57,7 @@ run_multiple_iterations(chain, 1,1000,
 print()
 
 graph_config = GraphConfig(
-    nodes=["researcher", "analyzer", "writer"]
+    nodes=["researcher", "analyser", "writer"]
 )
 
 prepare_data(exp, graph_config)
