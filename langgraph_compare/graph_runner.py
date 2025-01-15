@@ -2,6 +2,7 @@ from typing import Dict, Any
 from langgraph.graph.state import CompiledStateGraph
 import copy
 
+
 def run_multiple_iterations(
         graph: CompiledStateGraph,
         starting_thread_id: int,
@@ -11,6 +12,7 @@ def run_multiple_iterations(
 ) -> None:
     """
     Run the provided graph `num_repetitions` times, incrementing the thread_id each time.
+    Tracks and displays step iterations within each graph run.
 
     :param graph: The compiled StateGraph to run.
     :type graph: CompiledStateGraph
@@ -30,28 +32,25 @@ def run_multiple_iterations(
         # .compile method from official langgraph package
         graph = graph_builder.compile(checkpointer=memory)
 
-        # Run the graph for 3 iterations, starting from thread ID 1
-        run_multiple_iterations(graph, 1, 3, {"messages": [("user", "Tell me a joke")]})
+        # Run the graph for 2 iterations, starting from thread ID 1
+        run_multiple_iterations(graph, 1, 2, {"messages": [("user", "Tell me a joke")]})
 
         # Output:
         # Iteration: 1, Thread_ID 1
-        # {'messages': [AIMessage(content='Why did the scarecrow win an award? Because he was outstanding in his field!',
+        # Step 0:
+        # {'messages': [AIMessage(content='Climate change is a significant global challenge...',
         # additional_kwargs={'refusal': None}, response_metadata={'token_usage': {'completion_tokens': 18,
-        # 'prompt_tokens': 11, 'total_tokens': 29, ...})]}
+        # 'prompt_tokens': 11, 'total_tokens': 29}})]}
         # ---
         # Iteration: 2, Thread_ID 2
-        # {'messages': [AIMessage(content='Why did the scarecrow win an award? Because he was outstanding in his field!',
+        # Step 0:
+        # {'messages': [AIMessage(content='The climate crisis requires immediate action...',
         # additional_kwargs={'refusal': None}, response_metadata={'token_usage': {'completion_tokens': 17,
-        # 'prompt_tokens': 11, 'total_tokens': 28, ...})]}
-        # ---
-        # Iteration: 3, Thread_ID 3
-        # {'messages': [AIMessage(content='Why did the scarecrow win an award? Because he was outstanding in his field!',
-        # additional_kwargs={'refusal': None}, response_metadata={'token_usage': {'completion_tokens': 18,
-        # 'prompt_tokens': 11, 'total_tokens': 29, ...})]}
+        # 'prompt_tokens': 11, 'total_tokens': 28}})]}
         # ---
     """
     for i in range(num_repetitions):
-        # Wygeneruj dla aktualnego thread ID i dostosuj user input w ramach potrzeby
+        # Generate config for current thread ID
         current_thread_id = str(starting_thread_id + i)
         config = {
             "configurable": {"thread_id": current_thread_id},
@@ -62,9 +61,15 @@ def run_multiple_iterations(
         # This ensures complete isolation of state between runs
         user_input = copy.deepcopy(user_input_template)
 
+        print("#" * 30)
         print(f"Iteration: {i + 1}, Thread_ID {current_thread_id}")
-        for event in graph.stream(user_input, config):
-            for value in event.values():
+        print("#" * 30)
+
+        # Stream the graph with step tracking
+        events = graph.stream(user_input, config, stream_mode="values")
+        for step_num, event in enumerate(events):
+            for key, value in event.items():
                 if "__end__" not in value:
+                    print(f"Step {step_num}:")
                     print(value)
                     print("---")
