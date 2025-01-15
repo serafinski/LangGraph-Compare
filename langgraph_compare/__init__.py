@@ -17,7 +17,8 @@ __all__ = [
     "get_act_reworks", "print_act_reworks",
     "get_mean_act_times", "print_mean_act_times",
     "get_durations", "print_durations",
-    "print_analysis", "get_avg_duration", "print_avg_duration",
+    "print_analysis",
+    "get_avg_duration", "print_avg_duration",
     "get_global_act_reworks", "print_global_act_reworks",
 
     # Functions - analyze_case_id

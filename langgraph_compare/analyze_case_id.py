@@ -5,7 +5,7 @@ from collections import Counter
 
 pd.set_option('display.max_columns', None)
 
-# 12
+# 1
 def get_case_sequence(event_log: pd.DataFrame, case_id: int) -> list[str]:
     """
     Return the activity sequence for a specific case ID.
@@ -38,7 +38,7 @@ def get_case_sequence(event_log: pd.DataFrame, case_id: int) -> list[str]:
 
     return sequence
 
-#13
+
 def print_case_sequence(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the activity sequence for a specific case ID.
@@ -59,7 +59,7 @@ def print_case_sequence(event_log: pd.DataFrame, case_id: int) -> None:
     sequence = get_case_sequence(event_log, case_id)
     print(f"Activity sequence for case ID {case_id}: {sequence}")
 
-#14
+#2
 def get_case_sequence_prob(event_log: pd.DataFrame, case_id: int) -> tuple[list[str], float]:
     """
     Return the activity sequence with its probability for a specific case ID.
@@ -94,7 +94,7 @@ def get_case_sequence_prob(event_log: pd.DataFrame, case_id: int) -> tuple[list[
 
     return sequence, probability
 
-#15
+
 def print_case_sequence_prob(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the activity sequence with its probability for a specific case ID.
@@ -117,7 +117,7 @@ def print_case_sequence_prob(event_log: pd.DataFrame, case_id: int) -> None:
     print(f"Activity sequence for case ID {case_id}: {sequence}")
     print(f"Probability: {round(probability,3)}")
 
-#18
+#3
 def get_case_min_self_dists(event_log: pd.DataFrame, case_id: int) -> dict[str, int]:
     """
     Return the minimum self-distances for all activities for a specific case ID.
@@ -154,7 +154,7 @@ def get_case_min_self_dists(event_log: pd.DataFrame, case_id: int) -> dict[str, 
     )
     return msd
 
-#19
+
 def print_case_min_self_dists(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the minimum self-distances for all activities for a specific case ID.
@@ -176,7 +176,7 @@ def print_case_min_self_dists(event_log: pd.DataFrame, case_id: int) -> None:
     min_self_distances = get_case_min_self_dists(event_log, case_id)
     print(f"Minimum self distances for case ID {case_id}: {min_self_distances}")
 
-#26
+#4
 def get_case_act_reworks(event_log: pd.DataFrame, case_id: int) -> dict[str, int]:
     """
     Return the rework counts for each activity for a specific case ID.
@@ -219,7 +219,7 @@ def get_case_act_reworks(event_log: pd.DataFrame, case_id: int) -> dict[str, int
 
     return rework_counts
 
-#27
+
 def print_case_act_reworks(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the rework counts for each activity for a specific case ID.
@@ -240,7 +240,7 @@ def print_case_act_reworks(event_log: pd.DataFrame, case_id: int) -> None:
     rework_counts = get_case_act_reworks(event_log, case_id)
     print(f"Rework counts for case ID {case_id}: {rework_counts}")
 
-#32
+#5
 def get_case_duration(event_log: pd.DataFrame, case_id: int) -> float:
     """
     Calculate the duration time for a specific case ID.
@@ -272,7 +272,7 @@ def get_case_duration(event_log: pd.DataFrame, case_id: int) -> float:
     duration = pm4py.get_case_duration(event_log, case_id_str)
     return duration
 
-#33
+
 def print_case_duration(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the duration time for a specific case ID.
@@ -293,7 +293,7 @@ def print_case_duration(event_log: pd.DataFrame, case_id: int) -> None:
     duration = get_case_duration(event_log, case_id)
     print(f"Duration for case ID {case_id}: {round(duration,3)} s")
 
-#34
+#6
 def get_case_start(event_log: pd.DataFrame, case_id: int) -> str:
     """
     Retrieve the first activity for the specified case ID.
@@ -316,7 +316,7 @@ def get_case_start(event_log: pd.DataFrame, case_id: int) -> str:
     sequence = get_case_sequence(event_log, case_id)
     return sequence[0]
 
-#35
+
 def print_case_start(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the first activity for the specified case ID.
@@ -337,7 +337,7 @@ def print_case_start(event_log: pd.DataFrame, case_id: int) -> None:
     start_activity = get_case_start(event_log, case_id)
     print(f"Start activity for case ID {case_id}: {start_activity}")
 
-#36
+#7
 def get_case_end(event_log: pd.DataFrame, case_id: int) -> str:
     """
     Retrieve the last activity for the specified case ID.
@@ -360,7 +360,7 @@ def get_case_end(event_log: pd.DataFrame, case_id: int) -> str:
     sequence = get_case_sequence(event_log, case_id)
     return sequence[-1]
 
-#37
+
 def print_case_end(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the last activity for the specified case ID.
@@ -381,7 +381,7 @@ def print_case_end(event_log: pd.DataFrame, case_id: int) -> None:
     end_activity = get_case_end(event_log, case_id)
     print(f"End activity for case ID {case_id}: {end_activity}")
 
-#38
+#8
 def get_case_act_counts(event_log: pd.DataFrame, case_id: int) -> dict[str, int]:
     """
     Count how many times each activity occurred for the specified case ID.
@@ -404,7 +404,7 @@ def get_case_act_counts(event_log: pd.DataFrame, case_id: int) -> dict[str, int]
     sequence = get_case_sequence(event_log, case_id)
     return dict(Counter(sequence))
 
-#39
+
 def print_case_act_counts(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the count of each activity for the specified case ID.
@@ -435,7 +435,7 @@ def print_case_act_counts(event_log: pd.DataFrame, case_id: int) -> None:
     for activity, count in activities_count.items():
         print(f"Activity '{activity}': {count}")
 
-#40
+#9
 def get_case_sum_act_times(event_log: pd.DataFrame, case_id: int) -> dict[str, float]:
     """
     Calculate the sum service time in seconds for each activity for a specific case ID.
@@ -479,7 +479,7 @@ def get_case_sum_act_times(event_log: pd.DataFrame, case_id: int) -> dict[str, f
 
     return sum_serv_time
 
-#41
+
 def print_case_sum_act_times(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the sum service time in seconds for each activity for a specific case ID.
@@ -510,7 +510,7 @@ def print_case_sum_act_times(event_log: pd.DataFrame, case_id: int) -> None:
     for activity, time in sum_time.items():
         print(f"Activity '{activity}': {round(time,3)} s")
 
-
+#10
 def get_case_self_dist_witnesses(event_log: pd.DataFrame, case_id: int) -> dict[str, list[list[str]]]:
     """
     Return the minimum self-distance witnesses for all activities for a specific case ID,
@@ -610,6 +610,7 @@ def get_case_self_dist_witnesses(event_log: pd.DataFrame, case_id: int) -> dict[
 
     return corrected_witnesses
 
+
 def print_case_self_dist_witnesses(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Print the minimum self-distance witnesses for all activities for a specific case ID.
@@ -630,7 +631,7 @@ def print_case_self_dist_witnesses(event_log: pd.DataFrame, case_id: int) -> Non
     witnesses = get_case_self_dist_witnesses(event_log, case_id)
     print(f"Minimum self distance witnesses for case ID {case_id}: {witnesses}")
 
-#43
+
 def print_case_analysis(event_log: pd.DataFrame, case_id: int) -> None:
     """
     Run multiple analyses on single case_id and print the results.
