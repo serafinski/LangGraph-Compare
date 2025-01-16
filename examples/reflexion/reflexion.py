@@ -4,6 +4,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.tools import StructuredTool
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
+from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
 
 from langgraph.prebuilt import ToolNode
@@ -28,7 +29,8 @@ memory = exp.memory
 load_dotenv()
 
 # TOOLS
-llm = ChatOpenAI(model="gpt-4o-mini")
+# llm = ChatOpenAI(model="gpt-4o-mini")
+llm = ChatGroq(model="llama-3.1-8b-instant")
 search = TavilySearchAPIWrapper()
 tavily_tool = TavilySearchResults(search=search, max_results=5)
 
@@ -62,15 +64,17 @@ class ResponderWithRetries:
                 self.validator.invoke(response)
                 return {"messages": response}
             except ValidationError as e:
-                state = state + [
+                # Create new messages list with error response
+                new_messages = state["messages"] + [
                     response,
                     ToolMessage(
                         content=f"{repr(e)}\n\nPay close attention to the function schema.\n\n"
-                        + self.validator.schema_json()
-                        + " Respond by fixing all validation errors.",
+                                + json.dumps(self.validator.model_json_schema())
+                                + " Respond by fixing all validation errors.",
                         tool_call_id=response.tool_calls[0]["id"],
                     ),
                 ]
+                state = {"messages": new_messages}
         return {"messages": response}
 
 actor_prompt_template = ChatPromptTemplate.from_messages(
@@ -142,27 +146,45 @@ revision_validator = PydanticToolsParser(tools=[ReviseAnswer])
 revisor = ResponderWithRetries(runnable=revision_chain, validator=revision_validator)
 
 
-revised = revisor.respond(
-    {
-        "messages": [
-            HumanMessage(content=example_question),
-            initial["messages"],
-            ToolMessage(
-                tool_call_id=initial["messages"].tool_calls[0]["id"],
-                content=json.dumps(
-                    tavily_tool.invoke(
-                        {
-                            "query": initial["messages"].tool_calls[0]["args"][
-                                "search_queries"
-                            ][0]
-                        }
-                    )
+# Add the safety check
+if hasattr(initial["messages"], "tool_calls") and initial["messages"].tool_calls:
+    revised = revisor.respond(
+        {
+            "messages": [
+                HumanMessage(content=example_question),
+                initial["messages"],
+                ToolMessage(
+                    tool_call_id=initial["messages"].tool_calls[0]["id"],
+                    content=json.dumps(
+                        tavily_tool.invoke(
+                            {
+                                "query": initial["messages"].tool_calls[0]["args"][
+                                    "search_queries"
+                                ][0]
+                            }
+                        )
+                    ),
                 ),
-            ),
-        ]
-    }
-)
-revised["messages"]
+            ]
+        }
+    )
+else:
+    # Handle Groq/Llama case
+    response_content = json.loads(initial["messages"].content.split(">")[1])
+    revised = revisor.respond(
+        {
+            "messages": [
+                HumanMessage(content=example_question),
+                initial["messages"],
+                ToolMessage(
+                    tool_call_id="search_1",
+                    content=json.dumps(
+                        tavily_tool.invoke({"query": response_content["search_queries"][0]})
+                    ),
+                ),
+            ]
+        }
+    )
 
 # TOOL NODE
 def run_queries(search_queries: list[str], **kwargs):

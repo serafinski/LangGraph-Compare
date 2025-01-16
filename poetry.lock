@@ -915,6 +915,25 @@ docs = ["Sphinx", "furo"]
 test = ["objgraph", "psutil"]
 
 [[package]]
+name = "groq"
+version = "0.15.0"
+description = "The official Python library for the groq API"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "groq-0.15.0-py3-none-any.whl", hash = "sha256:c200558b67fee4b4f2bb89cc166337e3419a68c23280065770f8f8b0729c79ef"},
+    {file = "groq-0.15.0.tar.gz", hash = "sha256:9ad08ba6156c67d0975595a8515b517f22ff63158e063c55192e161ed3648af1"},
+]
+
+[package.dependencies]
+anyio = ">=3.5.0,<5"
+distro = ">=1.7.0,<2"
+httpx = ">=0.23.0,<1"
+pydantic = ">=1.9.0,<3"
+sniffio = "*"
+typing-extensions = ">=4.10,<5"
+
+[[package]]
 name = "h11"
 version = "0.14.0"
 description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
@@ -1470,6 +1489,21 @@ langchain-community = ">=0.3.0,<0.4.0"
 langchain-core = ">=0.3.28,<0.4.0"
 
 [[package]]
+name = "langchain-groq"
+version = "0.2.3"
+description = "An integration package connecting Groq and LangChain"
+optional = false
+python-versions = "<4.0,>=3.9"
+files = [
+    {file = "langchain_groq-0.2.3-py3-none-any.whl", hash = "sha256:3572c812acc1478ab0670c48eb9a135c95f47631190da750e48408267462a12d"},
+    {file = "langchain_groq-0.2.3.tar.gz", hash = "sha256:f94810fe734c9402b36273ddc3509eaa67f12a7d06b666c6ca472ab0bfdf37b7"},
+]
+
+[package.dependencies]
+groq = ">=0.4.1,<1"
+langchain-core = ">=0.3.29,<0.4.0"
+
+[[package]]
 name = "langchain-openai"
 version = "0.2.14"
 description = "An integration package connecting OpenAI and LangChain"
@@ -1517,13 +1551,13 @@ langgraph-sdk = ">=0.1.42,<0.2.0"
 
 [[package]]
 name = "langgraph-checkpoint"
-version = "2.0.9"
+version = "2.0.10"
 description = "Library with base interfaces for LangGraph checkpoint savers."
 optional = false
 python-versions = "<4.0.0,>=3.9.0"
 files = [
-    {file = "langgraph_checkpoint-2.0.9-py3-none-any.whl", hash = "sha256:b546ed6129929b8941ac08af6ce5cd26c8ebe1d25883d3c48638d34ade91ce42"},
-    {file = "langgraph_checkpoint-2.0.9.tar.gz", hash = "sha256:43847d7e385a2d9d2b684155920998e44ed42d2d1780719e4f6111fe3d6db84c"},
+    {file = "langgraph_checkpoint-2.0.10-py3-none-any.whl", hash = "sha256:0d592cfda2df93844c6ea44d142170a8f7e5ba5320274e0e5e60e27f2749392c"},
+    {file = "langgraph_checkpoint-2.0.10.tar.gz", hash = "sha256:2dcc04e09091d588bb6209e49d83ff5406d7231c2590d6ff18fb29ab8b140129"},
 ]
 
 [package.dependencies]
@@ -1532,18 +1566,18 @@ msgpack = ">=1.1.0,<2.0.0"
 
 [[package]]
 name = "langgraph-checkpoint-sqlite"
-version = "2.0.1"
+version = "2.0.3"
 description = "Library with a SQLite implementation of LangGraph checkpoint saver."
 optional = false
 python-versions = "<4.0.0,>=3.9.0"
 files = [
-    {file = "langgraph_checkpoint_sqlite-2.0.1-py3-none-any.whl", hash = "sha256:8f9e78c45d27ac7e1305af596c0cb799a780c0356568f20df5f49726ae2ba687"},
-    {file = "langgraph_checkpoint_sqlite-2.0.1.tar.gz", hash = "sha256:303a43b9dc769a087aaa6365009e8b6db132bc30021edcbcb70a2d18c7aafcd9"},
+    {file = "langgraph_checkpoint_sqlite-2.0.3-py3-none-any.whl", hash = "sha256:93491d1e5058f96537caf463ef4f03a9d1b9028fa86025c7c3cccac21b3b83ad"},
+    {file = "langgraph_checkpoint_sqlite-2.0.3.tar.gz", hash = "sha256:47e6cd6a52f7c6daca3dde935fca1da6f298d0dfe4c772da20edf48a0e0b1306"},
 ]
 
 [package.dependencies]
 aiosqlite = ">=0.20.0,<0.21.0"
-langgraph-checkpoint = ">=2.0.2,<3.0.0"
+langgraph-checkpoint = ">=2.0.10,<3.0.0"
 
 [[package]]
 name = "langgraph-sdk"
@@ -2160,13 +2194,13 @@ files = [
 
 [[package]]
 name = "openai"
-version = "1.59.6"
+version = "1.59.7"
 description = "The official Python library for the openai API"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "openai-1.59.6-py3-none-any.whl", hash = "sha256:b28ed44eee3d5ebe1a3ea045ee1b4b50fea36ecd50741aaa5ce5a5559c900cb6"},
-    {file = "openai-1.59.6.tar.gz", hash = "sha256:c7670727c2f1e4473f62fea6fa51475c8bc098c9ffb47bfb9eef5be23c747934"},
+    {file = "openai-1.59.7-py3-none-any.whl", hash = "sha256:cfa806556226fa96df7380ab2e29814181d56fea44738c2b0e581b462c268692"},
+    {file = "openai-1.59.7.tar.gz", hash = "sha256:043603def78c00befb857df9f0a16ee76a3af5984ba40cb7ee5e2f40db4646bf"},
 ]
 
 [package.dependencies]
@@ -3915,4 +3949,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "a31cdef27a5a2ef906fc97452f99b119f12171ecd6c5bcc0b9293828302fc508"
+content-hash = "ade4a43fa68c43baafefc59d1e404e091bdd0c909b3ce0e6d04f958af8ff8905"
