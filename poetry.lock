@@ -1505,17 +1505,17 @@ langchain-core = ">=0.3.29,<0.4.0"
 
 [[package]]
 name = "langchain-openai"
-version = "0.2.14"
+version = "0.3.0"
 description = "An integration package connecting OpenAI and LangChain"
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "langchain_openai-0.2.14-py3-none-any.whl", hash = "sha256:d232496662f79ece9a11caf7d798ba863e559c771bc366814f7688e0fe664fe8"},
-    {file = "langchain_openai-0.2.14.tar.gz", hash = "sha256:7a514f309e356b182a337c0ed36ab3fbe34d9834a235a3b85cb7f91ae775d978"},
+    {file = "langchain_openai-0.3.0-py3-none-any.whl", hash = "sha256:49c921a22d272b04749a61e78bffa83aecdb8840b24b69f2909e115a357a9a5b"},
+    {file = "langchain_openai-0.3.0.tar.gz", hash = "sha256:88d623eeb2aaa1fff65c2b419a4a1cfd37d3a1d504e598b87cf0bc822a3b70d0"},
 ]
 
 [package.dependencies]
-langchain-core = ">=0.3.27,<0.4.0"
+langchain-core = ">=0.3.29,<0.4.0"
 openai = ">=1.58.1,<2.0.0"
 tiktoken = ">=0.7,<1"
 
@@ -1534,19 +1534,36 @@ files = [
 langchain-core = ">=0.3.29,<0.4.0"
 
 [[package]]
+name = "langchain-together"
+version = "0.3.0"
+description = "An integration package connecting Together AI and LangChain"
+optional = false
+python-versions = "<4.0,>=3.9"
+files = [
+    {file = "langchain_together-0.3.0-py3-none-any.whl", hash = "sha256:4dcb4f6858c910c23d2268da1ed5f54e8cd01224ecf086dc7a8adbacdc6cb686"},
+    {file = "langchain_together-0.3.0.tar.gz", hash = "sha256:c8a96377e49c065526435f766c6e1c7da3f7d054361326f079de8bd368ea76f2"},
+]
+
+[package.dependencies]
+aiohttp = ">=3.9.1,<4.0.0"
+langchain-core = ">=0.3.29,<0.4.0"
+langchain-openai = ">=0.3,<0.4"
+requests = ">=2,<3"
+
+[[package]]
 name = "langgraph"
-version = "0.2.62"
+version = "0.2.63"
 description = "Building stateful, multi-actor applications with LLMs"
 optional = false
 python-versions = "<4.0,>=3.9.0"
 files = [
-    {file = "langgraph-0.2.62-py3-none-any.whl", hash = "sha256:51ae9e02a52485a837642eebe7ae43269af7d7305d62f8f69ac11589b2fbba26"},
-    {file = "langgraph-0.2.62.tar.gz", hash = "sha256:0aac9fd55ffe669bc1312203e0f9ea2733c65cc276f196e7ff0d443cf4efbb89"},
+    {file = "langgraph-0.2.63-py3-none-any.whl", hash = "sha256:7867108e045c0ee52cb705749edd478b08588dce74fbd4466b4197a04c4e718b"},
+    {file = "langgraph-0.2.63.tar.gz", hash = "sha256:4bcdd6023b02d16c840b5ee612bfbafd1b9e0beef91622aa1827593374ee6e8e"},
 ]
 
 [package.dependencies]
 langchain-core = ">=0.2.43,<0.3.0 || >0.3.0,<0.3.1 || >0.3.1,<0.3.2 || >0.3.2,<0.3.3 || >0.3.3,<0.3.4 || >0.3.4,<0.3.5 || >0.3.5,<0.3.6 || >0.3.6,<0.3.7 || >0.3.7,<0.3.8 || >0.3.8,<0.3.9 || >0.3.9,<0.3.10 || >0.3.10,<0.3.11 || >0.3.11,<0.3.12 || >0.3.12,<0.3.13 || >0.3.13,<0.3.14 || >0.3.14,<0.3.15 || >0.3.15,<0.3.16 || >0.3.16,<0.3.17 || >0.3.17,<0.3.18 || >0.3.18,<0.3.19 || >0.3.19,<0.3.20 || >0.3.20,<0.3.21 || >0.3.21,<0.3.22 || >0.3.22,<0.4.0"
-langgraph-checkpoint = ">=2.0.4,<3.0.0"
+langgraph-checkpoint = ">=2.0.10,<3.0.0"
 langgraph-sdk = ">=0.1.42,<0.2.0"
 
 [[package]]
@@ -2532,13 +2549,13 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "pm4py"
-version = "2.7.13"
+version = "2.7.13.1"
 description = "Process mining for Python"
 optional = false
 python-versions = "*"
 files = [
-    {file = "pm4py-2.7.13-py3-none-any.whl", hash = "sha256:9fff2a6eb284bf16af1d023349c8aee6fe0273b3a8fea5d1e101fec5ecb98c70"},
-    {file = "pm4py-2.7.13.tar.gz", hash = "sha256:1c0adf9c82ee9e38ea25c00d52951a08d65780144092f41db2f1e3ad012e483c"},
+    {file = "pm4py-2.7.13.1-py3-none-any.whl", hash = "sha256:599c7680a1edfbd2f431d3aebb3248cbce6e74c37bd158d1f89d4ba02d60a7cf"},
+    {file = "pm4py-2.7.13.1.tar.gz", hash = "sha256:ce9b84256d9b3d499a5b2a03d26cf63b15196f034034f20b37f7d9d7cc67e530"},
 ]
 
 [package.dependencies]
@@ -3949,4 +3966,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "ade4a43fa68c43baafefc59d1e404e091bdd0c909b3ce0e6d04f958af8ff8905"
+content-hash = "b5f466db310f6a56d4fb4d15316f504b7b310d3806e3f4a0d21cffd47e2b940d"

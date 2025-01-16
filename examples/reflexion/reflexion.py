@@ -6,6 +6,7 @@ from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
+from langchain_together import ChatTogether
 
 from langgraph.prebuilt import ToolNode
 from langgraph.graph import END, StateGraph, START
@@ -23,14 +24,15 @@ from dotenv import load_dotenv
 
 from langgraph_compare import *
 
-exp = create_experiment("reflexion")
+exp = create_experiment("climate_100")
 memory = exp.memory
 
 load_dotenv()
 
 # TOOLS
 # llm = ChatOpenAI(model="gpt-4o-mini")
-llm = ChatGroq(model="llama-3.1-8b-instant")
+# llm = ChatGroq(model="llama-3.1-8b-instant")
+llm = ChatTogether(model="meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo")
 search = TavilySearchAPIWrapper()
 tavily_tool = TavilySearchResults(search=search, max_results=5)
 
@@ -170,7 +172,27 @@ if hasattr(initial["messages"], "tool_calls") and initial["messages"].tool_calls
     )
 else:
     # Handle Groq/Llama case
-    response_content = json.loads(initial["messages"].content.split(">")[1])
+    try:
+        # First attempt to parse as JSON directly
+        response_content = json.loads(initial["messages"].content)
+    except json.JSONDecodeError:
+        # If that fails, try to extract JSON from function-like response
+        try:
+            # Look for content between curly braces
+            content_str = initial["messages"].content
+            start_idx = content_str.find('{')
+            end_idx = content_str.rfind('}') + 1
+            if start_idx != -1 and end_idx != -1:
+                json_str = content_str[start_idx:end_idx]
+                response_content = json.loads(json_str)
+            else:
+                raise ValueError("Could not find JSON content in response")
+        except (json.JSONDecodeError, ValueError) as e:
+            print(f"Error parsing response: {e}")
+            print("Raw response content:")
+            print(initial["messages"].content)
+            raise
+
     revised = revisor.respond(
         {
             "messages": [
@@ -243,7 +265,7 @@ graph = builder.compile(checkpointer=memory)
 user_input = {"messages": [("user", "How should we handle the climate crisis?")]}
 
 print()
-run_multiple_iterations(graph, 1, 3, user_input)
+run_multiple_iterations(graph, 1, 100, user_input)
 print()
 
 graph_config = GraphConfig(
