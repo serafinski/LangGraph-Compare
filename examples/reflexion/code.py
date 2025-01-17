@@ -25,7 +25,7 @@ from dotenv import load_dotenv
 
 from langgraph_compare import *
 
-exp = create_experiment("code_10", "check")
+exp = create_experiment("array_100")
 memory = exp.memory
 
 load_dotenv()

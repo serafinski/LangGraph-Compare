@@ -26,7 +26,7 @@ from dotenv import load_dotenv
 
 from langgraph_compare import *
 
-exp = create_experiment("climate_10", "check")
+exp = create_experiment("climate_100")
 memory = exp.memory
 
 load_dotenv()
