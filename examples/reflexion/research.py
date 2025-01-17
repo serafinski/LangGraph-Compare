@@ -1,12 +1,10 @@
-from langchain_core.messages import HumanMessage, ToolMessage
+import datetime
+import json
+
+from langchain_core.messages import ToolMessage
 from langchain_core.output_parsers.openai_tools import PydanticToolsParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.tools import StructuredTool
-from langchain_community.tools.tavily_search import TavilySearchResults
-from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
-from langchain_groq import ChatGroq
-from langchain_openai import ChatOpenAI
-from langchain_together import ChatTogether
 
 from langgraph.prebuilt import ToolNode
 from langgraph.graph import END, StateGraph, START
@@ -17,14 +15,18 @@ from typing_extensions import TypedDict
 
 from pydantic import ValidationError, BaseModel, Field
 
-import datetime
-import json
+from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
+
+from langchain_groq import ChatGroq
+from langchain_openai import ChatOpenAI
+from langchain_together import ChatTogether
 
 from dotenv import load_dotenv
 
 from langgraph_compare import *
 
-exp = create_experiment("climate_100")
+exp = create_experiment("climate_10", "check")
 memory = exp.memory
 
 load_dotenv()
@@ -35,6 +37,7 @@ load_dotenv()
 llm = ChatTogether(model="meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo")
 search = TavilySearchAPIWrapper()
 tavily_tool = TavilySearchResults(search=search, max_results=5)
+
 
 # INITIAL RESPONDER
 class Reflection(BaseModel):
@@ -50,6 +53,18 @@ class AnswerQuestion(BaseModel):
     search_queries: list[str] = Field(
         description="1-3 search queries for researching improvements to address the critique of your current answer."
     )
+
+
+# Extend the initial answer schema to include references.
+class ReviseAnswer(AnswerQuestion):
+    """Revise your original answer to your question. Provide an answer, reflection,
+    cite your reflection with references, and finally
+    add search queries to improve the answer."""
+
+    references: list[str] = Field(
+        description="Citations motivating your updated answer."
+    )
+
 
 class ResponderWithRetries:
     def __init__(self, runnable, validator):
@@ -79,134 +94,64 @@ class ResponderWithRetries:
                 state = {"messages": new_messages}
         return {"messages": response}
 
+
 actor_prompt_template = ChatPromptTemplate.from_messages(
     [
         (
             "system",
             """You are expert researcher.
-Current time: {time}
+            Current time: {time}
 
-1. {first_instruction}
-2. Reflect and critique your answer. Be severe to maximize improvement.
-3. Recommend search queries to research information and improve your answer.""",
+            1. {first_instruction}
+            2. Reflect and critique your answer. Be severe to maximize improvement.
+            3. Recommend search queries to research information and improve your answer.""",
         ),
         MessagesPlaceholder(variable_name="messages"),
         (
             "user",
-            "\n\n<system>Reflect on the user's original question and the"
-            " actions taken thus far. Respond using the {function_name} function.</reminder>",
+            "\n\n<system>Reflect on the user's original question and the actions taken thus far. Respond using the {function_name} function.</reminder>",
         ),
     ]
 ).partial(
     time=lambda: datetime.datetime.now().isoformat(),
 )
-initial_answer_chain = actor_prompt_template.partial(
-    first_instruction="Provide a detailed ~250 word answer.",
-    function_name=AnswerQuestion.__name__,
-) | llm.bind_tools(tools=[AnswerQuestion])
+
+initial_answer_chain = (
+        actor_prompt_template.partial(
+            first_instruction="Provide a detailed ~250 word answer.",
+            function_name=AnswerQuestion.__name__,
+        ) | llm.bind_tools(tools=[AnswerQuestion]))
+
 validator = PydanticToolsParser(tools=[AnswerQuestion])
 
 first_responder = ResponderWithRetries(
     runnable=initial_answer_chain, validator=validator
 )
 
-example_question = "Why is reflection useful in AI?"
-initial = first_responder.respond(
-    {"messages": [HumanMessage(content=example_question)]}
-)
-
 # REVISION
 revise_instructions = """Revise your previous answer using the new information.
-    - You should use the previous critique to add important information to your answer.
+        - You should use the previous critique to add important information to your answer.
         - You MUST include numerical citations in your revised answer to ensure it can be verified.
         - Add a "References" section to the bottom of your answer (which does not count towards the word limit). In form of:
             - [1] https://example.com
             - [2] https://example.com
-    - You should use the previous critique to remove superfluous information from your answer and make SURE it is not more than 250 words.
+        - You should use the previous critique to remove superfluous information from your answer and make SURE it is not more than 250 words.
 """
 
+revision_chain = (
+        actor_prompt_template.partial(
+            first_instruction=revise_instructions,
+            function_name=ReviseAnswer.__name__,
+        )
+        | llm.bind_tools(tools=[ReviseAnswer])
+)
 
-# Extend the initial answer schema to include references.
-# Forcing citation in the model encourages grounded responses
-class ReviseAnswer(AnswerQuestion):
-    """Revise your original answer to your question. Provide an answer, reflection,
-
-    cite your reflection with references, and finally
-    add search queries to improve the answer."""
-
-    references: list[str] = Field(
-        description="Citations motivating your updated answer."
-    )
-
-
-revision_chain = actor_prompt_template.partial(
-    first_instruction=revise_instructions,
-    function_name=ReviseAnswer.__name__,
-) | llm.bind_tools(tools=[ReviseAnswer])
 revision_validator = PydanticToolsParser(tools=[ReviseAnswer])
 
-revisor = ResponderWithRetries(runnable=revision_chain, validator=revision_validator)
+revisor = ResponderWithRetries(
+    runnable=revision_chain, validator=revision_validator
+)
 
-
-# Add the safety check
-if hasattr(initial["messages"], "tool_calls") and initial["messages"].tool_calls:
-    revised = revisor.respond(
-        {
-            "messages": [
-                HumanMessage(content=example_question),
-                initial["messages"],
-                ToolMessage(
-                    tool_call_id=initial["messages"].tool_calls[0]["id"],
-                    content=json.dumps(
-                        tavily_tool.invoke(
-                            {
-                                "query": initial["messages"].tool_calls[0]["args"][
-                                    "search_queries"
-                                ][0]
-                            }
-                        )
-                    ),
-                ),
-            ]
-        }
-    )
-else:
-    # Handle Groq/Llama case
-    try:
-        # First attempt to parse as JSON directly
-        response_content = json.loads(initial["messages"].content)
-    except json.JSONDecodeError:
-        # If that fails, try to extract JSON from function-like response
-        try:
-            # Look for content between curly braces
-            content_str = initial["messages"].content
-            start_idx = content_str.find('{')
-            end_idx = content_str.rfind('}') + 1
-            if start_idx != -1 and end_idx != -1:
-                json_str = content_str[start_idx:end_idx]
-                response_content = json.loads(json_str)
-            else:
-                raise ValueError("Could not find JSON content in response")
-        except (json.JSONDecodeError, ValueError) as e:
-            print(f"Error parsing response: {e}")
-            print("Raw response content:")
-            print(initial["messages"].content)
-            raise
-
-    revised = revisor.respond(
-        {
-            "messages": [
-                HumanMessage(content=example_question),
-                initial["messages"],
-                ToolMessage(
-                    tool_call_id="search_1",
-                    content=json.dumps(
-                        tavily_tool.invoke({"query": response_content["search_queries"][0]})
-                    ),
-                ),
-            ]
-        }
-    )
 
 # TOOL NODE
 def run_queries(search_queries: list[str], **kwargs):
@@ -229,15 +174,16 @@ class State(TypedDict):
 
 MAX_ITERATIONS = 5
 builder = StateGraph(State)
+
 builder.add_node("draft", first_responder.respond)
-
-
 builder.add_node("execute_tools", tool_node)
 builder.add_node("revise", revisor.respond)
-# draft -> execute_tools
+
+# Add edges
+builder.add_edge(START, "draft")
 builder.add_edge("draft", "execute_tools")
-# execute_tools -> revise
 builder.add_edge("execute_tools", "revise")
+
 
 # Define looping logic:
 def _get_num_iterations(state: list):
@@ -259,13 +205,13 @@ def event_loop(state: list):
 
 # revise -> execute_tools OR end
 builder.add_conditional_edges("revise", event_loop, ["execute_tools", END])
-builder.add_edge(START, "draft")
 graph = builder.compile(checkpointer=memory)
 
-user_input = {"messages": [("user", "How should we handle the climate crisis?")]}
+user_input = {"messages": [("user",
+                            "How should we handle the climate crisis?")]}
 
 print()
-run_multiple_iterations(graph, 1, 100, user_input)
+run_multiple_iterations(graph, 1, 10, user_input)
 print()
 
 graph_config = GraphConfig(
