@@ -15,7 +15,8 @@ from typing_extensions import TypedDict
 
 from pydantic import ValidationError, BaseModel, Field
 
-from langchain_experimental.utilities import PythonREPL
+from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
 
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
@@ -25,7 +26,7 @@ from dotenv import load_dotenv
 
 from langgraph_compare import *
 
-exp = create_experiment("array_100")
+exp = create_experiment("programming_100")
 memory = exp.memory
 
 load_dotenv()
@@ -34,32 +35,35 @@ load_dotenv()
 # llm = ChatOpenAI(model="gpt-4o-mini")
 # llm = ChatGroq(model="llama-3.1-8b-instant")
 llm = ChatTogether(model="meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo")
-repl = PythonREPL()
+search = TavilySearchAPIWrapper()
+tavily_tool = TavilySearchResults(search=search, max_results=5)
 
 
 # INITIAL RESPONDER
-class CodeReflection(BaseModel):
-    missing: str = Field(description="What is missing from the implementation")
-    superfluous: str = Field(description="What is unnecessary in the implementation")
+class CodeAnalysis(BaseModel):
+    """Analysis of the proposed solution"""
+    technical_gaps: str = Field(description="Identify technical gaps or potential issues in the implementation")
+    optimization: str = Field(description="Suggestions for optimization and best practices")
+    security: str = Field(description="Security considerations and potential vulnerabilities")
 
 
-class GenerateCode(BaseModel):
-    """Generate initial code implementation with analysis and reflection."""
+class ProgrammingAnswer(BaseModel):
+    """Provide a detailed programming solution with implementation details and considerations."""
 
-    answer: str = Field(description="~Code implementation with explanation")
-    reflection: CodeReflection = Field(description="Reflection on the implementation")
-    code_samples: list[str] = Field(
-        description="1-3 code samples to test and verify the implementation"
+    solution: str = Field(
+        description="Detailed solution including code examples, implementation details, and explanation"
+    )
+    analysis: CodeAnalysis = Field(description="Technical analysis of the solution")
+    search_queries: list[str] = Field(
+        description="1-3 search queries for researching technical improvements or alternative approaches"
     )
 
 
-class ReviseCode(BaseModel):
-    """Revise code implementation based on previous reflection."""
+class RevisedProgrammingAnswer(ProgrammingAnswer):
+    """Provide an improved programming solution with references to documentation and best practices."""
 
-    answer: str = Field(description="~250 word revised implementation with explanation")
-    reflection: CodeReflection = Field(description="New reflection on the implementation")
-    code_samples: list[str] = Field(
-        description="1-3 code samples to test the revised implementation"
+    references: list[str] = Field(
+        description="Links to relevant documentation, GitHub repos, or technical resources"
     )
 
 
@@ -92,87 +96,76 @@ class ResponderWithRetries:
         return {"messages": response}
 
 
-actor_prompt_template = ChatPromptTemplate.from_messages(
-    [
-        (
-            "system",
-            """You are expert software engineer.
-            Current time: {time}
+# Define system prompts
+actor_prompt_template = ChatPromptTemplate.from_messages([
+    (
+        "system",
+        """You are an expert software engineer and programming mentor.
+        Current time: {time}
 
-            1. {first_instruction}
-            2. Reflect and critique your implementation. Be severe to maximize improvement.
-            3. Provide code samples to test and verify your implementation.""",
-        ),
-        MessagesPlaceholder(variable_name="messages"),
-        (
-            "user",
-            "\n\n<system>Review the code request and actions taken. Respond using the {function_name} function.</system>",
-        ),
-    ]
-).partial(
+        Your role is to:
+        1. {first_instruction}
+        2. Analyze the technical aspects of your solution including potential issues, optimizations, and security considerations
+        3. Research additional technical resources and documentation to improve the solution
+
+        Focus on:
+        - Writing clean, maintainable code
+        - Following programming best practices
+        - Providing detailed explanations of the implementation
+        - Considering edge cases and error handling
+        - Suggesting optimizations and improvements""",
+    ),
+    MessagesPlaceholder(variable_name="messages"),
+    (
+        "user",
+        "\n\n<system>Review the programming question and provide a solution using the {function_name} function.</system>",
+    ),
+]).partial(
     time=lambda: datetime.datetime.now().isoformat(),
 )
 
-initial_chain = (
+# Setup initial answer chain
+initial_answer_chain = (
         actor_prompt_template.partial(
-            first_instruction="Provide a detailed code implementation with explanation.",
-            function_name=GenerateCode.__name__,
-        ) | llm.bind_tools(tools=[GenerateCode]))
-
-validator = PydanticToolsParser(tools=[GenerateCode])
-
-first_responder = ResponderWithRetries(
-    runnable=initial_chain, validator=validator
+            first_instruction="Provide a detailed programming solution with implementation details.",
+            function_name=ProgrammingAnswer.__name__,
+        ) | llm.bind_tools(tools=[ProgrammingAnswer])
 )
 
-# REVISION
-revise_instructions = """Revise your code implementation using the execution results.
-    - Use the previous critique to improve your implementation
-    - Make sure the code handles edge cases
-    - Focus on improving efficiency and readability
-    - Keep the explanation clear and concise within 250 words"""
+validator = PydanticToolsParser(tools=[ProgrammingAnswer])
+first_responder = ResponderWithRetries(runnable=initial_answer_chain, validator=validator)
+
+# Setup revision chain
+revise_instructions = """Improve your programming solution using the additional research:
+    - Update the implementation based on best practices and documentation
+    - Add error handling and edge cases
+    - Optimize the code for better performance
+    - Include links to relevant documentation and resources
+    - Ensure the solution follows security best practices
+    - Add example usage and test cases
+"""
 
 revision_chain = (
         actor_prompt_template.partial(
             first_instruction=revise_instructions,
-            function_name=ReviseCode.__name__,
-        )
-        | llm.bind_tools(tools=[ReviseCode])
+            function_name=RevisedProgrammingAnswer.__name__,
+        ) | llm.bind_tools(tools=[RevisedProgrammingAnswer])
 )
-revision_validator = PydanticToolsParser(tools=[ReviseCode])
 
-revisor = ResponderWithRetries(
-    runnable=revision_chain, validator=revision_validator
-)
+revision_validator = PydanticToolsParser(tools=[RevisedProgrammingAnswer])
+revisor = ResponderWithRetries(runnable=revision_chain, validator=revision_validator)
 
 
 # TOOL NODE
-def execute_code(code: str) -> str:
-    """Execute code in REPL and return output."""
-    try:
-        return repl.run(code)
-    except Exception as e:
-        return f"Error: {str(e)}"
+def run_queries(search_queries: list[str], **kwargs):
+    """Run the generated queries."""
+    return tavily_tool.batch([{"query": query} for query in search_queries])
 
 
-def run_code_samples(request: GenerateCode | ReviseCode, **kwargs):
-    """Run the code samples and return results."""
-    results = []
-    for code in request.code_samples:
-        output = execute_code(code)
-        results.append({
-            "code": code,
-            "output": output
-        })
-    return results
-
-
-tool_node = ToolNode(
-    [
-        StructuredTool.from_function(run_code_samples, name=GenerateCode.__name__),
-        StructuredTool.from_function(run_code_samples, name=ReviseCode.__name__),
-    ]
-)
+tool_node = ToolNode([
+    StructuredTool.from_function(run_queries, name=ProgrammingAnswer.__name__),
+    StructuredTool.from_function(run_queries, name=RevisedProgrammingAnswer.__name__),
+])
 
 
 # CONSTRUCT GRAPH
@@ -213,11 +206,11 @@ def event_loop(state: dict):
 builder.add_conditional_edges("revise", event_loop, ["execute_tools", END])
 graph = builder.compile(checkpointer=memory)
 
-user_input = {"messages": [("user",
-                            "Given an array of integers, find the length of the longest subsequence such that all elements of the subsequence are sorted in increasing order.")]}
+# Example usage
+user_input = {"messages": [("user", "How do I implement a secure REST API with rate limiting in Python?")]}
 
 print()
-run_multiple_iterations(graph, 1, 10, user_input)
+run_multiple_iterations(graph, 1, 100, user_input)
 print()
 
 graph_config = GraphConfig(
