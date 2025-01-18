@@ -180,7 +180,6 @@ builder.add_node("draft", first_responder.respond)
 builder.add_node("execute_tools", tool_node)
 builder.add_node("revise", revisor.respond)
 
-# Add edges
 builder.add_edge(START, "draft")
 builder.add_edge("draft", "execute_tools")
 builder.add_edge("execute_tools", "revise")

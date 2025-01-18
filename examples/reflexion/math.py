@@ -26,7 +26,7 @@ from dotenv import load_dotenv
 
 from langgraph_compare import *
 
-exp = create_experiment("climate_100")
+exp = create_experiment("math_100")
 memory = exp.memory
 
 load_dotenv()
@@ -40,29 +40,30 @@ tavily_tool = TavilySearchResults(search=search, max_results=5)
 
 
 # INITIAL RESPONDER
-class Reflection(BaseModel):
-    missing: str = Field(description="Critique of what is missing.")
-    superfluous: str = Field(description="Critique of what is superfluous")
+class MathematicalAnalysis(BaseModel):
+    """Analysis of the mathematical solution"""
+    assumptions: str = Field(description="Key assumptions and constraints in the problem")
+    verification: str = Field(description="Methods to verify the solution's correctness")
+    alternative_approaches: str = Field(description="Other possible solution methods")
 
 
-class AnswerQuestion(BaseModel):
-    """Answer the question. Provide an answer, reflection, and then follow up with search queries to improve the answer."""
+class MathSolution(BaseModel):
+    """Provide a detailed mathematical solution with step-by-step reasoning."""
 
-    answer: str = Field(description="~250 word detailed answer to the question.")
-    reflection: Reflection = Field(description="Your reflection on the initial answer.")
+    solution: str = Field(
+        description="Step-by-step solution including equations, calculations, and explanations"
+    )
+    analysis: MathematicalAnalysis = Field(description="Mathematical analysis of the solution")
     search_queries: list[str] = Field(
-        description="1-3 search queries for researching improvements to address the critique of your current answer."
+        description="1-3 search queries for researching mathematical concepts or alternative approaches"
     )
 
 
-# Extend the initial answer schema to include references.
-class ReviseAnswer(AnswerQuestion):
-    """Revise your original answer to your question. Provide an answer, reflection,
-    cite your reflection with references, and finally
-    add search queries to improve the answer."""
+class RevisedMathSolution(MathSolution):
+    """Provide an improved mathematical solution with references to theorems and proofs."""
 
     references: list[str] = Field(
-        description="Citations motivating your updated answer."
+        description="Links to mathematical resources, proofs, or relevant academic papers"
     )
 
 
@@ -94,64 +95,65 @@ class ResponderWithRetries:
                 state = {"messages": new_messages}
         return {"messages": response}
 
+# Define system prompts
+actor_prompt_template = ChatPromptTemplate.from_messages([
+    (
+        "system",
+        """You are an expert mathematician and mathematical educator.
+        Current time: {time}
 
-actor_prompt_template = ChatPromptTemplate.from_messages(
-    [
-        (
-            "system",
-            """You are expert researcher.
-            Current time: {time}
+        Your role is to:
+        1. {first_instruction}
+        2. Analyze the mathematical approach, including assumptions and verification methods
+        3. Research additional mathematical resources and proofs to enhance the solution
 
-            1. {first_instruction}
-            2. Reflect and critique your answer. Be severe to maximize improvement.
-            3. Recommend search queries to research information and improve your answer.""",
-        ),
-        MessagesPlaceholder(variable_name="messages"),
-        (
-            "user",
-            "\n\n<system>Reflect on the user's original question and the actions taken thus far. Respond using the {function_name} function.</reminder>",
-        ),
-    ]
-).partial(
+        Focus on:
+        - Providing clear, step-by-step solutions
+        - Explaining mathematical concepts thoroughly
+        - Using proper mathematical notation
+        - Verifying solutions with different methods
+        - Considering edge cases and special conditions
+        - Citing relevant theorems and proofs""",
+    ),
+    MessagesPlaceholder(variable_name="messages"),
+    (
+        "user",
+        "\n\n<system>Review the mathematical problem and provide a solution using the {function_name} function.</system>",
+    ),
+]).partial(
     time=lambda: datetime.datetime.now().isoformat(),
 )
 
+# Setup initial answer chain
 initial_answer_chain = (
         actor_prompt_template.partial(
-            first_instruction="Provide a detailed ~250 word answer.",
-            function_name=AnswerQuestion.__name__,
-        ) | llm.bind_tools(tools=[AnswerQuestion]))
-
-validator = PydanticToolsParser(tools=[AnswerQuestion])
-
-first_responder = ResponderWithRetries(
-    runnable=initial_answer_chain, validator=validator
+            first_instruction="Provide a detailed step-by-step mathematical solution.",
+            function_name=MathSolution.__name__,
+        ) | llm.bind_tools(tools=[MathSolution])
 )
 
-# REVISION
-revise_instructions = """Revise your previous answer using the new information.
-        - You should use the previous critique to add important information to your answer.
-        - You MUST include numerical citations in your revised answer to ensure it can be verified.
-        - Add a "References" section to the bottom of your answer (which does not count towards the word limit). In form of:
-            - [1] https://example.com
-            - [2] https://example.com
-        - You should use the previous critique to remove superfluous information from your answer and make SURE it is not more than 250 words.
+validator = PydanticToolsParser(tools=[MathSolution])
+first_responder = ResponderWithRetries(runnable=initial_answer_chain, validator=validator)
+
+# Setup revision chain
+revise_instructions = """Improve your mathematical solution using the additional research:
+    - Incorporate relevant theorems and proofs
+    - Add alternative solution methods
+    - Verify the solution's correctness
+    - Include references to mathematical resources
+    - Consider special cases and constraints
+    - Add numerical examples where appropriate
 """
 
 revision_chain = (
         actor_prompt_template.partial(
             first_instruction=revise_instructions,
-            function_name=ReviseAnswer.__name__,
-        )
-        | llm.bind_tools(tools=[ReviseAnswer])
+            function_name=RevisedMathSolution.__name__,
+        ) | llm.bind_tools(tools=[RevisedMathSolution])
 )
 
-revision_validator = PydanticToolsParser(tools=[ReviseAnswer])
-
-revisor = ResponderWithRetries(
-    runnable=revision_chain, validator=revision_validator
-)
-
+revision_validator = PydanticToolsParser(tools=[RevisedMathSolution])
+revisor = ResponderWithRetries(runnable=revision_chain, validator=revision_validator)
 
 # TOOL NODE
 def run_queries(search_queries: list[str], **kwargs):
@@ -159,12 +161,10 @@ def run_queries(search_queries: list[str], **kwargs):
     return tavily_tool.batch([{"query": query} for query in search_queries])
 
 
-tool_node = ToolNode(
-    [
-        StructuredTool.from_function(run_queries, name=AnswerQuestion.__name__),
-        StructuredTool.from_function(run_queries, name=ReviseAnswer.__name__),
-    ]
-)
+tool_node = ToolNode([
+    StructuredTool.from_function(run_queries, name=MathSolution.__name__),
+    StructuredTool.from_function(run_queries, name=RevisedMathSolution.__name__),
+])
 
 
 # CONSTRUCT GRAPH
@@ -179,14 +179,13 @@ builder.add_node("draft", first_responder.respond)
 builder.add_node("execute_tools", tool_node)
 builder.add_node("revise", revisor.respond)
 
-# Add edges
 builder.add_edge(START, "draft")
 builder.add_edge("draft", "execute_tools")
 builder.add_edge("execute_tools", "revise")
 
 
-# Define looping logic:
-def _get_num_iterations(state: list):
+def get_num_iterations(state: list):
+    """Count the number of iterations in the current state."""
     i = 0
     for m in state[::-1]:
         if m.type not in {"tool", "ai"}:
@@ -195,20 +194,19 @@ def _get_num_iterations(state: list):
     return i
 
 
-def event_loop(state: list):
-    # in our case, we'll just stop after N plans
-    num_iterations = _get_num_iterations(state["messages"])
+def event_loop(state: dict):
+    num_iterations = get_num_iterations(state["messages"])
     if num_iterations > MAX_ITERATIONS:
         return END
     return "execute_tools"
 
 
-# revise -> execute_tools OR end
 builder.add_conditional_edges("revise", event_loop, ["execute_tools", END])
 graph = builder.compile(checkpointer=memory)
 
-user_input = {"messages": [("user",
-                            "How should we handle the climate crisis?")]}
+# Example usage
+user_input = {
+    "messages": [("user", "How do I solve a system of linear equations with 3 variables using elimination method?")]}
 
 print()
 run_multiple_iterations(graph, 1, 100, user_input)
@@ -220,7 +218,7 @@ graph_config = GraphConfig(
 
 prepare_data(exp, graph_config)
 
-# ANALIZA
+# ANALYSIS
 print()
 event_log = load_event_log(exp)
 print_analysis(event_log)
