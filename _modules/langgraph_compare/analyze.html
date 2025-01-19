@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>langgraph_compare.analyze &mdash; LangGraph Compare 0.1.2 documentation</title>
+  <title>langgraph_compare.analyze &mdash; LangGraph Compare 0.1.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=92734c54"></script>
+      <script src="../../_static/documentation_options.js?v=fd825880"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -79,7 +79,7 @@
 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
-<span class="c1">#2</span>
+<span class="c1">#1</span>
 <div class="viewcode-block" id="get_starts">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.get_starts">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_starts</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
@@ -104,7 +104,6 @@
 
 
 
-<span class="c1">#3</span>
 <div class="viewcode-block" id="print_starts">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.print_starts">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">print_starts</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -126,8 +125,7 @@
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Start activities:&quot;</span><span class="p">,</span> <span class="n">start_activities</span><span class="p">)</span></div>
 
 
-
-<span class="c1">#4</span>
+<span class="c1">#2</span>
 <div class="viewcode-block" id="get_ends">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.get_ends">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_ends</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
@@ -152,7 +150,6 @@
 
 
 
-<span class="c1">#5</span>
 <div class="viewcode-block" id="print_ends">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.print_ends">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">print_ends</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -174,8 +171,7 @@
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;End activities:&quot;</span><span class="p">,</span> <span class="n">end_activities</span><span class="p">)</span></div>
 
 
-
-<span class="c1">#6</span>
+<span class="c1">#3</span>
 <div class="viewcode-block" id="get_act_counts">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.get_act_counts">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_act_counts</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
@@ -200,7 +196,6 @@
 
 
 
-<span class="c1">#7</span>
 <div class="viewcode-block" id="print_act_counts">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.print_act_counts">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">print_act_counts</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -222,8 +217,7 @@
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Count of each activity:&quot;</span><span class="p">,</span> <span class="n">activities</span><span class="p">)</span></div>
 
 
-
-<span class="c1">#8</span>
+<span class="c1">#4</span>
 <div class="viewcode-block" id="get_sequences">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.get_sequences">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_sequences</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
@@ -259,7 +253,6 @@
 
 
 
-<span class="c1">#9</span>
 <div class="viewcode-block" id="print_sequences">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.print_sequences">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">print_sequences</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -291,8 +284,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">sequence</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
-
-<span class="c1">#10</span>
+<span class="c1">#5</span>
 <div class="viewcode-block" id="get_sequence_probs">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.get_sequence_probs">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_sequence_probs</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="nb">float</span><span class="p">]]:</span>
@@ -330,7 +322,6 @@
 
 
 
-<span class="c1">#11</span>
 <div class="viewcode-block" id="print_sequence_probs">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.print_sequence_probs">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">print_sequence_probs</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -363,8 +354,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Probability: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">probability</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
-
-<span class="c1"># 16</span>
+<span class="c1">#6</span>
 <div class="viewcode-block" id="get_min_self_dists">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.get_min_self_dists">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_min_self_dists</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
@@ -408,7 +398,6 @@
 
 
 
-<span class="c1">#17</span>
 <div class="viewcode-block" id="print_min_self_dists">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.print_min_self_dists">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">print_min_self_dists</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -436,8 +425,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">distances</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
-
-<span class="c1">#24</span>
+<span class="c1">#7</span>
 <div class="viewcode-block" id="get_act_reworks">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.get_act_reworks">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_act_reworks</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
@@ -482,7 +470,6 @@
 
 
 
-<span class="c1">#25</span>
 <div class="viewcode-block" id="print_act_reworks">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.print_act_reworks">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">print_act_reworks</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -510,7 +497,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">rework_counts</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
-
+<span class="c1">#8</span>
 <div class="viewcode-block" id="get_global_act_reworks">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.get_global_act_reworks">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_global_act_reworks</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
@@ -593,7 +580,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Activity &#39;</span><span class="si">{</span><span class="n">activity</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">rework_counts</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
-<span class="c1">#28</span>
+<span class="c1">#9</span>
 <div class="viewcode-block" id="get_mean_act_times">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.get_mean_act_times">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_mean_act_times</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
@@ -620,7 +607,6 @@
 
 
 
-<span class="c1">#29</span>
 <div class="viewcode-block" id="print_mean_act_times">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.print_mean_act_times">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">print_mean_act_times</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -653,8 +639,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Activity &#39;</span><span class="si">{</span><span class="n">activity</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span><span class="si">}</span><span class="s2"> s&quot;</span><span class="p">)</span></div>
 
 
-
-<span class="c1">#30</span>
+<span class="c1">#10</span>
 <div class="viewcode-block" id="get_durations">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.get_durations">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_durations</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
@@ -687,7 +672,6 @@
 
 
 
-<span class="c1">#31</span>
 <div class="viewcode-block" id="print_durations">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.print_durations">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">print_durations</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -715,7 +699,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case ID </span><span class="si">{</span><span class="n">case_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span><span class="si">}</span><span class="s2"> s&quot;</span><span class="p">)</span></div>
 
 
-
+<span class="c1">#11</span>
 <div class="viewcode-block" id="get_avg_duration">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.get_avg_duration">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_avg_duration</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -760,7 +744,7 @@
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Average case duration: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span><span class="si">}</span><span class="s2"> s.&quot;</span><span class="p">)</span></div>
 
 
-
+<span class="c1">#12</span>
 <div class="viewcode-block" id="get_self_dist_witnesses">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.get_self_dist_witnesses">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_self_dist_witnesses</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]]:</span>
@@ -893,7 +877,6 @@
 
 
 
-<span class="c1">#42</span>
 <div class="viewcode-block" id="print_analysis">
 <a class="viewcode-back" href="../../langgraph_compare.html#langgraph_compare.analyze.print_analysis">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">print_analysis</span><span class="p">(</span><span class="n">event_log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
